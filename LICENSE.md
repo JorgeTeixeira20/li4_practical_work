@@ -1,1 +1,0 @@
-Licenciado pelo professor Belo!
