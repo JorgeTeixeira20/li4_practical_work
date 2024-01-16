@@ -1,1 +1,0 @@
-Exemplo de CRUD com base de dados SQL Server para User; (exemplo até slide 35)
