@@ -1,0 +1,47 @@
+﻿@page "/perfil"
+@rendermode InteractiveServer
+
+<PageTitle>Perfil</PageTitle>
+
+<h1>Perfil</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Increment</button>
+<button class="btn btn-primary" @onclick="DecrementCount">Decrement</button>
+
+<!-- Exibindo a imagem com base em alguma lógica -->
+@if (currentCount == 1)
+{
+    <img src="https://cdn.discordapp.com/attachments/1155884905989931151/1196878169794420787/luisinho.jpg?ex=65b93aa8&is=65a6c5a8&hm=fb7b15828d8d51e18b8ef74f2ecb8125ca0bdd9b83c8c412a9d1115d381009f6&" alt="Luisinho">
+}
+@if (currentCount == 2)
+{
+    <img src="https://cdn.discordapp.com/attachments/1064295656262471821/1196878661169729677/ad8bea93-d0f5-4454-b695-dcdf57c40c41.jpg?ex=65b93b1d&is=65a6c61d&hm=03677b385b3c898ee8d78551da663c999bca180a5004021f9d671219bcd2b9da&" alt="Rê">
+}
+@if (currentCount == 3)
+{
+    <img src="https://cdn.discordapp.com/attachments/1064295656262471821/1196880436320800799/image.png?ex=65b93cc4&is=65a6c7c4&hm=efd1f5a407c9975ecb87215e083f22a6ffb10592de88790fe984569c4167059f&" alt="Ri">
+}
+@if (currentCount == 4)
+{
+    <img src="https://cdn.discordapp.com/attachments/1064295656262471821/1196880742383358072/image.png?ex=65b93d0d&is=65a6c80d&hm=26b49ae3c1bfcb866d6f21f91d24e120c28107dd4eab36aa2786728787c15720&" alt="Jê">
+}
+@if (currentCount == 5)
+{
+    <img src="https://cdn.discordapp.com/emojis/663475555571859456.webp?size=96&quality=lossless" alt="H">
+}
+
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+    private void DecrementCount()
+    {
+        currentCount--;
+    }
+}
