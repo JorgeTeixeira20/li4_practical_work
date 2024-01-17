@@ -4,13 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>d6061467-d100-455b-a3eb-22079d543740</UserSecretsId>
+    <UserSecretsId>47f4c40f-1ba7-41ed-a4e1-d969e73f3b46</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Pages\Leiloar" />
-    <None Remove="Pages\NewFile.txt" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />

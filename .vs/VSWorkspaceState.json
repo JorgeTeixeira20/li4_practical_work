@@ -3,8 +3,11 @@
     "",
     "\\DataLayer",
     "\\demo",
-    "\\demo\\Features"
+    "\\demo\\Features",
+    "\\demo\\Features\\Home",
+    "\\demo\\Features\\Layout",
+    "\\demo\\Pages"
   ],
-  "SelectedNode": "\\demo\\Demo.sln",
+  "SelectedNode": "\\.gitignore",
   "PreviewInSolutionExplorer": false
 }
