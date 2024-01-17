@@ -4,8 +4,9 @@
     "\\DataLayer",
     "\\demo",
     "\\demo\\Features",
+    "\\demo\\Features\\Layout",
     "\\demo\\Pages"
   ],
-  "SelectedNode": "\\demo\\Pages\\Home.razor",
+  "SelectedNode": "\\demo\\Features\\Layout\\NavMenu.razor",
   "PreviewInSolutionExplorer": false
 }
