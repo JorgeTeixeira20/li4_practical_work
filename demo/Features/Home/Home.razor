@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/home"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager;
 @using DataLayer
@@ -6,6 +6,10 @@
 @inject ICardRepository _db
 
 <PageTitle>Index</PageTitle>
+
+<h1>Home</h1>
+
+<img src="https://cdn.discordapp.com/attachments/1155884905989931151/1196878169794420787/luisinho.jpg?ex=65b93aa8&is=65a6c5a8&hm=fb7b15828d8d51e18b8ef74f2ecb8125ca0bdd9b83c8c412a9d1115d381009f6&" alt="Luisinho">
 
 @if (_cards == null)
 {
