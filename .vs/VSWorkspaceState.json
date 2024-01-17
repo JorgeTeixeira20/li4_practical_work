@@ -3,8 +3,9 @@
     "",
     "\\DataLayer",
     "\\demo",
-    "\\demo\\Features"
+    "\\demo\\Features",
+    "\\demo\\Pages"
   ],
-  "SelectedNode": "\\demo\\Demo.sln",
+  "SelectedNode": "\\demo\\Pages\\Home.razor",
   "PreviewInSolutionExplorer": false
 }
