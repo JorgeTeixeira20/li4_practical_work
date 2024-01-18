@@ -8,10 +8,14 @@ public class UtilizadorRepository : IUtilizadorRepository
         _db = db;
     }
 
-    public UtilizadorModel Find(int id)
+    public UtilizadorModel Find(string username)
     {
-        string sql = "select * from Utilizador where idUtilizador = @Id";
-        List<UtilizadorModel> utiRes = _db.LoadData<UtilizadorModel, dynamic>(sql, new { Id = id }).Result;
+        Console.WriteLine($"Entrei em Find Utilizador Movel com username: {username}!");
+        string sql = $"select * from Utilizador where username = '{username}'";
+        List<UtilizadorModel> utiRes = _db.LoadData<UtilizadorModel, dynamic>(sql, new { }).Result;
+        Console.WriteLine("depois de _db.WriteData");
+        if(utiRes != null) { Console.WriteLine("Encontrei "+ utiRes.Count); }
+        else { Console.WriteLine("Utilizador encontrou null");  }
         return utiRes.First();
     }
 

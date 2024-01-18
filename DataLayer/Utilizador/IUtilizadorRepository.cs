@@ -2,7 +2,7 @@
 {
     public interface IUtilizadorRepository
     {
-        public UtilizadorModel Find(int id);
+        public UtilizadorModel Find(string username);
         public Task<List<UtilizadorModel>> FindAll();
         public Task Create(UtilizadorModel card);
         public Task<UtilizadorModel> Update(UtilizadorModel user);
