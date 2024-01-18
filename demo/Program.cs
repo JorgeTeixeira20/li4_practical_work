@@ -13,6 +13,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<ICardRepository, CardRepository>();
+builder.Services.AddTransient<demo.Features.Home.WatchRepository>(); // Adicione esta linha
 
 
 

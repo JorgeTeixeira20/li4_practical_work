@@ -1,13 +1,16 @@
-@using DataLayer;
+@using DataLayer
 
 <div class="card shadow" style="width: 18rem;">
-   <img src="@card.Image" class="card-img-top" alt="@card.Name">
-       <div class="card-body">
-         <h5 class="card-title">@card.Name</h5>
-          <h6 class="card-subtitle mb-3 text-muted">
-           <span class="oi oi-map-marker"></span>
-            @card.Name
-          </h6>
+    @if (card.Image != null && card.Image.Length > 0)
+    {
+        <img src="data:image/jpeg;base64,@Convert.ToBase64String(card.Image)" class="card-img-top" alt="@card.Name">
+    }
+    <div class="card-body">
+        <h5 class="card-title">@card.Name</h5>
+        <h6 class="card-subtitle mb-3 text-muted">
+            <span class="oi oi-map-marker"></span>
+            @card.Description
+        </h6>
     </div>
 </div>
 @code {

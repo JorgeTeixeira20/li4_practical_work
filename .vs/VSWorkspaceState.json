@@ -4,9 +4,13 @@
     "\\DataLayer",
     "\\demo",
     "\\demo\\Features",
-    "\\demo\\Features\\Layout",
+    "\\demo\\Features\\FetchData",
+    "\\demo\\Features\\Home",
+    "\\demo\\Features\\Leiloar",
+    "\\demo\\Features\\LeiloesFav",
+    "\\demo\\Features\\Registar",
     "\\demo\\Pages"
   ],
-  "SelectedNode": "\\demo\\Features\\Layout\\NavMenu.razor",
+  "SelectedNode": "\\demo\\Demo.sln",
   "PreviewInSolutionExplorer": false
 }

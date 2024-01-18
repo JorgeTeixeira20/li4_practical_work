@@ -20,7 +20,6 @@
             <div class="flex-item">
                 <label>Número de série:</label>
                 <input type="text" @bind="numeroSerie">
-
             </div>
 
             <div class="flex-item100percent">
@@ -30,10 +29,7 @@
 
             <div class="flex-item100percent">
                 <label>Fotos</label>
-                <button>
-                    <span class="plus">+</span>
-                    <input type="file" />
-                </button>
+                <InputFile multiple OnChange="HandleFileInput" />
             </div>
 
             <div class="flex-item">
@@ -76,12 +72,15 @@
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
-            <button class="button-9" role="button">
+            <button class="button-9" @onclick="CriarLeilao">
                 Criar Leilão
             </button>
         </div>
     </form>
 </body>
+
+@inject WatchRepository WatchRepo
+
 @code {
     private string modelo;
     private string numeroSerie;
@@ -94,4 +93,40 @@
     private double precoBase;
     private DateTime dataHoraInicio;
     private DateTime dataHoraFecho;
+
+    private byte[] imagemRelogio; // Alterada para ser um array de bytes
+
+    private void HandleFileInput(InputFileChangeEventArgs e)
+    {
+        var file = e.File; // Agora só estamos tratando um arquivo
+        imagemRelogio = new byte[file.Size];
+
+        using (var stream = file.OpenReadStream())
+        {
+            stream.Read(imagemRelogio, 0, (int)file.Size);
+        }
+    }
+
+    private async Task CriarLeilao()
+    {
+        // Crie um objeto WatchModel com os dados do formulário
+        var novoRelogio = new WatchModel
+            {
+                Modelo = modelo,
+                NumeroSerie = numeroSerie,
+                Descricao = descricao,
+                Imagem = imagemRelogio, // Agora, só uma imagem
+                Marca = marca,
+                EstadoConservacao = estadoConservacao,
+                TemCaixaOriginal = temCaixaOriginal,
+                AnoFabrico = anoFabrico,
+                RelogioFunciona = relogioFunciona,
+                PrecoBase = precoBase,
+                DataHoraInicio = dataHoraInicio,
+                DataHoraFecho = dataHoraFecho,
+            };
+
+        // Adicione o relógio à base de dados usando o WatchRepository
+        await WatchRepo.AddClockAsync(novoRelogio);
+    }
 }
