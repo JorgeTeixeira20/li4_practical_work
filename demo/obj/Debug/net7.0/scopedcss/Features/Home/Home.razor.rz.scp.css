@@ -1,0 +1,17 @@
+body[b-zu8gpqe5ks] {
+    margin: 0;
+    padding: 0;
+}
+
+.grid[b-zu8gpqe5ks] {
+    margin: 0 20px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.card[b-zu8gpqe5ks] {
+    margin: 0 10px;
+    height: 100px;
+}

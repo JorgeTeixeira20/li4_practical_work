@@ -1,0 +1,132 @@
+﻿@page "/leiloar"
+
+<PageTitle>Leiloar Relógio</PageTitle>
+
+<h1>Leiloar Relógio</h1>
+
+<body>
+    <form>  
+        <div class="flex-container">
+    
+            <div class="flex-item100percent">
+                <h3>Adicione as informações relativas ao seu relógio</h3>
+            </div>
+    
+            <div class="flex-item">
+                <label>Modelo:</label>
+                <input type="text" @bind="modelo" />
+            </div>
+
+            <div class="flex-item">
+                <label>Número de série:</label>
+                <input type="text" @bind="numeroSerie">
+            </div>
+
+            <div class="flex-item100percent">
+                <label>Descrição:</label>
+                <textarea @bind="descricao"></textarea>
+            </div>
+
+            <div class="flex-item100percent">
+                <label>Fotos</label>
+                <InputFile multiple OnChange="HandleFileInput" />
+            </div>
+
+            <div class="flex-item">
+                <label>Marca:</label>
+                <input type="text" @bind="marca" />
+            </div>
+
+            <div class="flex-item">
+                <label>Estado de Conservação: </label>
+                <input type="text" @bind="estadoConservacao">
+            </div>
+
+            <div class="flex-item" style="margin-bottom: 0">
+                <label>Tem Caixa Original?</label>
+                <div class="radio-options">
+                    <div class="radio-option" data-value="true">
+                        <input type="radio" id="temCaixaOriginalSim" name="temCaixaOriginal" value="true" checked />
+                        <label for="temCaixaOriginalSim">Sim</label>
+                    </div>
+                    <div class="radio-option" data-value="false">
+                        <input type="radio" id="temCaixaOriginalNao" name="temCaixaOriginal" value="false" />
+                        <label for="temCaixaOriginalNao">Não</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-item">
+                <label>Ano de fabrico</label>
+                <input type="number" @bind="anoFabrico">
+            </div>
+
+            <div class="flex-item">
+                <label>Data e Hora de Início:</label>
+                <input type="datetime-local" @bind="dataHoraInicio" />
+            </div>
+            <div class="flex-item">
+                <label>Data de Fecho e Hora de Fecho:</label>
+                <input type="datetime-local" @bind="dataHoraFecho" />
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="button-9" @onclick="CriarLeilao">
+                Criar Leilão
+            </button>
+        </div>
+    </form>
+</body>
+
+@inject WatchRepository WatchRepo
+
+@code {
+    private string modelo;
+    private string numeroSerie;
+    private string descricao;
+    private string marca;
+    private string estadoConservacao;
+    private bool temCaixaOriginal;
+    private int anoFabrico;
+    private bool relogioFunciona;
+    private double precoBase;
+    private DateTime dataHoraInicio;
+    private DateTime dataHoraFecho;
+
+    private byte[] imagemRelogio; // Alterada para ser um array de bytes
+
+    private void HandleFileInput(InputFileChangeEventArgs e)
+    {
+        var file = e.File; // Agora só estamos tratando um arquivo
+        imagemRelogio = new byte[file.Size];
+
+        using (var stream = file.OpenReadStream())
+        {
+            stream.Read(imagemRelogio, 0, (int)file.Size);
+        }
+    }
+
+    private async Task CriarLeilao()
+    {
+        // Crie um objeto WatchModel com os dados do formulário
+        var novoRelogio = new WatchModel
+            {
+                Modelo = modelo,
+                NumeroSerie = numeroSerie,
+                Descricao = descricao,
+                Imagem = imagemRelogio, // Agora, só uma imagem
+                Marca = marca,
+                EstadoConservacao = estadoConservacao,
+                TemCaixaOriginal = temCaixaOriginal,
+                AnoFabrico = anoFabrico,
+                RelogioFunciona = relogioFunciona,
+                PrecoBase = precoBase,
+                DataHoraInicio = dataHoraInicio,
+                DataHoraFecho = dataHoraFecho,
+            };
+
+        // Adicione o relógio à base de dados usando o WatchRepository
+        await WatchRepo.AddClockAsync(novoRelogio);
+    }
+}

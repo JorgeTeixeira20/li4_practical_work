@@ -1,0 +1,83 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = demo
+build_property.RootNamespace = demo
+build_property.ProjectDir = C:\Users\hugoa\Desktop\li4_practical_work\demo\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\hugoa\Desktop\li4_practical_work\demo
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Features/Counter/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcQ291bnRlclxDb3VudGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Features/FetchData/FetchData.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcRmV0Y2hEYXRhXEZldGNoRGF0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Features/Home/CardComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcSG9tZVxDYXJkQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Features/LeiloesFav/LeiloesFav.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcTGVpbG9lc0ZhdlxMZWlsb2VzRmF2LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Features/Login/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcTG9naW5cTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Features/Perfil/Perfil.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcUGVyZmlsXFBlcmZpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Features/Registar/Registar.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcUmVnaXN0YXJcUmVnaXN0YXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Pages/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Features/Home/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcSG9tZVxIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-zu8gpqe5ks
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Features/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcTGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-3dn8csia4r
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Features/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcTGF5b3V0XE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-gdfio5srvh
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Features/Leiloar/Leiloar.razor]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXNcTGVpbG9hclxMZWlsb2FyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-rqd6my4v3e
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hugoa/Desktop/li4_practical_work/demo/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
