@@ -5,8 +5,9 @@
     "\\demo",
     "\\demo\\Features",
     "\\demo\\Features\\Layout",
+    "\\demo\\Features\\Registar",
     "\\demo\\Pages"
   ],
-  "SelectedNode": "\\demo\\Features\\Layout\\NavMenu.razor",
+  "SelectedNode": "\\demo\\Features\\Registar\\Registar.razor",
   "PreviewInSolutionExplorer": false
 }

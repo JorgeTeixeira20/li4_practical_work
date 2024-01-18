@@ -28,4 +28,11 @@ public class SqlDataAccess : ISqlDataAccess
             await connection.ExecuteAsync(sql, parameters);
         }
     }
+
+    public async void ExecuteData<T>(string sql, T parameters)
+    {
+        string? connectionString = _config.GetConnectionString(ConnectionStringName);
+        using IDbConnection connection = new SqlConnection(connectionString);
+        await connection.ExecuteAsync(sql, parameters);
+    }
 }

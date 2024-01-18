@@ -1,4 +1,4 @@
-namespace DataLayer;
+namespace DataLayer.Cards;
 public class CardRepository : ICardRepository
 {
     private ISqlDataAccess _db;

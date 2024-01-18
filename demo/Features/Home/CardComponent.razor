@@ -1,4 +1,4 @@
-@using DataLayer;
+@using DataLayer.Cards;;
 
 <div class="card shadow" style="width: 18rem;">
    <img src="@card.Image" class="card-img-top" alt="@card.Name">
@@ -11,6 +11,6 @@
     </div>
 </div>
 @code {
-  [Parameter, EditorRequired]
-   public CardModel card { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public CardModel card { get; set; } = default!;
 }

@@ -1,8 +1,8 @@
 ﻿@page "/home"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager;
-@using DataLayer
 
+@using DataLayer.Cards;
 @inject ICardRepository _db
 
 <PageTitle>Index</PageTitle>
@@ -25,9 +25,8 @@ else
     </div>
 }
 
-
 @code {
-    private List<DataLayer.CardModel> _cards;
+    private List<CardModel> _cards;
     protected override async Task OnInitializedAsync()
     {
         _cards = await _db.FindAll();

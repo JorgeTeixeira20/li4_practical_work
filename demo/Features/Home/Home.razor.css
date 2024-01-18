@@ -4,13 +4,12 @@
 }
 
 .grid {
-    margin: 0 20px;
-    flex-direction: column;
+    display: flex; /* Add this to make it a flex container */
+    flex-direction: row; /* Change to row to align items horizontally */
     flex-wrap: wrap;
     justify-content: center;
-    width: 100%;
+    margin: 0 -10px; /* Adjust margin to create space between cards */
 }
-
 .card {
     margin: 0 10px;
     height: 100px;
