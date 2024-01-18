@@ -8,11 +8,22 @@ public class UtilizadorRepository : IUtilizadorRepository
         _db = db;
     }
 
-    public UtilizadorModel Find(int id)
+    public async Task<UtilizadorModel> Find(string username)
     {
-        string sql = "select * from Utilizador where idUtilizador = @Id";
-        List<UtilizadorModel> utiRes = _db.LoadData<UtilizadorModel, dynamic>(sql, new { Id = id }).Result;
-        return utiRes.First();
+        Console.WriteLine($"Entrei em Find Utilizador Movel com username: {username}!");
+        string sql = $"select * from Utilizador where username = '{username}'";
+        List<UtilizadorModel> utiRes = await _db.LoadData<UtilizadorModel, dynamic>(sql, new { Username = username });
+        Console.WriteLine("depois de _db.LoadData");
+        if (utiRes != null && utiRes.Count > 0)
+        {
+            Console.WriteLine($"Encontrei {utiRes.Count}");
+            return utiRes.First();
+        }
+        else
+        {
+            Console.WriteLine("Utilizador encontrou null");
+            return null;
+        }
     }
 
     public Task<List<UtilizadorModel>> FindAll()

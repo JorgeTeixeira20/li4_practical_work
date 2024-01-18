@@ -1,20 +1,22 @@
 ﻿@page "/login"
+@using DataLayer.Utilizador
+@inject IUtilizadorRepository _db;
 
 <h1>Entrar</h1>
 
-<form action="/login" method="post" asp-modal="true">
+<form action="/login" method="post" asp-modal="true" @onsubmit="LoginUser">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <p>Endereço de e-mail:</p>
-                <input type="email" name="email" placeholder="Endereço de e-mail" class="form-control">
+                <p>Nome de Utilizador:</p>
+                <input type="text" name="username" placeholder="Username" class="form-control" @bind="username">
 
                 <p>Senha:</p>
-                <input type="password" name="password" placeholder="Senha" class="form-control">
+                <input type="password" name="password" placeholder="Senha" class="form-control" @bind="password">
             </div>
 
             <div class="modal-footer">
-                <input type="submit" value="Entrar" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary">Entrar</button>
             </div>
         </div>
     </div>
@@ -40,3 +42,30 @@
         color: #ffffff;
     }
 </style>
+
+@code {
+    private string username;
+    private string password;
+
+    private async Task LoginUser()
+    {
+        Console.WriteLine("AQUI_____________________________________");
+        Console.WriteLine($"nome: {username}");
+        Console.WriteLine($"password: {password}");
+
+        UtilizadorModel userFounded = await _db.Find(username);
+
+        Console.WriteLine("Utilizador encontrado?: ");
+        if (userFounded == null)
+            Console.WriteLine("Não encontrei nada chefe, um grande abraço!");
+        else
+        {
+            Console.WriteLine("Id: " + userFounded.Id);
+            Console.WriteLine("Username: " + userFounded.username);
+            Console.WriteLine("password: " + userFounded.Id);
+            Console.WriteLine("Avaliação: " + userFounded.avaliacaoMedia);
+            Console.WriteLine("Num leilões: " + userFounded.numeroDeLeiloesFeitos);
+            Console.WriteLine("Data de registo: " + userFounded.dataDeRegisto);
+        }
+    }
+}

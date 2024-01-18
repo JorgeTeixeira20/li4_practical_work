@@ -1,9 +1,9 @@
 {
   "ExpandedNodes": [
     "",
+    "\\DataLayer",
     "\\demo",
     "\\demo\\Features",
-    "\\demo\\Features\\FetchData",
     "\\demo\\Features\\Home",
     "\\demo\\Features\\Layout",
     "\\demo\\Features\\Leiloar",
@@ -11,6 +11,6 @@
     "\\demo\\Features\\Registar",
     "\\demo\\Pages"
   ],
-  "SelectedNode": "\\demo\\Features\\Home\\Home.razor",
+  "SelectedNode": "\\demo\\Demo.sln",
   "PreviewInSolutionExplorer": false
 }

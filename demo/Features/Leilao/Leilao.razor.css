@@ -1,0 +1,35 @@
+﻿.container {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.card {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    font-size: 1.5rem;
+}
+
+.card-text {
+    font-size: 1rem;
+}
+
+.list-group-item {
+    border-top: 1px solid #ccc;
+}
+
+    .list-group-item:first-child {
+        border-top: none;
+    }
+
+.card-footer {
+    text-align: right;
+}

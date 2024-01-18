@@ -15,10 +15,24 @@ public class SqlDataAccess : ISqlDataAccess
     }
     public async Task<List<T>> LoadData<T, U>(string sql, U parameters)
     {
-        string? connectionString = _config.GetConnectionString(ConnectionStringName);
-        using IDbConnection connection = new SqlConnection(connectionString);
-        var data = await connection.QueryAsync<T>(sql, parameters);
-        return data.ToList();
+        try
+        {
+            Console.WriteLine("[Antes de _cfg.GetConnString]Entrei em LoadData: " + sql);
+            string? connectionString = _config.GetConnectionString(ConnectionStringName);
+            Console.WriteLine("[Depois de string? connectionString][antes de using IDBConnection]");
+            Console.WriteLine($"Connection string: {connectionString}");
+            using IDbConnection connection = new SqlConnection(connectionString);
+            Console.WriteLine($"SQL Query: {sql}");
+            Console.WriteLine($"Parameters: {parameters}");
+            var data = await connection.QueryAsync<T>(sql, parameters);
+            Console.WriteLine("Antes do return de LaodDta em SQLDataAccess!");
+            return data.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            return new List<T>();
+        }
     }
     public async Task SaveData<T>(string sql, T parameters)
     {
@@ -28,4 +42,5 @@ public class SqlDataAccess : ISqlDataAccess
             await connection.ExecuteAsync(sql, parameters);
         }
     }
+
 }
