@@ -27,7 +27,10 @@ public class SqlDataAccess : ISqlDataAccess
             var data = await connection.QueryAsync<T>(sql, parameters);
             Console.WriteLine("Antes do return de LaodDta em SQLDataAccess!");
             return data.ToList();
-        } catch(Exception ex)
+
+        }
+        catch (Exception ex)
+
         {
             Console.WriteLine(ex.ToString());
             return new List<T>();
@@ -48,4 +51,5 @@ public class SqlDataAccess : ISqlDataAccess
         using IDbConnection connection = new SqlConnection(connectionString);
         await connection.ExecuteAsync(sql, parameters);
     }
+
 }

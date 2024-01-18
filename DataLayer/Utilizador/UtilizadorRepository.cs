@@ -2,7 +2,7 @@
 
 public class UtilizadorRepository : IUtilizadorRepository
 {
-    private ISqlDataAccess _db; 
+    private ISqlDataAccess _db;
     public UtilizadorRepository(ISqlDataAccess db)
     {
         _db = db;
@@ -37,7 +37,7 @@ public class UtilizadorRepository : IUtilizadorRepository
         string sql = "INSERT INTO Utilizador (username, password, avaliacaoMedia, numeroDeLeiloesFeitos, dataDeRegisto)" +
                      "VALUES (@username, @password, @avaliacaoMedia, @numeroDeLeiloesFeitos, @dataDeRegisto)";
 
-        await _db.SaveData(sql, new 
+        await _db.SaveData(sql, new
         {
             user.username,
             user.password,

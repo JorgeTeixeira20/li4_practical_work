@@ -1,4 +1,5 @@
 ﻿@page "/leiloar"
+@using DataLayer.Watches
 
 <PageTitle>Leiloar Relógio</PageTitle>
 
@@ -20,7 +21,6 @@
             <div class="flex-item">
                 <label>Número de série:</label>
                 <input type="text" @bind="numeroSerie">
-
             </div>
 
             <div class="flex-item100percent">
@@ -30,10 +30,7 @@
 
             <div class="flex-item100percent">
                 <label>Fotos</label>
-                <button>
-                    <span class="plus">+</span>
-                    <input type="file" />
-                </button>
+                <InputFile multiple OnChange="HandleFileInput" />
             </div>
 
             <div class="flex-item">
@@ -76,12 +73,15 @@
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
-            <button class="button-9" role="button">
+            <button class="button-9" @onclick="CriarLeilao">
                 Criar Leilão
             </button>
         </div>
     </form>
 </body>
+
+@inject IWatchRepository WatchRepo
+
 @code {
     private string modelo;
     private string numeroSerie;
@@ -94,4 +94,58 @@
     private double precoBase;
     private DateTime dataHoraInicio;
     private DateTime dataHoraFecho;
+
+    private byte[] imagemRelogio; // Alterada para ser um array de bytes
+
+    private async Task HandleFileInput(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        using (var stream = file.OpenReadStream())
+        {
+            var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            imagemRelogio = memoryStream.ToArray();
+        }
+    }
+
+    private async Task CriarLeilao()
+    {
+
+        Console.WriteLine("Iniciando a criação do leilão...");
+
+        Console.WriteLine($"Modelo: {modelo}");
+        Console.WriteLine($"Número de série: {numeroSerie}");
+        Console.WriteLine($"Descrição: {descricao}");
+        Console.WriteLine($"DataHoraInicio: {dataHoraInicio.ToString("yyyy-MM-dd HH:mm:ss")}");
+        Console.WriteLine($"DataHoraFecho: {dataHoraFecho.ToString("yyyy-MM-dd HH:mm:ss")}");
+        Console.WriteLine($"Tamanho da Imagem: {imagemRelogio.Length} bytes");
+
+        // Crie um objeto WatchModel com os dados do formulário
+        var novoRelogio = new WatchModel
+            {
+                Modelo = modelo,
+                NumeroSerie = numeroSerie,
+                Descricao = descricao,
+                Imagem = imagemRelogio, // Agora, só uma imagem
+                Marca = marca,
+                EstadoConservacao = estadoConservacao,
+                TemCaixaOriginal = temCaixaOriginal,
+                AnoFabrico = anoFabrico,
+                RelogioFunciona = relogioFunciona,
+                PrecoBase = precoBase,
+                DataHoraInicio = dataHoraInicio,
+                DataHoraFecho = dataHoraFecho,
+            };
+
+        Console.WriteLine("Objeto WatchModel criado com sucesso.");
+
+        Console.WriteLine("Bytes da Imagem antes de salvar na base de dados:");
+        Console.WriteLine(BitConverter.ToString(imagemRelogio)); // Imprime os bytes
+
+        // Adicione o relógio à base de dados usando o WatchRepository
+        await WatchRepo.AddClockAsync(novoRelogio);
+
+        Console.WriteLine("Leilão criado com sucesso.");
+    }
 }
