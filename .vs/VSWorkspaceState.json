@@ -1,16 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\DataLayer",
     "\\demo",
     "\\demo\\Features",
     "\\demo\\Features\\FetchData",
     "\\demo\\Features\\Home",
+    "\\demo\\Features\\Layout",
     "\\demo\\Features\\Leiloar",
     "\\demo\\Features\\LeiloesFav",
     "\\demo\\Features\\Registar",
     "\\demo\\Pages"
   ],
-  "SelectedNode": "\\demo\\Demo.sln",
+  "SelectedNode": "\\demo\\Features\\Home\\CardComponent.razor",
   "PreviewInSolutionExplorer": false
 }

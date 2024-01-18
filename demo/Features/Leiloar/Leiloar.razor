@@ -1,4 +1,5 @@
 ﻿@page "/leiloar"
+@using DataLayer.Watches
 
 <PageTitle>Leiloar Relógio</PageTitle>
 
@@ -79,7 +80,7 @@
     </form>
 </body>
 
-@inject WatchRepository WatchRepo
+@inject IWatchRepository WatchRepo
 
 @code {
     private string modelo;
@@ -96,19 +97,30 @@
 
     private byte[] imagemRelogio; // Alterada para ser um array de bytes
 
-    private void HandleFileInput(InputFileChangeEventArgs e)
+    private async Task HandleFileInput(InputFileChangeEventArgs e)
     {
-        var file = e.File; // Agora só estamos tratando um arquivo
-        imagemRelogio = new byte[file.Size];
+        var file = e.File;
 
         using (var stream = file.OpenReadStream())
         {
-            stream.Read(imagemRelogio, 0, (int)file.Size);
+            var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            imagemRelogio = memoryStream.ToArray();
         }
     }
 
     private async Task CriarLeilao()
     {
+
+        Console.WriteLine("Iniciando a criação do leilão...");
+
+        Console.WriteLine($"Modelo: {modelo}");
+        Console.WriteLine($"Número de série: {numeroSerie}");
+        Console.WriteLine($"Descrição: {descricao}");
+        Console.WriteLine($"DataHoraInicio: {dataHoraInicio.ToString("yyyy-MM-dd HH:mm:ss")}");
+        Console.WriteLine($"DataHoraFecho: {dataHoraFecho.ToString("yyyy-MM-dd HH:mm:ss")}");
+        Console.WriteLine($"Tamanho da Imagem: {imagemRelogio.Length} bytes");
+
         // Crie um objeto WatchModel com os dados do formulário
         var novoRelogio = new WatchModel
             {
@@ -126,7 +138,14 @@
                 DataHoraFecho = dataHoraFecho,
             };
 
+        Console.WriteLine("Objeto WatchModel criado com sucesso.");
+
+        Console.WriteLine("Bytes da Imagem antes de salvar na base de dados:");
+        Console.WriteLine(BitConverter.ToString(imagemRelogio)); // Imprime os bytes
+
         // Adicione o relógio à base de dados usando o WatchRepository
         await WatchRepo.AddClockAsync(novoRelogio);
+
+        Console.WriteLine("Leilão criado com sucesso.");
     }
 }

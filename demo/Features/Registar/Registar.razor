@@ -1,19 +1,21 @@
 ﻿@page "/register"
+@using DataLayer.Utilizador
+@inject IUtilizadorRepository _db
 
 <h1>Registar</h1>
 
-<form action="/register" method="post" asp-modal="true">
+<form action="/register" method="post" asp-modal="true" @onsubmit="RegisterUser">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
                 <p>Endereço de e-mail:</p>
-                <input type="email" name="email" placeholder="Endereço de e-mail" class="form-control">
+                <input type="email" name="email" placeholder="Endereço de e-mail" class="form-control" @bind ="nome">
 
                 <p>Senha:</p>
                 <input type="password" name="password" placeholder="Senha" class="form-control">
 
                 <p>Confirmar senha:</p>
-                <input type="password" name="confirmPassword" placeholder="Confirmar senha" class="form-control">
+                <input type="password" name="confirmPassword" placeholder="Confirmar senha" class="form-control" @bind="password">
             </div>
 
             <div class="modal-footer">
@@ -21,6 +23,7 @@
             </div>
         </div>
     </div>
+
 
     <style>
         .modal-dialog {
@@ -43,3 +46,26 @@
         }
     </style>
 </form>
+
+@code {
+    private string nome;
+    private string password;
+
+    private async Task RegisterUser()
+    {
+        Console.WriteLine("AQUI-----------------------------------------------------");
+        Console.WriteLine($"nome: {nome}");
+        Console.WriteLine($"password: {password}");
+
+        var novoUtilizador = new UtilizadorModel
+            {
+                username = nome,
+                password = password,
+                avaliacaoMedia = 0,
+                numeroDeLeiloesFeitos = 0,
+                dataDeRegisto = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+            };
+
+        await _db.Create(novoUtilizador);
+    }
+}

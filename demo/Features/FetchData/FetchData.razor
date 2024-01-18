@@ -1,5 +1,5 @@
 ﻿@page "/fetchdata"
-@using DataLayer
+@using DataLayer.Cards;
 
 @inject ICardRepository _db
 
@@ -38,7 +38,7 @@ else
 }
 
 @code {
-    private List<DataLayer.CardModel> cards;
+    private List<CardModel> cards;
 
     protected override async Task OnInitializedAsync()
     {

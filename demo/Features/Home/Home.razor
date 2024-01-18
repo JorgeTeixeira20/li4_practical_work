@@ -1,9 +1,11 @@
 ﻿@page "/home"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager;
-@using DataLayer
+@using DataLayer.Watches
+@using DataLayer.Cards
 
 @inject ICardRepository _db
+@inject IWatchRepository WatchRepo
 
 <PageTitle>Index</PageTitle>
 
@@ -11,25 +13,32 @@
 
 <img src="https://cdn.discordapp.com/attachments/1155884905989931151/1196878169794420787/luisinho.jpg?ex=65b93aa8&is=65a6c5a8&hm=fb7b15828d8d51e18b8ef74f2ecb8125ca0bdd9b83c8c412a9d1115d381009f6&" alt="Luisinho">
 
-@if (_cards == null)
+@if (_watches == null)
 {
-    <p>Loading cards...</p>
+    <p>Loading watches...</p>
 }
 else
 {
     <div class="grid">
-        @foreach (var card in _cards)
+        @foreach (var watch in _watches)
         {
-            <CardComponent card="card" />
+            <CardComponent watch="watch" />
         }
     </div>
 }
 
-
 @code {
-    private List<DataLayer.CardModel> _cards;
+
+    private List<DataLayer.Watches.WatchModel> _watches;
+
     protected override async Task OnInitializedAsync()
     {
-        _cards = await _db.FindAll();
+        _watches = await WatchRepo.GetAllClocksAsync();
     }
+
+    //private List<DataLayer.CardModel> _cards;
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    _cards = await _db.FindAll();
+    //}
 }
