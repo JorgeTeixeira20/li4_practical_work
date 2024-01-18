@@ -53,7 +53,8 @@
         Console.WriteLine($"nome: {username}");
         Console.WriteLine($"password: {password}");
 
-        UtilizadorModel userFounded = _db.Find(username);
+        UtilizadorModel userFounded = await _db.Find(username);
+
         Console.WriteLine("Utilizador encontrado?: ");
         if (userFounded == null)
             Console.WriteLine("Não encontrei nada chefe, um grande abraço!");
