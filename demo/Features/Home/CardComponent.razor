@@ -1,22 +1,30 @@
 @using DataLayer.Watches
+@inject NavigationManager NavigationManager
 
-<div class="watch shadow" style="width: 18rem;">
-    @if (watch.Imagem != null && watch.Imagem.Length > 0)
-    {
-        <img src="data:image/jpeg;base64,@Convert.ToBase64String(watch.Imagem)" class="watch-img-top" alt="@watch.Id">
-    }
-    <div class="card-body">
-        <h5 class="watch-title">@watch.Id</h5>
-        <h5 class="watch-title">@watch.Modelo</h5>
-        <h5 class="watch-title">@watch.NumeroSerie</h5>
-        <h6 class="watch-subtitle mb-3 text-muted">
-            <span class="oi oi-map-marker"></span>
-            @watch.Descricao
-        </h6>
+<a @onclick="NavigateToPage">
+    <div class="watch shadow" style="width: 18rem;">
+        @if (watch.Imagem != null && watch.Imagem.Length > 0)
+        {
+            <img src="data:image/jpeg;base64,@Convert.ToBase64String(watch.Imagem)" class="watch-img-top" alt="@watch.Id">
+        }
+        <div class="card-body">
+            <h5 class="watch-title">@watch.Id</h5>
+            <h5 class="watch-title">@watch.Modelo</h5>
+            <h5 class="watch-title">@watch.NumeroSerie</h5>
+            <h6 class="watch-subtitle mb-3 text-muted">
+                <span class="oi oi-map-marker"></span>
+                @watch.Descricao
+            </h6>
+        </div>
     </div>
-</div>
+</a>
 
 @code {
     [Parameter, EditorRequired]
     public WatchModel watch { get; set; } = default!;
+
+    private void NavigateToPage()
+    {
+        NavigationManager.NavigateTo($"/leilao/{watch.Id}");
+    }
 }
