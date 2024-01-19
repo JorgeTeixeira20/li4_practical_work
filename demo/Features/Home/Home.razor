@@ -4,13 +4,11 @@
 @using DataLayer.Watches
 @using DataLayer.Cards
 
-@using DataLayer.Cards;
 @inject ICardRepository _db
 @inject IWatchRepository WatchRepo
 
 <PageTitle>Home</PageTitle>
 
-<h1>Home</h1>
 
 @if (_watches == null)
 {

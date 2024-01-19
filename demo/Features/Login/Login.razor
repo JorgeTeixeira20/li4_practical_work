@@ -1,22 +1,29 @@
-﻿@page "/login"
+﻿@page "/entrar"
+@layout SpecialLayout
+
 @using DataLayer.Utilizador
 @inject IUtilizadorRepository _db;
-
-<h1>Entrar</h1>
 
 <form action="/login" method="post" asp-modal="true" @onsubmit="LoginUser">
     <div class="modal-dialog">
         <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title">Entrar</h1>
+            </div>
             <div class="modal-body">
-                <p>Nome de Utilizador:</p>
-                <input type="text" name="username" placeholder="Username" class="form-control" @bind="username">
+                <div class="form-group">
+                    <label for="username">Nome de Utilizador:</label>
+                    <input type="text" id="username" name="username" placeholder="Username" class="form-control" @bind="username">
+                </div>
 
-                <p>Senha:</p>
-                <input type="password" name="password" placeholder="Senha" class="form-control" @bind="password">
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password" placeholder="Senha" class="form-control" @bind="password">
+                </div>
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Entrar</button>
+                <button type="submit" class="btn btn-primary btn-block">Entrar</button>
             </div>
         </div>
     </div>
@@ -26,10 +33,21 @@
     .modal-dialog {
         background-color: #ffffff;
         border: 1px solid #ccc;
+        max-width: 600px;
+        margin: 0 auto;
+        margin-top: 50px; /* Adjust as needed */
     }
 
     .modal-body {
         padding: 20px;
+    }
+
+    .modal-footer {
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
     }
 
     .form-control {
@@ -37,9 +55,30 @@
         color: #333;
     }
 
+    .modal-title {
+        margin: 0;
+    }
+
+    .modal-header {
+        background-color: #f7f7f7;
+        border-bottom: 1px solid #ccc;
+        padding: 10px;
+    }
+
     .btn-primary {
         background-color: #007bff;
         color: #ffffff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 0;
+        border-top: 1px solid #ccc;
     }
 </style>
 

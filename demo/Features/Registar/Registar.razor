@@ -1,51 +1,94 @@
-﻿@page "/register"
+﻿@page "/registar"
+@layout SpecialLayout
+
 @using DataLayer.Utilizador
 @inject IUtilizadorRepository _db
-
-<h1>Registar</h1>
 
 <form action="/register" method="post" asp-modal="true" @onsubmit="RegisterUser">
     <div class="modal-dialog">
         <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title">Registar</h1>
+            </div>
             <div class="modal-body">
-                <p>Endereço de e-mail:</p>
-                <input type="email" name="email" placeholder="Endereço de e-mail" class="form-control" @bind ="nome">
+                <div class="form-group">
+                    <label for="email">Endereço de e-mail:</label>
+                    <input type="email" id="email" name="email" placeholder="Endereço de e-mail" class="form-control" @bind="nome">
+                </div>
 
-                <p>Senha:</p>
-                <input type="password" name="password" placeholder="Senha" class="form-control">
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password" placeholder="Senha" class="form-control">
+                </div>
 
-                <p>Confirmar senha:</p>
-                <input type="password" name="confirmPassword" placeholder="Confirmar senha" class="form-control" @bind="password">
+                <hr>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar senha:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar senha" class="form-control" @bind="password">
+                </div>
             </div>
 
             <div class="modal-footer">
-                <input type="submit" value="Registar" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary btn-block">Registar</button>
             </div>
         </div>
     </div>
-
-
-    <style>
-        .modal-dialog {
-            background-color: #ffffff;
-            border: 1px solid #ccc;
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .form-control {
-            font-size: 16px;
-            color: #333;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            color: #ffffff;
-        }
-    </style>
 </form>
+
+<style>
+    .modal-dialog {
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        max-width: 600px;
+        margin: 0 auto;
+        margin-top: 50px; /* Adjust as needed */
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        font-size: 16px;
+        color: #333;
+    }
+
+    .modal-title {
+        margin: 0;
+    }
+
+    .modal-header {
+        background-color: #f7f7f7;
+        border-bottom: 1px solid #ccc;
+        padding: 10px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #ffffff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+</style>
 
 @code {
     private string nome;
@@ -69,3 +112,6 @@
         await _db.Create(novoUtilizador);
     }
 }
+
+
+
