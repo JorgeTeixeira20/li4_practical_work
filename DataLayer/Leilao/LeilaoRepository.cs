@@ -1,4 +1,8 @@
-﻿namespace DataLayer.Leilao;
+﻿using static System.Net.Mime.MediaTypeNames;
+
+using DataLayer.Watches;
+
+namespace DataLayer.Leilao;
 
 public class LeilaoRepository : ILeilaoRepository
 {
@@ -25,6 +29,20 @@ public class LeilaoRepository : ILeilaoRepository
             Console.WriteLine("Leilao encontrou null");
             return null;
         }
+    }
+
+    public async Task<WatchModel> FindWatch(int leilaoId)
+    {
+        string sql = $"SELECT w.* FROM Leilao l INNER JOIN watches w ON l.Relogio_id = w.id WHERE l.id = {leilaoId};";
+        List<WatchModel> watches = await _db.LoadData<WatchModel, dynamic>(sql, new { Leilao = leilaoId });
+
+        WatchModel watch = watches.FirstOrDefault();  // Pega o primeiro item da lista (ou retorna null se a lista estiver vazia)
+
+        if(watch != null)
+        {
+            return watch;
+        } else 
+            return null;
     }
 
     public Task<List<LeilaoModel>> FindAll()
