@@ -21,6 +21,7 @@ builder.Services.AddTransient<ICardRepository, CardRepository>();
 builder.Services.AddTransient<IWatchRepository, WatchRepository>();
 builder.Services.AddTransient<ILeilaoRepository, LeilaoRepository>();
 builder.Services.AddTransient<IUtilizadorRepository, UtilizadorRepository>();
+builder.Services.AddTransient<ILeilaoRepository, LeilaoRepository>();
 
 
 var app = builder.Build();

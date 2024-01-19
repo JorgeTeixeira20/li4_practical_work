@@ -45,11 +45,12 @@ public class SqlDataAccess : ISqlDataAccess
         }
     }
 
-    public async void ExecuteData<T>(string sql, T parameters)
+    public async Task<int> SaveDataGetId<T>(string sql, T parameters)
     {
         string? connectionString = _config.GetConnectionString(ConnectionStringName);
-        using IDbConnection connection = new SqlConnection(connectionString);
-        await connection.ExecuteAsync(sql, parameters);
+        using (IDbConnection connection = new SqlConnection(connectionString))
+        {
+            return await connection.ExecuteScalarAsync<int>(sql, parameters);
+        }
     }
-
 }
