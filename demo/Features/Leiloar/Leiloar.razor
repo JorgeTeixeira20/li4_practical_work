@@ -1,5 +1,6 @@
 ﻿@page "/leiloar"
 @using DataLayer.Watches
+@using DataLayer.Leilao
 
 <PageTitle>Leiloar Relógio</PageTitle>
 
@@ -83,6 +84,7 @@
 
 
 @inject IWatchRepository WatchRepo
+@inject ILeilaoRepository LeilaoRepo
 
 @code {
     private string modelo;
@@ -135,18 +137,29 @@
                 TemCaixaOriginal = temCaixaOriginal,
                 AnoFabrico = anoFabrico,
                 RelogioFunciona = relogioFunciona,
-                PrecoBase = precoBase,
-                DataHoraInicio = dataHoraInicio,
-                DataHoraFecho = dataHoraFecho,
+                PrecoBase = precoBase
             };
+
+        // Adicione o relógio à base de dados usando o WatchRepository
+       int idWatch =  await WatchRepo.AddClockAsync(novoRelogio);
+
+        Console.WriteLine("-----------------------------");
+        Console.WriteLine($"Relogio ID: {idWatch}");
+
+        var novoLeilao = new LeilaoModel
+        {
+                Relogio_id = idWatch,
+                DataInicio = dataHoraInicio.ToString("yyyy-MM-dd HH:mm:ss"),
+                DataFim = dataHoraFecho.ToString("yyyy-MM-dd HH:mm:ss"),
+                Utilizador_idUtilizador = 1
+        };
+
+        await LeilaoRepo.Create(novoLeilao);
 
         Console.WriteLine("Objeto WatchModel criado com sucesso.");
 
         Console.WriteLine("Bytes da Imagem antes de salvar na base de dados:");
         Console.WriteLine(BitConverter.ToString(imagemRelogio)); // Imprime os bytes
-
-        // Adicione o relógio à base de dados usando o WatchRepository
-        await WatchRepo.AddClockAsync(novoRelogio);
 
         Console.WriteLine("Leilão criado com sucesso.");
     }

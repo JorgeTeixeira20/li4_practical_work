@@ -14,6 +14,4 @@ public class WatchModel
     public int AnoFabrico { get; set; }
     public bool RelogioFunciona { get; set; }
     public double PrecoBase { get; set; }
-    public DateTime DataHoraInicio { get; set; }
-    public DateTime DataHoraFecho { get; set; }
 }

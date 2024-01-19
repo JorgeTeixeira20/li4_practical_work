@@ -16,12 +16,13 @@ public class WatchRepository : IWatchRepository
         return await _db.LoadData<WatchModel, dynamic>(sql, new { });
     }
 
-    public async Task AddClockAsync(WatchModel watch)
+    public async Task<int> AddClockAsync(WatchModel watch)
     {
-        string sql = "INSERT INTO watches (Modelo, NumeroSerie, Descricao, Imagem, Marca, EstadoConservacao, TemCaixaOriginal, AnoFabrico, RelogioFunciona, PrecoBase, DataHoraInicio, DataHoraFecho) " +
-                     "VALUES (@Modelo, @NumeroSerie, @Descricao, @Imagem, @Marca, @EstadoConservacao, @TemCaixaOriginal, @AnoFabrico, @RelogioFunciona, @PrecoBase, @DataHoraInicio, @DataHoraFecho)";
+        string sql = "INSERT INTO watches (Modelo, NumeroSerie, Descricao, Imagem, Marca, EstadoConservacao, TemCaixaOriginal, AnoFabrico, RelogioFunciona, PrecoBase) " +
+                     "OUTPUT INSERTED.Id " + 
+                     "VALUES (@Modelo, @NumeroSerie, @Descricao, @Imagem, @Marca, @EstadoConservacao, @TemCaixaOriginal, @AnoFabrico, @RelogioFunciona, @PrecoBase)";
 
-        await _db.SaveData(sql, new
+        return await _db.SaveDataGetId(sql, new
         {
             watch.Modelo,
             watch.NumeroSerie,
@@ -32,9 +33,7 @@ public class WatchRepository : IWatchRepository
             watch.TemCaixaOriginal,
             watch.AnoFabrico,
             watch.RelogioFunciona,
-            watch.PrecoBase,
-            watch.DataHoraInicio,
-            watch.DataHoraFecho
+            watch.PrecoBase
         });
     }
 }
