@@ -1,5 +1,8 @@
 ﻿@page "/perfil"
 
+@using DataLayer.Utilizador
+@inject IUtilizadorRepository _db;
+
 <div class="card">
     <div class="card-header">
         <h2>Perfil</h2>
@@ -12,16 +15,16 @@
             <div class="col-md-8">
                 <dl class="row">
                     <dt class="col-sm-3 text-right">Nome:</dt>
-                    <dd class="col-sm-9">Rei</dd>
+                    <dd class="col-sm-9">@username</dd>
 
-                    <dt class="col-sm-3 text-right">Email:</dt>
-                    <dd class="col-sm-9">rei@gmail.com</dd>
+                    <dt class="col-sm-3 text-right">Avaliação Media:</dt>
+                    <dd class="col-sm-9">@userFounded?.avaliacaoMedia</dd>
 
-                    <dt class="col-sm-3 text-right">Telefone:</dt>
-                    <dd class="col-sm-9">937TTMM</dd>
+                    <dt class="col-sm-3 text-right">Número de Leilões:</dt>
+                    <dd class="col-sm-9">@userFounded?.numeroDeLeiloesFeitos</dd>
 
-                    <dt class="col-sm-3 text-right">Endereço:</dt>
-                    <dd class="col-sm-9">bila</dd>
+                    <dt class="col-sm-3 text-right">Data de Registro:</dt>
+                    <dd class="col-sm-9">@userFounded?.dataDeRegisto</dd>
                 </dl>
             </div>
         </div>
@@ -38,3 +41,18 @@
         <p>Leilão 3 ....</p>
     </div>
 </div>
+
+@code {
+    private string username = "User1";
+    private UtilizadorModel userFounded;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await showUser();
+    }
+
+    private async Task showUser()
+    {
+        userFounded = await _db.Find(username);
+    }
+}
