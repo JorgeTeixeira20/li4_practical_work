@@ -3,36 +3,40 @@
 @inject NavigationManager NavigationManager;
 @using DataLayer.Watches
 @using DataLayer.Cards
+@using DataLayer.Leilao
 
 @inject ICardRepository _db
 @inject IWatchRepository WatchRepo
+@inject ILeilaoRepository LeilaoRepo
 
 <PageTitle>Home</PageTitle>
 
-
-
-
-@if (_watches == null)
+@if (_leiloes == null)
 {
-    <p>Loading watches...</p>
+    <p>Loading leiloes...</p>
 }
 else
 {
     <div class="grid">
-        @foreach (var watch in _watches)
+        @foreach (var leilao in _leiloes)
         {
-            <CardComponent watch="watch" />
+            <CardComponent leilao="leilao" />
         }
     </div>
 }
 
 @code {
 
-    private List<DataLayer.Watches.WatchModel> _watches;
+    //private List<DataLayer.Watches.WatchModel> _watches;Es
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    _watches = await WatchRepo.GetAllClocksAsync();
+    //}
 
+    private List<DataLayer.Leilao.LeilaoModel> _leiloes;
     protected override async Task OnInitializedAsync()
     {
-        _watches = await WatchRepo.GetAllClocksAsync();
+        _leiloes = await LeilaoRepo.FindAll();
     }
 
     //private List<DataLayer.CardModel> _cards;

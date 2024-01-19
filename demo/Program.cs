@@ -7,6 +7,7 @@ using demo.Features.Home;
 using DataLayer.Cards;
 using DataLayer.Watches;
 using DataLayer.Utilizador;
+using DataLayer.Leilao;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<ICardRepository, CardRepository>();
 builder.Services.AddTransient<IWatchRepository, WatchRepository>();
+builder.Services.AddTransient<ILeilaoRepository, LeilaoRepository>();
 builder.Services.AddTransient<IUtilizadorRepository, UtilizadorRepository>();
 
 
