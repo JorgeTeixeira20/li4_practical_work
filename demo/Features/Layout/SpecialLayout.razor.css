@@ -2,15 +2,14 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    min-height: 100vh; 
+    background-color: #f0f0f0; 
 }
 
 main {
     flex: 1;
 }
 
-.sidebar {
-    background: linear-gradient(180deg, #333333 0%, #666666 100%);
-}
 
 .top-row {
     background: #999999;

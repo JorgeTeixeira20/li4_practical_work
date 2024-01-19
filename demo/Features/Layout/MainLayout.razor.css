@@ -9,7 +9,7 @@ main {
 }
 
 .sidebar {
-    background: linear-gradient(180deg, #333333 0%, #666666 100%);
+    background: linear-gradient(45deg, #333333, #555555);
     z-index: 1; /* Ensure the sidebar is below other elements */
 }
 

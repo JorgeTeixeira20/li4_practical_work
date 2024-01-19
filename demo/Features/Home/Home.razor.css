@@ -2,8 +2,8 @@
     margin: 0;
     padding: 0;
 }
-
 .grid {
+    padding-top: 100px;
     display: flex; /* Add this to make it a flex container */
     flex-direction: row; /* Change to row to align items horizontally */
     flex-wrap: wrap;
@@ -12,5 +12,5 @@
 }
 .card {
     margin: 0 10px;
-    height: 100px;
+    height: 200px;
 }
