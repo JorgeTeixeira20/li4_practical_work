@@ -1,53 +1,67 @@
 ﻿@page "/perfil"
 
 @using DataLayer.Utilizador
-@inject IUtilizadorRepository _db;
+@inject IUtilizadorRepository _db
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<div class="card">
-    <div class="card-header">
-        <h2>Perfil</h2>
-    </div>
-    <div class="card-body">
-        <div class="row align-items-center">
-            <div class="col-md-4">
-                <img src="https://cdn.discordapp.com/attachments/1155884905989931151/1196878169794420787/luisinho.jpg?ex=65b93aa8&is=65a6c5a8&hm=fb7b15828d8d51e18b8ef74f2ecb8125ca0bdd9b83c8c412a9d1115d381009f6&" alt="Luisinho" class="img-fluid">
+<AuthorizeView Roles="Client">
+    <Authorized>
+        <div class="card">
+            <div class="card-header">
+                <h2>Perfil</h2>
             </div>
-            <div class="col-md-8">
-                <dl class="row">
-                    <dt class="col-sm-3 text-right">Nome:</dt>
-                    <dd class="col-sm-9">@username</dd>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <img src="https://cdn.discordapp.com/attachments/1155884905989931151/1196878169794420787/luisinho.jpg?ex=65b93aa8&is=65a6c5a8&hm=fb7b15828d8d51e18b8ef74f2ecb8125ca0bdd9b83c8c412a9d1115d381009f6&" alt="Luisinho" class="img-fluid">
+                    </div>
+                    <div class="col-md-8">
+                        <dl class="row">
+                            <dt class="col-sm-3 text-right">Nome:</dt>
+                            <dd class="col-sm-9">@username</dd>
 
-                    <dt class="col-sm-3 text-right">Avaliação Media:</dt>
-                    <dd class="col-sm-9">@userFounded?.avaliacaoMedia</dd>
+                            <dt class="col-sm-3 text-right">Avaliação Media:</dt>
+                            <dd class="col-sm-9">@userFounded?.avaliacaoMedia</dd>
 
-                    <dt class="col-sm-3 text-right">Número de Leilões:</dt>
-                    <dd class="col-sm-9">@userFounded?.numeroDeLeiloesFeitos</dd>
+                            <dt class="col-sm-3 text-right">Número de Leilões:</dt>
+                            <dd class="col-sm-9">@userFounded?.numeroDeLeiloesFeitos</dd>
 
-                    <dt class="col-sm-3 text-right">Data de Registro:</dt>
-                    <dd class="col-sm-9">@userFounded?.dataDeRegisto</dd>
-                </dl>
+                            <dt class="col-sm-3 text-right">Data de Registro:</dt>
+                            <dd class="col-sm-9">@userFounded?.dataDeRegisto</dd>
+                        </dl>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="card mt-3">
-    <div class="card-header">
-        <h2>Leilões Passados</h2>
-    </div>
-    <div class="card-body">
-        <p>Leilão 1 ....</p>
-        <p>Leilão 2 ....</p>
-        <p>Leilão 3 ....</p>
-    </div>
-</div>
+        <div class="card mt-3">
+            <div class="card-header">
+                <h2>Leilões Passados</h2>
+            </div>
+            <div class="card-body">
+                <p>Leilão 1 ....</p>
+                <p>Leilão 2 ....</p>
+                <p>Leilão 3 ....</p>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Faz o login meu grande rei</h1>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 @code {
-    private string username = "User1";
+    private string username;
     private UtilizadorModel userFounded;
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        username = user.Identity.Name;
+
         await showUser();
     }
 

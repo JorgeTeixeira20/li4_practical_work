@@ -17,15 +17,9 @@ public class SqlDataAccess : ISqlDataAccess
     {
         try
         {
-            Console.WriteLine("[Antes de _cfg.GetConnString]Entrei em LoadData: " + sql);
             string? connectionString = _config.GetConnectionString(ConnectionStringName);
-            Console.WriteLine("[Depois de string? connectionString][antes de using IDBConnection]");
-            Console.WriteLine($"Connection string: {connectionString}");
             using IDbConnection connection = new SqlConnection(connectionString);
-            Console.WriteLine($"SQL Query: {sql}");
-            Console.WriteLine($"Parameters: {parameters}");
             var data = await connection.QueryAsync<T>(sql, parameters);
-            Console.WriteLine("Antes do return de LaodDta em SQLDataAccess!");
             return data.ToList();
 
         }

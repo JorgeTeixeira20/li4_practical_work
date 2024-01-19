@@ -1,9 +1,12 @@
 ﻿@page "/entrar"
 @layout SpecialLayout
-@inject NavigationManager NavigationManager
-
+@using BlazorServerAutheticationAndAuthorization.Authetication;
 @using DataLayer.Utilizador
-@inject IUtilizadorRepository _db;
+@inject IJSRuntime js
+@inject IUtilizadorRepository _db
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
+
 
 <form action="/login" method="post" asp-modal="true" @onsubmit="LoginUser">
     <div class="modal-dialog">
@@ -30,6 +33,7 @@
     </div>
 </form>
 
+@*
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="card mt-3" style="display: @(showMessageBox ? "block" : "none")">
@@ -39,76 +43,11 @@
         </div>
     </div>
 </div>
-
-<style>
-    .card {
-        background-color: #d4edda;
-        border: 1px solid #c3e6cb;
-        border-radius: 5px;
-        padding-top: 10px;
-        width: 300px;
-    }
-
-    .card-body {
-        padding: 0;
-    }
-
-    .modal-dialog {
-        background-color: #ffffff;
-        border: 1px solid #ccc;
-        max-width: 600px;
-        margin: 0 auto;
-        margin-top: 50px;
-    }
-
-    .modal-body {
-        padding: 20px;
-    }
-
-    .modal-footer {
-        padding: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .form-control {
-        font-size: 16px;
-        color: #333;
-    }
-
-    .modal-title {
-        margin: 0;
-    }
-
-    .modal-header {
-        background-color: #f7f7f7;
-        border-bottom: 1px solid #ccc;
-        padding: 10px;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        color: #ffffff;
-    }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-    hr {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        border: 0;
-        border-top: 1px solid #ccc;
-    }
-</style>
-
+*@
 @code {
     private string username;
     private string password;
-    private bool showMessageBox = false;
+    //private bool showMessageBox = false;
 
     private async Task LoginUser()
     {
@@ -120,6 +59,21 @@
 
         Console.WriteLine("Utilizador encontrado?: ");
 
+        if(userFounded == null || userFounded.password != password)
+        {
+            await js.InvokeVoidAsync("alert", "nome de utilizador ou password inválidos");
+            return;
+        }
+
+        var customAuthStateProvider = (CustomAutheticationStateProvider) authStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(new UserSession
+            {
+                UserName = userFounded.username,
+                Role = "Client"
+            });
+
+        navManager.NavigateTo("/home", true);
+        /*
         if (userFounded == null)
         {
             showMessageBox = true;
@@ -140,7 +94,7 @@
             Console.WriteLine("Num leilões: " + userFounded.numeroDeLeiloesFeitos);
             Console.WriteLine("Data de registo: " + userFounded.dataDeRegisto);
 
-            NavigationManager.NavigateTo("/home");
-        }
+            navManager.NavigateTo("/mainlayout", true);
+        } */
     }
 }
