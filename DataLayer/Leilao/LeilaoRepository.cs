@@ -35,14 +35,15 @@ public class LeilaoRepository : ILeilaoRepository
 
     public async Task Create(LeilaoModel leilao)
     {
-        string sql = "INSERT INTO Leilao (Relogio_id, DataInicio, DataFim, Utilizador_idUtilizador)" +
-                     "VALUES (@Relogio_id, @DataInicio, @DataFim, @Utilizador_idUtilizador)";
+        string sql = "INSERT INTO Leilao (Relogio_id, DataInicio, DataFim, LicitacaoAtual, Utilizador_idUtilizador)" +
+                     "VALUES (@Relogio_id, @DataInicio, @DataFim, @LicitacaoAtual, @Utilizador_idUtilizador)";
 
         await _db.SaveData(sql, new
         {
             leilao.Relogio_id,
             leilao.DataInicio,
             leilao.DataFim,
+            leilao.LicitacaoAtual,
             leilao.Utilizador_idUtilizador
         });
     }
