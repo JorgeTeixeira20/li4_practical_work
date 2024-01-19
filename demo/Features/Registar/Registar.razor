@@ -1,8 +1,10 @@
 ﻿@page "/registar"
 @layout SpecialLayout
-
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 @using DataLayer.Utilizador
 @inject IUtilizadorRepository _db
+
 
 <form action="/register" method="post" asp-modal="true" @onsubmit="RegisterUser">
     <div class="modal-dialog">
@@ -37,13 +39,38 @@
     </div>
 </form>
 
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="card mt-3" style="display: @(showMessageBox ? "block" : "none")">
+            <div class="card-body text-center">
+                <p>Registo foi um sucesso!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <style>
+    .card {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        border-radius: 5px;
+        padding-top: 10px;
+        width: 200px;
+    }
+
+    .card-body {
+        padding: 0;
+    }
+
     .modal-dialog {
         background-color: #ffffff;
         border: 1px solid #ccc;
         max-width: 600px;
         margin: 0 auto;
-        margin-top: 50px; /* Adjust as needed */
+        margin-top: 50px;
     }
 
     .modal-body {
@@ -93,6 +120,7 @@
 @code {
     private string nome;
     private string password;
+    private bool showMessageBox = false;
 
     private async Task RegisterUser()
     {
@@ -110,8 +138,12 @@
             };
 
         await _db.Create(novoUtilizador);
+
+        showMessageBox = true;
+        StateHasChanged();
+
+        await Task.Delay(1000);
+
+        NavigationManager.NavigateTo("/");
     }
 }
-
-
-
