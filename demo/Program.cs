@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using BlazorServerAutheticationAndAuthorization.Authetication;
 using DataLayer.Licitacao;
+using DataLayer.LeilaoFavorito;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ builder.Services.AddTransient<ILeilaoRepository, LeilaoRepository>();
 builder.Services.AddTransient<IUtilizadorRepository, UtilizadorRepository>();
 builder.Services.AddTransient<ILeilaoRepository, LeilaoRepository>();
 builder.Services.AddTransient<ILicitacaoRepository, LicitacaoRepository>();
+builder.Services.AddTransient<ILeilaoFavoritoRepository, LeilaoFavoritoRepository>();
 
 var app = builder.Build();
 
