@@ -23,20 +23,18 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Relogio bué caro</h5>
+                        <h5 class="card-title">@watchInfo.Modelo</h5>
                         <p class="card-text">
-                            Rel muito bonito
+                            @watchInfo.Descricao
                         </p>
                         <ul class="list-group">
                             <li class="list-group-item">Id: @CardId</li>
                             <li class="list-group-item">Marca: @watchInfo.Marca</li>
-                            <li class="list-group-item">Modelo: @watchInfo.Modelo</li>
                             <li class="list-group-item">NumeroSerie: @watchInfo.NumeroSerie</li>
                             <li class="list-group-item">Ano: @watchInfo.AnoFabrico </li>
                             <li class="list-group-item">EstadoConservacao: @watchInfo.EstadoConservacao</li>
                             <li class="list-group-item">TemCaixaOriginal: @watchInfo.TemCaixaOriginal</li>
                             <li class="list-group-item">RelogioFunciona: @watchInfo.RelogioFunciona</li>
-                            <li class="list-group-item">Descricao: @watchInfo.Descricao</li>
                         </ul>
                         <div class="card-footer">
                             <p class="text-muted">Lance atual: € @watchInfo.PrecoBase</p>
