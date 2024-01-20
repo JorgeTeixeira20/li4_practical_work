@@ -13,7 +13,15 @@
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col-md-4">
-                        <img src="https://cdn.discordapp.com/attachments/1155884905989931151/1196878169794420787/luisinho.jpg?ex=65b93aa8&is=65a6c5a8&hm=fb7b15828d8d51e18b8ef74f2ecb8125ca0bdd9b83c8c412a9d1115d381009f6&" alt="Luisinho" class="img-fluid">
+                        @if (userFounded?.Imagem != null && userFounded?.Imagem.Length > 0)
+                        {
+                            string imageBase64 = Convert.ToBase64String(userFounded?.Imagem);
+                            <img src="data:image/jpeg;base64,@imageBase64" class="watch-img-top" alt="@userFounded?.Id">
+                        }
+                        else
+                        {
+                            <div class="placeholder-image">Imagem não disponível</div>
+                        }
                     </div>
                     <div class="col-md-8">
                         <dl class="row">
