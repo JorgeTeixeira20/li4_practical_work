@@ -34,7 +34,7 @@
     [Parameter, EditorRequired]
     public LeilaoModel leilao { get; set; } = default!;
 
-    private WatchModel watchInfo;
+    private WatchModel watchInfo = null!;
 
     protected override async Task OnInitializedAsync()
     {
