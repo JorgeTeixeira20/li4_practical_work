@@ -24,6 +24,24 @@
                                 <div class="placeholder-image">Imagem não disponível</div>
                             }
                         </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Licitação</h5>
+
+                                <button class="btn btn-primary" @onclick="IncrementValue20" style="margin-top: 10px; margin-bottom: 10px;">+20 €</button>
+                                <button class="btn btn-primary" @onclick="IncrementValue50" style="margin-top: 10px; margin-bottom: 10px;">+50 €</button>
+                                <button class="btn btn-primary" @onclick="IncrementValue100" style="margin-top: 10px; margin-bottom: 10px;">+100 €</button>
+
+                                <div class="form-group">
+                                    <label for="newBid">Insira o Valor da sua Licitação:</label>
+                                    <input type="text" class="form-control" id="newBid" @bind="newBidValue" />
+                                </div>
+                                
+                                <button class="btn btn-primary" @onclick="PlaceBid" style="margin-top: 10px;">Licitar</button>
+                            </div>
+                        </div>
+                        
                     </div>
                     <div class="col-md-6">
                         <div class="card">
@@ -33,37 +51,22 @@
                                     @watchInfo.Descricao
                                 </p>
                                 <ul class="list-group">
-                                    <li class="list-group-item">Id: @CardId</li>
                                     <li class="list-group-item">Marca: @watchInfo.Marca</li>
                                     <li class="list-group-item">NumeroSerie: @watchInfo.NumeroSerie</li>
                                     <li class="list-group-item">Ano: @watchInfo.AnoFabrico </li>
                                     <li class="list-group-item">EstadoConservacao: @watchInfo.EstadoConservacao</li>
                                     <li class="list-group-item">TemCaixaOriginal: @watchInfo.TemCaixaOriginal</li>
                                     <li class="list-group-item">RelogioFunciona: @watchInfo.RelogioFunciona</li>
+                                    <!--<li class="list-group-item">RelogioFunciona: @leilao.DataInicio</li>-->
+                                    <!--<li class="list-group-item">RelogioFunciona: @leilao.DataFim</li>-->
                                 </ul>
                                 <div class="card-footer">
                                     <p class="text-muted">Lance atual: € @watchInfo.PrecoBase</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                        <button class="btn btn-primary" @onclick="PlaceBid" style="margin-left: 20px;">Adicionar aos Favoritos</button>
 
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Licitação</h5>
-                                <div class="form-group">
-                                    <label for="newBid">Insira o Valor da sua Licitação:</label>
-                                    <input type="text" class="form-control" id="newBid" @bind="newBidValue" />
-                                </div>
-                                <button class="btn btn-primary" @onclick="PlaceBid">Licitar</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Licitação anterior</h5>
@@ -89,6 +92,33 @@
     private WatchModel watchInfo;
 
     private string newBidValue;
+
+    private int currentBid;
+
+    private void IncrementValue20()
+    {
+        int precoBase = Convert.ToInt32(watchInfo.PrecoBase);
+        currentBid += precoBase + 20;
+        newBidValue = currentBid.ToString();
+        StateHasChanged();
+    }
+
+    private void IncrementValue50()
+    {
+        int precoBase = Convert.ToInt32(watchInfo.PrecoBase);
+        currentBid += precoBase + 50;
+        newBidValue = currentBid.ToString();
+        StateHasChanged();
+    }
+
+    private void IncrementValue100()
+    {
+        int precoBase = Convert.ToInt32(watchInfo.PrecoBase);
+        currentBid += precoBase + 100;
+        newBidValue = currentBid.ToString();
+        StateHasChanged();
+    }
+
 
     private async Task PlaceBid()
     {

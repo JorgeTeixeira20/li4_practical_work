@@ -9,7 +9,9 @@
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 -50px;
-    padding: 200px;
+    padding-top: 150px;
+    padding-left: 300px;
+    padding-right: 300px;
 }
 
 .card {

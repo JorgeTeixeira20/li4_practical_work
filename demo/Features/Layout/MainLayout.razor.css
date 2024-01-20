@@ -10,7 +10,7 @@ main {
 
 .sidebar {
     background: linear-gradient(45deg, #333333, #555555);
-    z-index: 1; /* Ensure the sidebar is below other elements */
+    z-index: 1;
 }
 
 .top-row {
@@ -18,7 +18,7 @@ main {
     border-bottom: 1px solid #f7f7f7;
     height: 3.5rem;
     display: flex;
-    justify-content: center; /* Center the content horizontally */
+    justify-content: center; 
     align-items: center;
     z-index: 2;
     position: relative;
@@ -37,7 +37,7 @@ main {
 @media (max-width: 640.98px) {
     .top-row {
         justify-content: space-between;
-        margin-left: 0; /* Reset margin for smaller screens */
+        margin-left: 0;
     }
 }
 
