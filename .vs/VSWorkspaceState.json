@@ -3,10 +3,7 @@
     "",
     "\\demo",
     "\\demo\\Features",
-    "\\demo\\Features\\Home",
-    "\\demo\\Features\\Layout",
-    "\\demo\\Features\\Registar",
-    "\\demo\\Pages"
+    "\\demo\\Features\\Home"
   ],
   "SelectedNode": "\\demo\\Demo.sln",
   "PreviewInSolutionExplorer": false
