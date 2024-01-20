@@ -4,83 +4,108 @@
 
 <PageTitle>Leiloar Relógio</PageTitle>
 
-<h1>Leiloar Relógio</h1>
-
-<body>
-    <form>  
-        <div class="flex-container">
-    
-            <div class="flex-item100percent">
-                <h3>Adicione as informações relativas ao seu relógio</h3>
-            </div>
-    
-            <div class="flex-item">
-                <label>Modelo:</label>
-                <input type="text" @bind="modelo" />
-            </div>
-
-            <div class="flex-item">
-                <label>Número de série:</label>
-                <input type="text" @bind="numeroSerie">
-            </div>
-
-            <div class="flex-item100percent">
-                <label>Descrição:</label>
-                <textarea @bind="descricao"></textarea>
-            </div>
-
-            <div class="flex-item100percent">
-                <label>Fotos</label>
-                <InputFile multiple OnChange="HandleFileInput" />
-            </div>
-
-            <div class="flex-item">
-                <label>Marca:</label>
-                <input type="text" @bind="marca" />
-            </div>
-
-            <div class="flex-item">
-                <label>Estado de Conservação: </label>
-                <input type="text" @bind="estadoConservacao">
-            </div>
-
-            <div class="flex-item" style="margin-bottom: 0">
-                <label>Tem Caixa Original?</label>
-                <div class="radio-options">
-                    <div class="radio-option" data-value="true">
-                        <input type="radio" id="temCaixaOriginalSim" name="temCaixaOriginal" value="true" checked />
-                        <label for="temCaixaOriginalSim">Sim</label>
+<div class="card">
+    <div class="card-header">
+        <h2>Leiloar Relógio</h2>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="form-columns">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label><span class="label-text">Marca:</span></label>
+                        <input type="text" @bind="marca" />
                     </div>
-                    <div class="radio-option" data-value="false">
-                        <input type="radio" id="temCaixaOriginalNao" name="temCaixaOriginal" value="false" />
-                        <label for="temCaixaOriginalNao">Não</label>
+
+                    <div class="form-group">
+                        <label><span class="label-text">Modelo:</span></label>
+                        <input type="text" @bind="modelo" />
+                    </div>
+
+                    <div class="form-group">
+                        <label><span class="label-text">Número de Série:</span></label>
+                        <input type="text" @bind="numeroSerie" />
+                    </div>
+
+                    <div class="form-group">
+                        <label><span class="label-text">Foto:</span></label>
+                        <InputFile multiple OnChange="HandleFileInput" />
+                    </div>
+
+                    <div class="form-group">
+                        <label><span class="label-text">Descrição:</span></label>
+                        <textarea @bind="descricao" style="height: 130px;"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-column">
+                    <div class="form-group">
+                        <label><span class="label-text">Estado de Conservação:</span></label>
+                        <select @bind="estadoConservacao">
+                            <option value="Novo">Novo</option>
+                            <option value="Usado">Usado</option>
+                            <option value="MuitoUsado">Muito Usado</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><span class="label-text">Tem Caixa Original?</span></label>
+                        <div class="radio-options">
+                            <div class="radio-option">
+                                <input type="radio" id="temCaixaOriginalSim" name="temCaixaOriginal" @bind="temCaixaOriginal" />
+                                <label for="temCaixaOriginalSim">Sim</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="temCaixaOriginalNao" name="temCaixaOriginal" @bind="temCaixaOriginal" />
+                                <label for="temCaixaOriginalNao">Não</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><span class="label-text">Relógio Funciona?</span></label>
+                        <div class="radio-options">
+                            <div class="radio-option">
+                                <input type="radio" id="relogioFuncionaSim" name="relogioFunciona" @bind="relogioFunciona" />
+                                <label for="relogioFuncionaSim">Sim</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="relogioFuncionaNao" name="relogioFunciona" @bind="relogioFunciona" />
+                                <label for="relogioFuncionaNao">Não</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><span class="label-text">Ano de Fabrico:</span></label>
+                        <input type="number" @bind="anoFabrico" />
+                    </div>
+
+                    <div class="form-group">
+                        <label><span class="label-text">Data e Hora de Início:</span></label>
+                        <input type="datetime-local" @bind="dataHoraInicio" />
+                    </div>
+
+                    <div class="form-group">
+                        <label><span class="label-text">Data e Hora de Fecho:</span></label>
+                        <input type="datetime-local" @bind="dataHoraFecho" />
                     </div>
                 </div>
             </div>
 
-            <div class="flex-item">
-                <label>Ano de fabrico</label>
-                <input type="number" @bind="anoFabrico">
+            <div class="price-group" style="text-align: center;">
+                <label><span class="label-text">Preço Inicial: </span></label>
+                <input type="text" @bind="precoBase" />
             </div>
 
-            <div class="flex-item">
-                <label>Data e Hora de Início:</label>
-                <input type="datetime-local" @bind="dataHoraInicio" />
+            <div class="form-group" style="text-align: center; margin-top: 20px;">
+                <button class="button-9" @onclick="CriarLeilao">
+                    Criar Leilão
+                </button>
             </div>
-            <div class="flex-item">
-                <label>Data de Fecho e Hora de Fecho:</label>
-                <input type="datetime-local" @bind="dataHoraFecho" />
-            </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 20px;">
-            <button class="button-9" @onclick="CriarLeilao">
-                Criar Leilão
-            </button>
-        </div>
-    </form>
-</body>
-
+        </form>
+    </div>
+</div>
 
 
 @inject IWatchRepository WatchRepo
@@ -93,11 +118,11 @@
     private string marca;
     private string estadoConservacao;
     private bool temCaixaOriginal;
-    private int anoFabrico;
+    private int anoFabrico = 2000;
     private bool relogioFunciona;
     private double precoBase;
-    private DateTime dataHoraInicio;
-    private DateTime dataHoraFecho;
+    private DateTime dataHoraInicio = DateTime.Now;
+    private DateTime dataHoraFecho = DateTime.Now.AddHours(1);
 
     private byte[] imagemRelogio; // Alterada para ser um array de bytes
 
@@ -141,18 +166,18 @@
             };
 
         // Adicione o relógio à base de dados usando o WatchRepository
-       int idWatch =  await WatchRepo.AddClockAsync(novoRelogio);
+        int idWatch = await WatchRepo.AddClockAsync(novoRelogio);
 
         Console.WriteLine("-----------------------------");
         Console.WriteLine($"Relogio ID: {idWatch}");
 
         var novoLeilao = new LeilaoModel
-        {
+            {
                 Relogio_id = idWatch,
                 DataInicio = dataHoraInicio.ToString("yyyy-MM-dd HH:mm:ss"),
                 DataFim = dataHoraFecho.ToString("yyyy-MM-dd HH:mm:ss"),
                 Utilizador_idUtilizador = 1
-        };
+            };
 
         await LeilaoRepo.Create(novoLeilao);
 
