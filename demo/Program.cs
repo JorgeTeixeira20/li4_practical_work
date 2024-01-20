@@ -11,6 +11,7 @@ using DataLayer.Leilao;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using BlazorServerAutheticationAndAuthorization.Authetication;
+using DataLayer.Licitacao;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ builder.Services.AddTransient<IWatchRepository, WatchRepository>();
 builder.Services.AddTransient<ILeilaoRepository, LeilaoRepository>();
 builder.Services.AddTransient<IUtilizadorRepository, UtilizadorRepository>();
 builder.Services.AddTransient<ILeilaoRepository, LeilaoRepository>();
-
+builder.Services.AddTransient<ILicitacaoRepository, LicitacaoRepository>();
 
 var app = builder.Build();
 

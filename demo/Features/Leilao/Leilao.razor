@@ -1,78 +1,86 @@
 ﻿@page "/leilao/{cardId}"
 @using DataLayer.Leilao
 @using DataLayer.Watches
+@using DataLayer.Licitacao
+@inject ILicitacaoRepository LicitacaoRepo
 @inject ILeilaoRepository LeilaoRepo
+@inject AuthenticationStateProvider authStateProvider
 
-<div class="container">
-    @if (watchInfo != null)
-    {
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    @if (watchInfo.Imagem != null && watchInfo.Imagem.Length > 0)
-                    {
-                        string imageBase64 = Convert.ToBase64String(watchInfo.Imagem);
-                        <img src="data:image/jpeg;base64,@imageBase64" alt="Luisinho" class="card-img-top img-fluid" style="width: 100%; height: 100%; object-fit: contain; border-radius: 3%;">
-                    }
-                    else
-                    {
-                        <div class="placeholder-image">Imagem não disponível</div>
-                    }
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@watchInfo.Modelo</h5>
-                        <p class="card-text">
-                            @watchInfo.Descricao
-                        </p>
-                        <ul class="list-group">
-                            <li class="list-group-item">Id: @CardId</li>
-                            <li class="list-group-item">Marca: @watchInfo.Marca</li>
-                            <li class="list-group-item">NumeroSerie: @watchInfo.NumeroSerie</li>
-                            <li class="list-group-item">Ano: @watchInfo.AnoFabrico </li>
-                            <li class="list-group-item">EstadoConservacao: @watchInfo.EstadoConservacao</li>
-                            <li class="list-group-item">TemCaixaOriginal: @watchInfo.TemCaixaOriginal</li>
-                            <li class="list-group-item">RelogioFunciona: @watchInfo.RelogioFunciona</li>
-                        </ul>
-                        <div class="card-footer">
-                            <p class="text-muted">Lance atual: € @watchInfo.PrecoBase</p>
+<AuthorizeView Roles="Client">
+    <Authorized>
+        <div class="container">
+            @if (watchInfo != null)
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            @if (watchInfo.Imagem != null && watchInfo.Imagem.Length > 0)
+                            {
+                                string imageBase64 = Convert.ToBase64String(watchInfo.Imagem);
+                                <img src="data:image/jpeg;base64,@imageBase64" alt="Luisinho" class="card-img-top img-fluid" style="width: 100%; height: 100%; object-fit: contain; border-radius: 3%;">
+                            }
+                            else
+                            {
+                                <div class="placeholder-image">Imagem não disponível</div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">@watchInfo.Modelo</h5>
+                                <p class="card-text">
+                                    @watchInfo.Descricao
+                                </p>
+                                <ul class="list-group">
+                                    <li class="list-group-item">Id: @CardId</li>
+                                    <li class="list-group-item">Marca: @watchInfo.Marca</li>
+                                    <li class="list-group-item">NumeroSerie: @watchInfo.NumeroSerie</li>
+                                    <li class="list-group-item">Ano: @watchInfo.AnoFabrico </li>
+                                    <li class="list-group-item">EstadoConservacao: @watchInfo.EstadoConservacao</li>
+                                    <li class="list-group-item">TemCaixaOriginal: @watchInfo.TemCaixaOriginal</li>
+                                    <li class="list-group-item">RelogioFunciona: @watchInfo.RelogioFunciona</li>
+                                </ul>
+                                <div class="card-footer">
+                                    <p class="text-muted">Lance atual: € @watchInfo.PrecoBase</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Licitação</h5>
-                        <div class="form-group">
-                            <label for="newBid">Insira o Valor da sua Licitação:</label>
-                            <input type="text" class="form-control" id="newBid" @bind="newBidValue" />
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Licitação</h5>
+                                <div class="form-group">
+                                    <label for="newBid">Insira o Valor da sua Licitação:</label>
+                                    <input type="text" class="form-control" id="newBid" @bind="newBidValue" />
+                                </div>
+                                <button class="btn btn-primary" @onclick="PlaceBid">Licitar</button>
+                            </div>
                         </div>
-                        <button class="btn btn-primary" @onclick="PlaceBid">Licitar</button>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Licitação anterior</h5>
-                        <p class="card-text">licitação 1 ......</p>
-                        <p class="card-text">licitação 2 ......</p>
-                        <p class="card-text">licitação 3 ......</p>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Licitação anterior</h5>
+                                <p class="card-text">licitação 1 ......</p>
+                                <p class="card-text">licitação 2 ......</p>
+                                <p class="card-text">licitação 3 ......</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
-    }
-</div>
-
-
+    </Authorized>
+    <NotAuthorized>
+        <h2>Não estás logado</h2>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     [Parameter]
@@ -82,9 +90,27 @@
 
     private string newBidValue;
 
-    private void PlaceBid()
+    private async Task PlaceBid()
     {
         Console.WriteLine($"New Bid: {newBidValue}");
+
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        var userIdClaim = user.FindFirst("UserId");
+        var userId = userIdClaim.Value;
+        Console.WriteLine("UserId do estado da sessão: " + userId);
+
+        var novaLicitacao = new LicitacaoModel
+            {
+                username = user.Identity.Name,
+                valor = int.Parse(newBidValue),
+                Data = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                Leilao_idUtilizador = int.Parse(CardId),
+                Utilizador_idUtilizador = 1     // int.Parse(userId) PRECISO METER O ID CORRETO ---------------------------------------------------------
+            };
+
+        await LicitacaoRepo.Create(novaLicitacao);
         newBidValue = string.Empty;
         StateHasChanged();
     }

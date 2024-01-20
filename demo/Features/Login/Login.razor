@@ -69,7 +69,11 @@
         await customAuthStateProvider.UpdateAuthenticationState(new UserSession
             {
                 UserName = userFounded.username,
-                Role = "Client"
+                Role = "Client",
+                UserId = userFounded.Id.ToString(),
+                UserMediumEval = userFounded.avaliacaoMedia.ToString(),
+                UserNumLeiloesFavoritos = userFounded.numeroDeLeiloesFeitos.ToString(),
+                UserRegisterDate = userFounded.dataDeRegisto
             });
 
         navManager.NavigateTo("/home", true);
