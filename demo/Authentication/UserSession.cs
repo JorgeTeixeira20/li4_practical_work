@@ -1,4 +1,4 @@
-﻿namespace BlazorServerAutheticationAndAuthorization.Authetication
+﻿namespace BlazorServerAuthenticationAndAuthorization.Authentication
 {
     public class UserSession
     {

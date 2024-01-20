@@ -9,4 +9,5 @@ public record UtilizadorModel
     public float avaliacaoMedia { get; set; } = 0;
     public int numeroDeLeiloesFeitos { get; set; }
     public string dataDeRegisto { get; set; } = "";
+    public byte[] fotoPerfil { get; set; }
 }

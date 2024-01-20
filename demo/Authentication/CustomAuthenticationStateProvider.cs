@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Security.Claims;
 
-namespace BlazorServerAutheticationAndAuthorization.Authetication
+namespace BlazorServerAuthenticationAndAuthorization.Authentication
 {
-    public class CustomAutheticationStateProvider : AuthenticationStateProvider
+    public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly ProtectedSessionStorage _sessionStorage;
         private ClaimsPrincipal _anonymous = new ClaimsPrincipal(new ClaimsIdentity());
 
-        public CustomAutheticationStateProvider(ProtectedSessionStorage sessionStorage)
+        public CustomAuthenticationStateProvider(ProtectedSessionStorage sessionStorage)
         {
             _sessionStorage = sessionStorage;
         }
@@ -55,6 +55,12 @@ namespace BlazorServerAutheticationAndAuthorization.Authetication
             }
 
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
+        }
+
+        public async Task ClearAuthenticationState()
+        {
+            await _sessionStorage.DeleteAsync("UserSession");
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
         }
     }
 }

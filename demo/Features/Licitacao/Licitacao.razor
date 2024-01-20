@@ -1,0 +1,42 @@
+﻿@page "/licitacao/{cardId}"
+@inject NavigationManager NavigationManager
+
+<div class="container">
+    <div class="card mt-3">
+        <div class="card-header">
+            <h2>Efetuar Licitação</h2>
+        </div>
+        <div class="card-body">
+            <p>Lance Atual: € 10,000</p>
+            <div class="form-group">
+                <label for="newBid">Insira o Valor da sua Licitação:</label>
+                <input type="text" class="form-control" id="newBid" @bind="newBidValue" />
+            </div>
+            <button class="btn btn-primary" @onclick="PlaceBid">Efetuar Licitação</button>
+            <button class="btn btn-secondary ml-2" @onclick="GoToAuctionMenu">Voltar Atrás</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string CardId { get; set; }
+
+    private string newBidValue;
+
+    private void PlaceBid()
+    {
+        // Add logic to handle the submission of the new bid
+        Console.WriteLine($"New Bid: {newBidValue}");
+        // You may want to implement logic to update the current bid value or handle the bid submission
+
+        // Redirect back to the auction menu after placing the bid
+        NavigationManager.NavigateTo($"/leilao/{@CardId}");
+    }
+
+    private void GoToAuctionMenu()
+    {
+        // Redirect to the auction menu
+        NavigationManager.NavigateTo($"/leilao/{@CardId}");
+    }
+}

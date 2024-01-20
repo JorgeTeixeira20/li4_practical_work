@@ -1,6 +1,6 @@
 ﻿@page "/entrar"
 @layout SpecialLayout
-@using BlazorServerAutheticationAndAuthorization.Authetication;
+@using BlazorServerAuthenticationAndAuthorization.Authentication;
 @using DataLayer.Utilizador
 @inject IJSRuntime js
 @inject IUtilizadorRepository _db
@@ -65,7 +65,7 @@
             return;
         }
 
-        var customAuthStateProvider = (CustomAutheticationStateProvider) authStateProvider;
+        var customAuthStateProvider = (CustomAuthenticationStateProvider) authStateProvider;
         await customAuthStateProvider.UpdateAuthenticationState(new UserSession
             {
                 UserName = userFounded.username,

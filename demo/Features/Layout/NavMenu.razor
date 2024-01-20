@@ -1,52 +1,74 @@
 ﻿@page "/navmenu"
+@using BlazorServerAuthenticationAndAuthorization.Authentication
+@inject IJSRuntime js;
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authStateProvider
 
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href=""></a>
+<AuthorizeView Roles="Client">
+    <div class="top-row ps-3 navbar navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href=""></a>
+        </div>
     </div>
-</div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+    <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="home" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
+    <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+        <nav class="flex-column">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="home" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                </NavLink>
+            </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="perfil">
-                <span class="bi bi-person-circle-nav-menu" aria-hidden="true"></span> Perfil
-            </NavLink>
-        </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="perfil">
+                    <span class="bi bi-person-circle-nav-menu" aria-hidden="true"></span> Perfil
+                </NavLink>
+            </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="leiloesfav">
-                <span class="bi bi-person-heart-nav-menu" aria-hidden="true"></span> Leilões Favoritos
-            </NavLink>
-        </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="leiloesfav">
+                    <span class="bi bi-person-heart-nav-menu" aria-hidden="true"></span> Leilões Favoritos
+                </NavLink>
+            </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="leiloar">
-                <span class="bi bi-cart-plus-nav-menu" aria-hidden="true"></span> Leiloar
-            </NavLink>
-        </div>
-        <AuthorizeView Roles="Administrator">
-            <Authorized>
-                <h1>És admin, os meus parabéns!</h1>
-            </Authorized>
-        </AuthorizeView>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="leiloar">
+                    <span class="bi bi-cart-plus-nav-menu" aria-hidden="true"></span> Leiloar
+                </NavLink>
+            </div>
 
-        <!--
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="register">
-                <span class="bi bi-box-arrow-in-right-nav-menu" aria-hidden="true"></span> Registar
-            </NavLink>
-        </div>
-        -->
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" @onclick="Logout">
+                    <span class="bi bi-cart-plus-nav-menu" aria-hidden="true"></span> Logout
+                </NavLink>
+            </div>
 
-    </nav>
-</div>
+            <!--
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="register">
+                    <span class="bi bi-box-arrow-in-right-nav-menu" aria-hidden="true"></span> Registar
+                </NavLink>
+            </div>
+            -->
 
+        </nav>
+    </div>
+</AuthorizeView>
+
+
+
+<AuthorizeView Roles="Administrator">
+    <Authorized>
+        <h1>És admin, os meus parabéns!</h1>
+    </Authorized>
+</AuthorizeView>
+
+@code{
+    private async Task Logout() {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(null);
+        navManager.NavigateTo("/");
+    } 
+}

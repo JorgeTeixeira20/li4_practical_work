@@ -26,9 +26,22 @@ else
 }
 
 @code {
+
+    //private List<DataLayer.Watches.WatchModel> _watches;Es
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    _watches = await WatchRepo.GetAllClocksAsync();
+    //}
+
     private List<DataLayer.Leilao.LeilaoModel> _leiloes;
     protected override async Task OnInitializedAsync()
     {
         _leiloes = await LeilaoRepo.FindAll();
     }
+
+    //private List<DataLayer.CardModel> _cards;
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    _cards = await _db.FindAll();
+    //}
 }

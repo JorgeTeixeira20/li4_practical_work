@@ -1,9 +1,9 @@
 ﻿@page "/registar"
 @layout SpecialLayout
 @inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
 @using DataLayer.Utilizador
 @inject IUtilizadorRepository _db
+@inject IJSRuntime js
 
 
 <form action="/register" method="post" asp-modal="true" @onsubmit="RegisterUser">
@@ -15,8 +15,8 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="email">Endereço de e-mail:</label>
-                    <input type="email" id="email" name="email" placeholder="Endereço de e-mail" class="form-control" @bind="nome">
+                    <label for="username">Nome de utilizador:</label>
+                    <input type="text" id="username" name="username" placeholder="Nome de Utilizador" class="form-control" @bind="nome">
                 </div>
 
                 <div class="form-group">
@@ -30,11 +30,18 @@
                     <label for="confirmPassword">Confirmar senha:</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar senha" class="form-control" @bind="password">
                 </div>
+                
+                <div class="form-group">
+                    <label>Foto de perfil</label>
+                    <InputFile OnChange="HandleFileInput" class="form-control"/>
+                </div>
             </div>
+            
 
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary btn-block">Registar</button>
             </div>
+
         </div>
     </div>
 </form>
@@ -56,6 +63,19 @@
     private string nome;
     private string password;
     private bool showMessageBox = false;
+    private byte[] img;
+
+    private async Task HandleFileInput(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        using (var stream = file.OpenReadStream())
+        {
+            var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            img = memoryStream.ToArray();
+        }
+    }
 
     private async Task RegisterUser()
     {
@@ -69,16 +89,28 @@
                 password = password,
                 avaliacaoMedia = 0,
                 numeroDeLeiloesFeitos = 0,
-                dataDeRegisto = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+                dataDeRegisto = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                fotoPerfil = img
             };
 
-        await _db.Create(novoUtilizador);
+        UtilizadorModel userFounded = await _db.Find(nome);
+        if(userFounded == null)
+        {
+            
+            await _db.Create(novoUtilizador);
+            await js.InvokeVoidAsync("alert", "Utilizador criado com sucesso");
+            NavigationManager.NavigateTo("/");
+        } else
+        {
+            await js.InvokeVoidAsync("alert", "Utilizador já existente");
+            return;
+        }
 
-        showMessageBox = true;
-        StateHasChanged();
+        //showMessageBox = true;
+        // StateHasChanged();
 
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
 
-        NavigationManager.NavigateTo("/");
+        //NavigationManager.NavigateTo("/");
     }
 }

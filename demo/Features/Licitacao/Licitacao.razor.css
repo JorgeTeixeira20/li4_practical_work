@@ -1,0 +1,24 @@
+﻿.container {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.form-group {
+    padding-bottom: 20px;
+}
