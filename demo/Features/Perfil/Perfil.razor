@@ -47,9 +47,10 @@
             <div class="card-header">
                 <h2>Leilões Passados</h2>
             </div>
+        </div>
             @if (_leiloes == null)
             {
-                <p>Não efetup</p>
+                <p>Nenhum leilão criado.</p>
             }
             else
             {
@@ -60,7 +61,7 @@
                     }
                 </div>
             }
-        </div>
+        
     </Authorized>
     <NotAuthorized>
         <h1>Faz o login meu grande rei</h1>
