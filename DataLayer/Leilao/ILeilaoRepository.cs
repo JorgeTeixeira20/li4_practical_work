@@ -9,7 +9,7 @@ namespace DataLayer.Leilao
         public Task<WatchModel> FindWatch(int leilaoId);
         public Task<List<LeilaoModel>> FindLeiloesUtilizador(int idUtilizador);
         public Task Create(LeilaoModel card);
-        public Task<LeilaoModel> Update(LeilaoModel user);
+        public Task<LeilaoModel> UpdateLicitacaoAtual(int leilaoId, int newLicitacaoAtual);
         public Task Remove(int code);
         public Task<List<LeilaoModel>> FindLeilaoFav(int utilizadorId);
     }
