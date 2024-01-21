@@ -2,9 +2,11 @@
 @using DataLayer.Leilao
 @using DataLayer.Watches
 @using DataLayer.Licitacao
+@using DataLayer.LeilaoFavorito
 @inject ILicitacaoRepository LicitacaoRepo
 @inject ILeilaoRepository LeilaoRepo
 @inject AuthenticationStateProvider authStateProvider
+@inject ILeilaoFavoritoRepository LeilaoFavoritoRepo
 
 <AuthorizeView Roles="Client">
     <Authorized>
@@ -81,6 +83,12 @@
                     </div>
                 </div>
             }
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" @onclick="AdicionarFavoritos">Adicionar aos Favoritos</button>
+                </div>
+            </div>
+
         </div>
     </Authorized>
     <NotAuthorized>
@@ -189,6 +197,17 @@
         {
             Console.WriteLine($"Erro ao recuperar informações do relógio: {ex.Message}");
         }
+    }
+
+    private async Task AdicionarFavoritos()
+    {
+        var novoLeilaoFavorito = new LeilaoFavoritoModel
+            {
+                Utilizador_idUtilizador = 1,    // ALTERAR ID PARA O ID DA PESSOA QUE ESTÁ LOGADA ------------------------------------------------
+                Leilao_idLeilao = int.Parse(CardId)
+            };
+
+        await LeilaoFavoritoRepo.Create(novoLeilaoFavorito);
     }
 }
 
