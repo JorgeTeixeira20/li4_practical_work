@@ -11,5 +11,6 @@ namespace DataLayer.Leilao
         public Task Create(LeilaoModel card);
         public Task<LeilaoModel> Update(LeilaoModel user);
         public Task Remove(int code);
+        public Task<List<LeilaoModel>> FindLeilaoFav(int utilizadorId);
     }
 }

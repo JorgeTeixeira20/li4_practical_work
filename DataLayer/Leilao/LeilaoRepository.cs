@@ -45,6 +45,19 @@ public class LeilaoRepository : ILeilaoRepository
             return null;
     }
 
+    public async Task<List<LeilaoModel>> FindLeilaoFav(int utilizadorId)
+    {
+        string sql = @"SELECT l.*
+                   FROM LeilaoFavorito lf
+                   INNER JOIN Leilao l ON lf.Leilao_idLeilao = l.id
+                   WHERE lf.Utilizador_idUtilizador = @UtilizadorId;";
+
+        List<LeilaoModel> leiloesFavoritos = await _db.LoadData<LeilaoModel, dynamic>(sql, new { UtilizadorId = utilizadorId });
+
+        return leiloesFavoritos;
+    }
+
+
     public Task<List<LeilaoModel>> FindAll()
     {
         string sql = "select * from Leilao";
