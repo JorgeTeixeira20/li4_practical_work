@@ -51,6 +51,16 @@
     text-align: right;
 }
 
+.licitacao-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Ajusta a posição à esquerda */
+}
+
+.licitacao-item {
+    margin-bottom: 10px; /* Ajuste conforme necessário para o espaçamento entre licitações */
+}
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

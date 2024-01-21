@@ -76,11 +76,14 @@
                             <div class="card-body">
                                 <h5 class="card-title">Licitação anterior</h5>
                                 <div class="grid">
-                                    @foreach (var licitacao in _licitacoes)
-                                    {
-                                            <LicitacaoComponent licitacao="licitacao" />
-                                      
-                                    }
+                                    <div class="licitacao-column">
+                                        @foreach (var licitacao in _licitacoes)
+                                        {
+                                            <div class="licitacao-item">
+                                                <LicitacaoComponent licitacao="licitacao" />
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
