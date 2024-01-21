@@ -32,6 +32,7 @@ builder.Services.AddTransient<IUtilizadorRepository, UtilizadorRepository>();
 builder.Services.AddTransient<ILeilaoRepository, LeilaoRepository>();
 builder.Services.AddTransient<ILicitacaoRepository, LicitacaoRepository>();
 builder.Services.AddTransient<ILeilaoFavoritoRepository, LeilaoFavoritoRepository>();
+builder.Services.AddTransient<IUtilizadorRepository, UtilizadorRepository>();
 
 var app = builder.Build();
 

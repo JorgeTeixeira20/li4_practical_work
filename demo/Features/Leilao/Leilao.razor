@@ -2,13 +2,15 @@
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 @using DataLayer.Leilao
 @using DataLayer.Watches
-@inject IJSRuntime JSRuntime
 @using DataLayer.Licitacao
 @using DataLayer.LeilaoFavorito
+@using DataLayer.Utilizador
+@inject IJSRuntime JSRuntime
+@inject AuthenticationStateProvider authStateProvider
 @inject ILicitacaoRepository LicitacaoRepo
 @inject ILeilaoRepository LeilaoRepo
-@inject AuthenticationStateProvider authStateProvider
 @inject ILeilaoFavoritoRepository LeilaoFavoritoRepo
+@inject IUtilizadorRepository UserRepo
 
 <AuthorizeView Roles="Client">
     <Authorized>
@@ -55,6 +57,9 @@
                                     @watchInfo.Descricao
                                 </p>
                                 <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <a href="/perfil-utilizador/@userInfo.idUtilizador">@userInfo.username</a>
+                                    </li>
                                     <li class="list-group-item">Marca: @watchInfo.Marca</li>
                                     <li class="list-group-item">NumeroSerie: @watchInfo.NumeroSerie</li>
                                     <li class="list-group-item">Ano: @watchInfo.AnoFabrico </li>
@@ -103,6 +108,8 @@
 
     private WatchModel watchInfo;
 
+    private UtilizadorModel userInfo;
+
     private LeilaoModel leilaoInfo;
 
     private List<DataLayer.Licitacao.LicitacaoModel> _licitacoes;
@@ -140,11 +147,11 @@
         Console.WriteLine($"New Bid: {newBidValue}");
         /*
         if (DateTime.Parse(leilaoInfo.DataInicio) > DateTime.UtcNow)
-        {
+            {
             await JSRuntime.InvokeVoidAsync("alert", "O Leilao ainda não começou!");
         }
         if (DateTime.Parse(leilaoInfo.DataFim) < DateTime.UtcNow)
-        {
+            {
             await JSRuntime.InvokeVoidAsync("alert", "O Leilao já terminou!");
         }
         */
@@ -189,6 +196,12 @@
                 watchInfo = await LeilaoRepo.FindWatch(cardIdAsInt);
 
                 leilaoInfo = await LeilaoRepo.Find(cardIdAsInt);
+
+                Console.WriteLine($"Leilao id: {leilaoInfo.Id}");
+
+                userInfo = await LeilaoRepo.FindUser(leilaoInfo.Id);
+
+                if (userInfo == null) Console.WriteLine("TAS NA MERDA ESTE GAJO NAO EXISTE");
 
                 if (watchInfo != null)
                 {

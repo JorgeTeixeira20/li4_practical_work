@@ -1,6 +1,7 @@
 ﻿using static System.Net.Mime.MediaTypeNames;
 
 using DataLayer.Watches;
+using DataLayer.Utilizador;
 
 namespace DataLayer.Leilao;
 
@@ -42,6 +43,21 @@ public class LeilaoRepository : ILeilaoRepository
         {
             return watch;
         } else 
+            return null;
+    }
+
+    public async Task<UtilizadorModel> FindUser(int leilaoId)
+    {
+        string sql = $"SELECT u.* FROM Leilao l INNER JOIN Utilizador u ON l.Utilizador_idUtilizador = u.idUtilizador WHERE l.id = {leilaoId};";
+        List<UtilizadorModel> users = await _db.LoadData<UtilizadorModel, dynamic>(sql, new { Leilao = leilaoId });
+
+        UtilizadorModel user = users.FirstOrDefault();  // Pega o primeiro item da lista (ou retorna null se a lista estiver vazia)
+
+        if (user != null)
+        {
+            return user;
+        }
+        else
             return null;
     }
 
