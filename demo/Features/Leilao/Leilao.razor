@@ -6,10 +6,13 @@
 @inject IJSRuntime JSRuntime
 @using DataLayer.Licitacao
 @using DataLayer.LeilaoFavorito
+@using DataLayer.Utilizador
+@inject IJSRuntime JSRuntime
+@inject AuthenticationStateProvider authStateProvider
 @inject ILicitacaoRepository LicitacaoRepo
 @inject ILeilaoRepository LeilaoRepo
-@inject AuthenticationStateProvider authStateProvider
 @inject ILeilaoFavoritoRepository LeilaoFavoritoRepo
+@inject IUtilizadorRepository UserRepo
 
 <AuthorizeView Roles="Client">
     <Authorized>
@@ -56,6 +59,9 @@
                                     @watchInfo.Descricao
                                 </p>
                                 <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <a href="/perfil-utilizador/@userInfo.idUtilizador">@userInfo.username</a>
+                                    </li>
                                     <li class="list-group-item">Marca: @watchInfo.Marca</li>
                                     <li class="list-group-item">NumeroSerie: @watchInfo.NumeroSerie</li>
                                     <li class="list-group-item">Ano: @watchInfo.AnoFabrico </li>
@@ -104,41 +110,40 @@
 
     private WatchModel watchInfo;
 
+    private UtilizadorModel userInfo;
+
     private LeilaoModel leilaoInfo;
 
     private List<DataLayer.Licitacao.LicitacaoModel> _licitacoes;
 
-    private string newBidValue;
+    private int newBidValue;
 
-    private int currentBid;
 
     private void IncrementValue20()
     {
         int precoBase = Convert.ToInt32(leilaoInfo.LicitacaoAtual);
-        currentBid += precoBase + 20;
-        newBidValue = currentBid.ToString();
+        newBidValue += precoBase + 20;
         StateHasChanged();
     }
 
     private void IncrementValue50()
     {
         int precoBase = Convert.ToInt32(leilaoInfo.LicitacaoAtual);
-        currentBid += precoBase + 50;
-        newBidValue = currentBid.ToString();
+        newBidValue += precoBase + 50;
         StateHasChanged();
     }
 
     private void IncrementValue100()
     {
         int precoBase = Convert.ToInt32(leilaoInfo.LicitacaoAtual);
-        currentBid += precoBase + 100;
-        newBidValue = currentBid.ToString();
+        newBidValue += precoBase + 100;
         StateHasChanged();
     }
 
     private async Task PlaceBid()
     {
         Console.WriteLine($"New Bid: {newBidValue}");
+
         if (DateTime.ParseExact(leilaoInfo.DataInicio, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.UtcNow)
         {
             await JSRuntime.InvokeVoidAsync("alert", "O Leilao ainda não começou!");
@@ -147,7 +152,7 @@
         {
             await JSRuntime.InvokeVoidAsync("alert", "O Leilao já terminou!");
         }
-        else if (int.Parse(newBidValue) <= leilaoInfo.LicitacaoAtual)
+        else if (newBidValue <= leilaoInfo.LicitacaoAtual)
         {
             await JSRuntime.InvokeVoidAsync("alert", "O valor da Licitação tem de ser superior ao Lance atual");
         }
@@ -161,16 +166,15 @@
             var novaLicitacao = new LicitacaoModel
                 {
                     username = authState.User.Identity.Name,
-                    valor = int.Parse(newBidValue),
+                    valor = newBidValue,
                     Data = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
                     Leilao_idUtilizador = int.Parse(CardId),
                     Utilizador_idUtilizador = userId,
                 };
 
             await LicitacaoRepo.Create(novaLicitacao);
-            await LeilaoRepo.UpdateLicitacaoAtual(int.Parse(CardId), currentBid);
+            await LeilaoRepo.UpdateLicitacaoAtual(int.Parse(CardId), newBidValue);
 
-            newBidValue = string.Empty;
             StateHasChanged();
 
             NavigationManager.NavigateTo($"/leilao/{CardId}", forceLoad: true);
@@ -189,6 +193,12 @@
                 watchInfo = await LeilaoRepo.FindWatch(cardIdAsInt);
 
                 leilaoInfo = await LeilaoRepo.Find(cardIdAsInt);
+
+                Console.WriteLine($"Leilao id: {leilaoInfo.Id}");
+
+                userInfo = await LeilaoRepo.FindUser(leilaoInfo.Id);
+
+                if (userInfo == null) Console.WriteLine("TAS NA MERDA ESTE GAJO NAO EXISTE");
 
                 if (watchInfo != null)
                 {
@@ -215,6 +225,7 @@
         {
             Console.WriteLine($"Erro ao recuperar informações do relógio: {ex.Message}");
         }
+        newBidValue = leilaoInfo.LicitacaoAtual;
     }
 
     private async Task AdicionarFavoritos()

@@ -1,4 +1,5 @@
-﻿using DataLayer.Watches;
+﻿using DataLayer.Utilizador;
+using DataLayer.Watches;
 
 namespace DataLayer.Leilao
 {
@@ -12,5 +13,6 @@ namespace DataLayer.Leilao
         public Task<LeilaoModel> UpdateLicitacaoAtual(int leilaoId, int newLicitacaoAtual);
         public Task Remove(int code);
         public Task<List<LeilaoModel>> FindLeilaoFav(int utilizadorId);
+        public Task<UtilizadorModel> FindUser(int leilaoId);
     }
 }
