@@ -4,7 +4,7 @@ namespace DataLayer.Leilao
 {
     public interface ILeilaoRepository
     {
-        public Task<LeilaoModel> Find(string username);
+        public Task<LeilaoModel> Find(int id);
         public Task<List<LeilaoModel>> FindAll();
         public Task<WatchModel> FindWatch(int leilaoId);
         public Task<List<LeilaoModel>> FindLeiloesUtilizador(int idUtilizador);

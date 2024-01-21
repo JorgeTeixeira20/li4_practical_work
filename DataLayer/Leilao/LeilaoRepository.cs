@@ -13,11 +13,11 @@ public class LeilaoRepository : ILeilaoRepository
     }
 
     // POR ALTERAR 
-    public async Task<LeilaoModel> Find(string username)
+    public async Task<LeilaoModel> Find(int leilaoId)
     {
-        Console.WriteLine($"Entrei em Find Leilao Movel com username: {username}!");
-        string sql = $"select * from Utilizador where username = '{username}'";
-        List<LeilaoModel> utiRes = await _db.LoadData<LeilaoModel, dynamic>(sql, new { Username = username });
+        Console.WriteLine($"Entrei em Find Leilao Movel com username: {leilaoId}!");
+        string sql = $"select * from Leilao where id = '{leilaoId}'";
+        List<LeilaoModel> utiRes = await _db.LoadData<LeilaoModel, dynamic>(sql, new { id = leilaoId });
         Console.WriteLine("depois de _db.LoadData");
         if (utiRes != null && utiRes.Count > 0)
         {

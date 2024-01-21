@@ -39,8 +39,8 @@
                                     <label for="newBid">Insira o Valor da sua Licitação:</label>
                                     <input type="text" class="form-control" id="newBid" @bind="newBidValue" />
                                 </div>
-                                
-                                <button class="btn btn-primary" @onclick="PlaceBid" style="margin-top: 10px;">Licitar</button>
+
+                                <button class="btn btn-primary" @onclick="AdicionarFavoritos" style="margin-top: 10px;">Licitar</button>
                             </div>
                         </div>
                         
@@ -59,8 +59,8 @@
                                     <li class="list-group-item">EstadoConservacao: @watchInfo.EstadoConservacao</li>
                                     <li class="list-group-item">TemCaixaOriginal: @watchInfo.TemCaixaOriginal</li>
                                     <li class="list-group-item">RelogioFunciona: @watchInfo.RelogioFunciona</li>
-                                    <!--<li class="list-group-item">RelogioFunciona: @leilao.DataInicio</li>-->
-                                    <!--<li class="list-group-item">RelogioFunciona: @leilao.DataFim</li>-->
+                                    <li class="list-group-item">RelogioFunciona: @leilaoInfo.DataInicio</li>
+                                    <li class="list-group-item">RelogioFunciona: @leilaoInfo.DataFim</li>
                                 </ul>
                                 <div class="card-footer">
                                     <p class="text-muted">Lance atual: € @watchInfo.PrecoBase</p>
@@ -72,20 +72,17 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Licitação anterior</h5>
-                                <p class="card-text">licitação 1 ......</p>
-                                <p class="card-text">licitação 2 ......</p>
-                                <p class="card-text">licitação 3 ......</p>
+                                <div class="grid">
+                                    @foreach (var licitacao in _licitacoes)
+                                    {
+                                        <LicitacaoComponent licitacao="licitacao" />
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             }
-            <div class="row mt-3">
-                <div class="col-md-12">
-                    <button class="btn btn-primary" @onclick="AdicionarFavoritos">Adicionar aos Favoritos</button>
-                </div>
-            </div>
-
         </div>
     </Authorized>
     <NotAuthorized>
@@ -98,6 +95,10 @@
     public string CardId { get; set; }
 
     private WatchModel watchInfo;
+
+    private LeilaoModel leilaoInfo;
+
+    private List<DataLayer.Licitacao.LicitacaoModel> _licitacoes;
 
     private string newBidValue;
 
@@ -126,7 +127,6 @@
         newBidValue = currentBid.ToString();
         StateHasChanged();
     }
-
 
     private async Task PlaceBid()
     {
@@ -157,11 +157,14 @@
     {
         try
         {
+            _licitacoes = await LicitacaoRepo.FindAllFromLeilao(int.Parse(CardId));
             // Convert the CardId from string to int
             if (int.TryParse(CardId, out int cardIdAsInt))
             {
                 // Use the function FindWatch to get the watch information corresponding to the auction
                 watchInfo = await LeilaoRepo.FindWatch(cardIdAsInt);
+
+                leilaoInfo = await LeilaoRepo.Find(cardIdAsInt);
 
                 if (watchInfo != null)
                 {
