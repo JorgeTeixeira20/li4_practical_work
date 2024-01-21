@@ -2,6 +2,7 @@
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 @using DataLayer.Leilao
 @using DataLayer.Watches
+@inject IJSRuntime JSRuntime
 @using DataLayer.Licitacao
 @using DataLayer.LeilaoFavorito
 @inject ILicitacaoRepository LicitacaoRepo
@@ -76,7 +77,8 @@
                                 <div class="grid">
                                     @foreach (var licitacao in _licitacoes)
                                     {
-                                        <LicitacaoComponent licitacao="licitacao" />
+                                            <LicitacaoComponent licitacao="licitacao" />
+                                      
                                     }
                                 </div>
                             </div>
@@ -132,30 +134,44 @@
     private async Task PlaceBid()
     {
         Console.WriteLine($"New Bid: {newBidValue}");
+        /*
+        if (DateTime.Parse(leilaoInfo.DataInicio) > DateTime.UtcNow)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "O Leilao ainda não começou!");
+        }
+        if (DateTime.Parse(leilaoInfo.DataFim) < DateTime.UtcNow)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "O Leilao já terminou!");
+        }
+        */
+        if (int.Parse(newBidValue) <= leilaoInfo.LicitacaoAtual)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "O valor da Licitação tem de ser superior ao Lance atual");
+        }
+        else
+        {
+            var authState = await authStateProvider.GetAuthenticationStateAsync();
+            var userIdString = authState.User.FindFirst("UserId")?.Value;
+            int userId = int.Parse(userIdString);
+            Console.WriteLine("UserId do estado da sessão: " + userId);
 
-        var authState = await authStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
+            var novaLicitacao = new LicitacaoModel
+                {
+                    username = authState.User.Identity.Name,
+                    valor = int.Parse(newBidValue),
+                    Data = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Leilao_idUtilizador = int.Parse(CardId),
+                    Utilizador_idUtilizador = userId,
+                };
 
-        var userIdClaim = user.FindFirst("UserId");
-        var userId = userIdClaim.Value;
-        Console.WriteLine("UserId do estado da sessão: " + userId);
+            await LicitacaoRepo.Create(novaLicitacao);
+            await LeilaoRepo.UpdateLicitacaoAtual(int.Parse(CardId), currentBid);
 
-        var novaLicitacao = new LicitacaoModel
-            {
-                username = user.Identity.Name,
-                valor = int.Parse(newBidValue),
-                Data = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
-                Leilao_idUtilizador = int.Parse(CardId),
-                Utilizador_idUtilizador = 1     // int.Parse(userId) PRECISO METER O ID CORRETO ---------------------------------------------------------
-            };
+            newBidValue = string.Empty;
+            StateHasChanged();
 
-        await LicitacaoRepo.Create(novaLicitacao);
-        await LeilaoRepo.UpdateLicitacaoAtual(int.Parse(CardId), currentBid);
-
-        newBidValue = string.Empty;
-        StateHasChanged();
-
-        NavigationManager.NavigateTo($"/leilao/{CardId}", forceLoad: true);
+            NavigationManager.NavigateTo($"/leilao/{CardId}", forceLoad: true);
+        }
     }
 
     protected override async Task OnInitializedAsync()
@@ -163,10 +179,9 @@
         try
         {
             _licitacoes = await LicitacaoRepo.FindAllFromLeilao(int.Parse(CardId));
-            // Convert the CardId from string to int
+
             if (int.TryParse(CardId, out int cardIdAsInt))
             {
-                // Use the function FindWatch to get the watch information corresponding to the auction
                 watchInfo = await LeilaoRepo.FindWatch(cardIdAsInt);
 
                 leilaoInfo = await LeilaoRepo.Find(cardIdAsInt);
@@ -200,9 +215,13 @@
 
     private async Task AdicionarFavoritos()
     {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var userIdString = authState.User.FindFirst("UserId")?.Value;
+        int userId = int.Parse(userIdString);
+        
         var novoLeilaoFavorito = new LeilaoFavoritoModel
             {
-                Utilizador_idUtilizador = 1,    // ALTERAR ID PARA O ID DA PESSOA QUE ESTÁ LOGADA ------------------------------------------------
+                Utilizador_idUtilizador = userId,   
                 Leilao_idLeilao = int.Parse(CardId)
             };
 
