@@ -2,6 +2,8 @@
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 @using DataLayer.Leilao
 @using DataLayer.Watches
+@using System.Globalization;
+@inject IJSRuntime JSRuntime
 @using DataLayer.Licitacao
 @using DataLayer.LeilaoFavorito
 @using DataLayer.Utilizador
@@ -145,17 +147,16 @@
     private async Task PlaceBid()
     {
         Console.WriteLine($"New Bid: {newBidValue}");
-        /*
-        if (DateTime.Parse(leilaoInfo.DataInicio) > DateTime.UtcNow)
-            {
+
+        if (DateTime.ParseExact(leilaoInfo.DataInicio, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.UtcNow)
+        {
             await JSRuntime.InvokeVoidAsync("alert", "O Leilao ainda não começou!");
         }
-        if (DateTime.Parse(leilaoInfo.DataFim) < DateTime.UtcNow)
-            {
+        else if (DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) < DateTime.UtcNow)
+        {
             await JSRuntime.InvokeVoidAsync("alert", "O Leilao já terminou!");
         }
-        */
-        if (int.Parse(newBidValue) <= leilaoInfo.LicitacaoAtual)
+        else if (int.Parse(newBidValue) <= leilaoInfo.LicitacaoAtual)
         {
             await JSRuntime.InvokeVoidAsync("alert", "O valor da Licitação tem de ser superior ao Lance atual");
         }
@@ -184,6 +185,7 @@
             NavigationManager.NavigateTo($"/leilao/{CardId}", forceLoad: true);
         }
     }
+
 
     protected override async Task OnInitializedAsync()
     {
