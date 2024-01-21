@@ -27,6 +27,7 @@ else
 
 @code {
     private List<DataLayer.Leilao.LeilaoModel> _leiloes;
+
     protected override async Task OnInitializedAsync()
     {
         _leiloes = await LeilaoRepo.FindAll();

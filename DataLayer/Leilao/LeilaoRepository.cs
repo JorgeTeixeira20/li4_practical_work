@@ -51,6 +51,12 @@ public class LeilaoRepository : ILeilaoRepository
         return _db.LoadData<LeilaoModel, dynamic>(sql, new { });
     }
 
+    public Task<List<LeilaoModel>> FindLeiloesUtilizador(int idUtilizador)
+    {
+        string sql = $"select * from Leilao Where Utilizador_idUtilizador = {idUtilizador};";
+        return _db.LoadData<LeilaoModel, dynamic>(sql, new { });
+    }
+
     public async Task Create(LeilaoModel leilao)
     {
         string sql = "INSERT INTO Leilao (Relogio_id, DataInicio, DataFim, LicitacaoAtual, Utilizador_idUtilizador)" +

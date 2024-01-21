@@ -1,8 +1,9 @@
 ﻿@page "/perfil"
-
+@using DataLayer.Leilao
 @using DataLayer.Utilizador
 @inject IUtilizadorRepository _db
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ILeilaoRepository LeilaoRepo
 
 <AuthorizeView Roles="Client">
     <Authorized>
@@ -16,7 +17,7 @@
                         @if (userFounded?.Imagem != null && userFounded?.Imagem.Length > 0)
                         {
                             string imageBase64 = Convert.ToBase64String(userFounded?.Imagem);
-                            <img src="data:image/jpeg;base64,@imageBase64" class="watch-img-top" alt="@userFounded?.Id">
+                            <img src="data:image/jpeg;base64,@imageBase64" class="watch-img-top" alt="@userFounded?.idUtilizador">
                         }
                         else
                         {
@@ -46,11 +47,19 @@
             <div class="card-header">
                 <h2>Leilões Passados</h2>
             </div>
-            <div class="card-body">
-                <p>Leilão 1 ....</p>
-                <p>Leilão 2 ....</p>
-                <p>Leilão 3 ....</p>
-            </div>
+            @if (_leiloes == null)
+            {
+                <p>Não efetup</p>
+            }
+            else
+            {
+                <div class="grid">
+                    @foreach (var leilao in _leiloes)
+                    {
+                        <CardComponent leilao="leilao" />
+                    }
+                </div>
+            }
         </div>
     </Authorized>
     <NotAuthorized>
@@ -62,6 +71,7 @@
 @code {
     private string username;
     private UtilizadorModel userFounded;
+    private List<DataLayer.Leilao.LeilaoModel> _leiloes;
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,10 +81,13 @@
         username = user.Identity.Name;
 
         await showUser();
+
+        _leiloes = await LeilaoRepo.FindLeiloesUtilizador(userFounded.idUtilizador);
     }
 
     private async Task showUser()
     {
         userFounded = await _db.Find(username);
     }
+
 }
