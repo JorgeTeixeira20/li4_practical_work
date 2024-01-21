@@ -54,11 +54,11 @@
 .licitacao-column {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Ajusta a posição à esquerda */
+    justify-content: flex-start;
 }
 
 .licitacao-item {
-    margin-bottom: 10px; /* Ajuste conforme necessário para o espaçamento entre licitações */
+    margin-bottom: 10px;
 }
 
 .grid {
