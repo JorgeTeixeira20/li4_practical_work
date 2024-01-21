@@ -72,10 +72,26 @@ public class LeilaoRepository : ILeilaoRepository
         });
     }
 
-    public Task<LeilaoModel> Update(LeilaoModel user)
+    public async Task<LeilaoModel> UpdateLicitacaoAtual(int leilaoId, int newLicitacaoAtual)
     {
-        //string sql = "UPDATE Utilizador SET ";
-        throw new NotImplementedException();
+        try
+        {
+            string sql = "UPDATE Leilao SET LicitacaoAtual = @NewLicitacaoAtual WHERE Id = @LeilaoId";
+
+            await _db.SaveData(sql, new
+            {
+                NewLicitacaoAtual = newLicitacaoAtual,
+                LeilaoId = leilaoId
+            });
+
+            // Retrieve the updated LeilaoModel
+            return await Find(leilaoId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating LicitacaoAtual for Leilao: {ex.Message}");
+            throw;
+        }
     }
 
     public Task Remove(int code)

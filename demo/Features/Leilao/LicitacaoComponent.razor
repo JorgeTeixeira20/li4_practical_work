@@ -4,9 +4,9 @@
 @inject NavigationManager NavigationManager
 @inject ILicitacaoRepository LicitacaoRepo
 
-<div class="comp">
-    <p class="card-text">@licitacao.username @licitacao.valor € @licitacao.Data</p>
-</div>
+
+<p class="card-text">@licitacao.username @licitacao.valor € @licitacao.Data</p>
+
 
 @code {
     [Parameter, EditorRequired]
