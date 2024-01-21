@@ -116,31 +116,27 @@
 
     private List<DataLayer.Licitacao.LicitacaoModel> _licitacoes;
 
-    private string newBidValue;
+    private int newBidValue;
 
-    private int currentBid;
 
     private void IncrementValue20()
     {
         int precoBase = Convert.ToInt32(leilaoInfo.LicitacaoAtual);
-        currentBid += precoBase + 20;
-        newBidValue = currentBid.ToString();
+        newBidValue += precoBase + 20;
         StateHasChanged();
     }
 
     private void IncrementValue50()
     {
         int precoBase = Convert.ToInt32(leilaoInfo.LicitacaoAtual);
-        currentBid += precoBase + 50;
-        newBidValue = currentBid.ToString();
+        newBidValue += precoBase + 50;
         StateHasChanged();
     }
 
     private void IncrementValue100()
     {
         int precoBase = Convert.ToInt32(leilaoInfo.LicitacaoAtual);
-        currentBid += precoBase + 100;
-        newBidValue = currentBid.ToString();
+        newBidValue += precoBase + 100;
         StateHasChanged();
     }
 
@@ -156,7 +152,7 @@
         {
             await JSRuntime.InvokeVoidAsync("alert", "O Leilao já terminou!");
         }
-        else if (int.Parse(newBidValue) <= leilaoInfo.LicitacaoAtual)
+        else if (newBidValue <= leilaoInfo.LicitacaoAtual)
         {
             await JSRuntime.InvokeVoidAsync("alert", "O valor da Licitação tem de ser superior ao Lance atual");
         }
@@ -170,16 +166,15 @@
             var novaLicitacao = new LicitacaoModel
                 {
                     username = authState.User.Identity.Name,
-                    valor = int.Parse(newBidValue),
+                    valor = newBidValue,
                     Data = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
                     Leilao_idUtilizador = int.Parse(CardId),
                     Utilizador_idUtilizador = userId,
                 };
 
             await LicitacaoRepo.Create(novaLicitacao);
-            await LeilaoRepo.UpdateLicitacaoAtual(int.Parse(CardId), currentBid);
+            await LeilaoRepo.UpdateLicitacaoAtual(int.Parse(CardId), newBidValue);
 
-            newBidValue = string.Empty;
             StateHasChanged();
 
             NavigationManager.NavigateTo($"/leilao/{CardId}", forceLoad: true);
@@ -230,6 +225,7 @@
         {
             Console.WriteLine($"Erro ao recuperar informações do relógio: {ex.Message}");
         }
+        newBidValue = leilaoInfo.LicitacaoAtual;
     }
 
     private async Task AdicionarFavoritos()

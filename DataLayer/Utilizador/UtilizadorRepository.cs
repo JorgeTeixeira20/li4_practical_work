@@ -1,4 +1,6 @@
-﻿namespace DataLayer.Utilizador;
+﻿using DataLayer.Leilao;
+
+namespace DataLayer.Utilizador;
 
 public class UtilizadorRepository : IUtilizadorRepository
 {
@@ -46,6 +48,27 @@ public class UtilizadorRepository : IUtilizadorRepository
             user.Imagem,
             user.dataDeRegisto
         });
+    }
+
+    public async Task<UtilizadorModel> UpdateNumLeilao(string user, int numLeilao)
+    {
+        try
+        {
+            string sql = "UPDATE utilizador SET NumeroDeLeiloesFeitos = @nLeilao WHERE username = @userA";
+
+            await _db.SaveData(sql, new
+            {
+                nLeilao = numLeilao,
+                userA = user
+            });
+
+            return await Find(user);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating NumeroDeLeiloesFeiros for Utilizador: {ex.Message}");
+            throw;
+        }
     }
 
     public Task<UtilizadorModel> Update(UtilizadorModel user)
