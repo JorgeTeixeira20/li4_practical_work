@@ -3,6 +3,7 @@
 @using DataLayer.Leilao
 @using DataLayer.Utilizador
 @inject AuthenticationStateProvider authStateProvider
+@inject IJSRuntime js
 
 <PageTitle>Leiloar Relógio</PageTitle>
 
@@ -134,6 +135,7 @@
     private double precoBase;
     private DateTime dataHoraInicio = DateTime.Now;
     private DateTime dataHoraFecho = DateTime.Now.AddHours(1);
+    private string errorMessage;
 
     private string username;
     private UtilizadorModel userFounded;
@@ -155,7 +157,16 @@
     private async Task CriarLeilao()
     {
 
-        Console.WriteLine("Iniciando a criação do leilão...");
+        Console.WriteLine("Inicio da criação do leilão...");
+
+        // Verificar se todos os campos obrigatórios estão preenchidos
+        if (string.IsNullOrEmpty(modelo) || string.IsNullOrEmpty(numeroSerie) || string.IsNullOrEmpty(marca) ||
+            estadoConservacao == null || imagemRelogio == null || precoBase <= 0)
+        {
+            errorMessage = "Preencha todos os campos obrigatórios.";
+            await js.InvokeVoidAsync("alert", errorMessage); // Mostrar notificação usando IJSRuntime
+            return;
+        }
 
         Console.WriteLine($"Modelo: {modelo}");
         Console.WriteLine($"Número de série: {numeroSerie}");
@@ -205,6 +216,9 @@
         Console.WriteLine(BitConverter.ToString(imagemRelogio)); // Imprime os bytes
 
         Console.WriteLine("Leilão criado com sucesso.");
+        
+        errorMessage = ""; // Limpar mensagem de erro se não houver erro
+        await js.InvokeVoidAsync("alert", "Leilão criado com sucesso."); // Exemplo de notificação de sucesso
 
         var user = authState.User;
 

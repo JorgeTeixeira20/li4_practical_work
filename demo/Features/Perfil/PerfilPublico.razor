@@ -50,20 +50,20 @@
             <div class="card-header">
                 <h2>Leilões Passados</h2>
             </div>
-            @if (_leiloes == null)
-            {
-                <p>Não efetup</p>
-            }
-            else
-            {
-                <div class="grid">
-                    @foreach (var leilao in _leiloes)
-                    {
-                        <CardComponent leilao="leilao" />
-                    }
-                </div>
-            }
         </div>
+        @if (_leiloes == null)
+        {
+            <p>Nenhum leilão criado.</p>
+        }
+        else
+        {
+            <div class="grid">
+                @foreach (var leilao in _leiloes)
+                {
+                    <CardComponent leilao="leilao" />
+                }
+            </div>
+        }
     </Authorized>
     <NotAuthorized>
         <h2>Not authorized</h2>

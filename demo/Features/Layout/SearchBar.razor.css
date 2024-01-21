@@ -11,6 +11,7 @@
 .search-bar {
     display: flex;
     border-radius: 20px;
+    height: 30px;
     overflow: hidden;
     background-color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -30,10 +31,13 @@
     padding: 10px;
     border-radius: 0 20px 20px 0;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 .search-icon {
     width: 20px;
     height: 20px;
     fill: #666;
+    vertical-align: middle;
 }

@@ -30,8 +30,10 @@ main {
     font-weight: bold;
     color: white;
     z-index: 3;
-    margin: 0 auto;
+    margin-right: auto;
+    margin-left: auto;
     text-decoration: none;
+    padding-left: 240px;
 }
 
 @media (max-width: 640.98px) {
