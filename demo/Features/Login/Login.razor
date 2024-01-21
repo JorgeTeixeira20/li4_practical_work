@@ -57,7 +57,7 @@
 
         UtilizadorModel userFounded = await _db.Find(username);
 
-        Console.WriteLine($"Utilizador encontrado?: {userFounded.idUtilizador}");
+        //Console.WriteLine($"Utilizador encontrado?: {userFounded.idUtilizador}");
 
         if(userFounded == null || userFounded.password != password)
         {

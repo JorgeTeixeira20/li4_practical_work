@@ -9,8 +9,13 @@
             </div>
 
             <main>
-                <div class="top-row">
-                    <a href="/" class="brand">Time Treasures</a>
+                <div class="top-row d-flex">
+                    <a href="/" class="brand mr-4">Time Treasures</a>
+            
+                    <div class="d-flex align-items-center mx-auto">
+                        <SearchBar />
+                    </div>
+            
                 </div>
 
                 <article class="content px-4">
@@ -26,7 +31,7 @@
         </div>
     </Authorized>
     <NotAuthorized>
-        <h1>Meu menino não estás loggado</h1>
+        <h1>Não te encontras autenticado!</h1>
     </NotAuthorized>
 </AuthorizeView>
 

@@ -4,6 +4,7 @@
 @inject IJSRuntime JSRuntime
 @using DataLayer.Utilizador
 @inject IUtilizadorRepository _db
+@inject IJSRuntime js
 
 
 <form action="/register" method="post" asp-modal="true" @onsubmit="RegisterUser">
@@ -94,13 +95,17 @@
                 Imagem = imagemDeRei
             };
 
-        await _db.Create(novoUtilizador);
-
-        showMessageBox = true;
-        StateHasChanged();
-
-        await Task.Delay(1000);
-
-        NavigationManager.NavigateTo("/");
+        UtilizadorModel userFounded = await _db.Find(nome);
+        if (userFounded == null)
+        {
+            await _db.Create(novoUtilizador);
+            await js.InvokeVoidAsync("alert", "Utilizador criado com sucesso");
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "Utilizador já existente");
+            return;
+        }
     }
 }
