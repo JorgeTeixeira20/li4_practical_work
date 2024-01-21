@@ -1,6 +1,7 @@
 ﻿@page "/"
 @layout SpecialLayout
-
+@using BlazorServerAutheticationAndAuthorization.Authetication
+@inject AuthenticationStateProvider authStateProvider
 
 <div class="modal-dialog">
     <div class="modal-content">
@@ -22,6 +23,13 @@
 
 @code {
     @inject NavigationManager NavigationManager
+
+    /*
+    protected override async Task OnInitializedAsync()
+    {
+        var customAuthSateProvider = (CustomAutheticationStateProvider)authStateProvider;
+        await customAuthSateProvider.dele;
+    }*/
 
     private void NavigateToRegister()
     {
