@@ -57,8 +57,6 @@
 
         UtilizadorModel userFounded = await _db.Find(username);
 
-        Console.WriteLine($"Utilizador encontrado?: {userFounded.idUtilizador}");
-
         if(userFounded == null || userFounded.password != password)
         {
             await js.InvokeVoidAsync("alert", "nome de utilizador ou password inválidos");
