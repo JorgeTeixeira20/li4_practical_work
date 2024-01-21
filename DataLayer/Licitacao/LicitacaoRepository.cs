@@ -8,11 +8,11 @@ public class LicitacaoRepository : ILicitacaoRepository
         _db = db;
     }
 
-    public async Task<LicitacaoModel> Find(string username)
+    public async Task<LicitacaoModel> Find(int idLicitacao)
     {
-        Console.WriteLine($"Entrei em Find Licitacao Movel com username: {username}!");
-        string sql = $"select * from Licitacao where username = '{username}'";
-        List<LicitacaoModel> leiRes = await _db.LoadData<LicitacaoModel, dynamic>(sql, new { Username = username });
+        Console.WriteLine($"Entrei em Find Licitacao Movel com username: {idLicitacao}!");
+        string sql = $"select * from Licitacao where id = '{idLicitacao}'";
+        List<LicitacaoModel> leiRes = await _db.LoadData<LicitacaoModel, dynamic>(sql, new { id = idLicitacao });
         Console.WriteLine("depois de _db.LoadData");
         if (leiRes != null && leiRes.Count > 0)
         {
@@ -26,9 +26,9 @@ public class LicitacaoRepository : ILicitacaoRepository
         }
     }
 
-    public Task<List<LicitacaoModel>> FindAll()
+    public Task<List<LicitacaoModel>> FindAllFromLeilao(int idLeilao)
     {
-        string sql = "select * from Licitacao";
+        string sql = $"select * from Licitacao Where Leilao_idUtilizador = {idLeilao}";
         return _db.LoadData<LicitacaoModel, dynamic>(sql, new { });
     }
 
