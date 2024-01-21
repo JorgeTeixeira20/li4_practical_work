@@ -29,7 +29,7 @@ public class NotificacaoRepository : INotificacaoRepository
     public Task<List<NotificacaoModel>> FindAllFromUtilizador(int idUser)
     {
         string sql = $"select * from Notificacao Where Utilizador_idUtilizador = {idUser}";
-        return _db.LoadData<NotificacaoModel, dynamic>(sql, new { });
+        return _db.LoadData<NotificacaoModel, dynamic>(sql, new { Utilizador_idUtilizador = idUser });
     }
 
     public async Task Create(NotificacaoModel noti)

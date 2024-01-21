@@ -1,0 +1,10 @@
+﻿@using DataLayer.Notificacao
+
+<div class="comp">
+    <p class="card-text">@notificacao.Tipo </p>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public NotificacaoModel notificacao { get; set; } = default!;
+}
