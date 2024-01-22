@@ -10,19 +10,19 @@
                     @switch (notificacao.Tipo)
                     {
                         case "Ganhou":
-                            <button class="remove-button" @onclick="RemoveNotification">Remover</button>
+                            <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
                             <span>Ganhou o leilão!</span>
                             break;
                         case "LeilaoFavoritoTerminou":
-                            <button class="remove-button" @onclick="RemoveNotification">Remover</button>
+                            <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
                             <span>O leilão favorito terminou!</span>
                             break;
                         case "LeilaoFavoritoComecou":
-                            <button class="remove-button" @onclick="RemoveNotification">Remover</button>
+                            <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
                             <span>O leilão favorito começou!</span>
                             break;
                         case "LicitacaoNoFavorito":
-                            <button class="remove-button" @onclick="RemoveNotification">Remover</button>
+                            <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
                             <span>Fizeram uma licitação no seu leilão favorito!</span>
                             break;
                         default:
