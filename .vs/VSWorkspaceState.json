@@ -1,14 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\DataLayer",
-    "\\DataLayer\\Utilizador",
     "\\demo",
-    "\\demo\\Authentication",
-    "\\demo\\Data",
-    "\\demo\\Features",
-    "\\demo\\Features\\Home",
-    "\\demo\\Features\\Notificacoes"
+    "\\demo\\Features"
   ],
   "SelectedNode": "\\demo\\Demo.sln",
   "PreviewInSolutionExplorer": false

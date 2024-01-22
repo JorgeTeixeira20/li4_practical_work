@@ -62,16 +62,16 @@
                                 </p>
                                 <ul class="list-group">
                                     <li class="list-group-item">
-                                        <a href="/perfil-utilizador/@userInfo.idUtilizador">@userInfo.username</a>
+                                        <a href="/perfilpublico/@userInfo.username">@userInfo.username</a>
                                     </li>
                                     <li class="list-group-item">Marca: @watchInfo.Marca</li>
                                     <li class="list-group-item">NumeroSerie: @watchInfo.NumeroSerie</li>
                                     <li class="list-group-item">Ano: @watchInfo.AnoFabrico </li>
-                                    <li class="list-group-item">EstadoConservacao: @watchInfo.EstadoConservacao</li>
-                                    <li class="list-group-item">TemCaixaOriginal: @watchInfo.TemCaixaOriginal</li>
-                                    <li class="list-group-item">RelogioFunciona: @watchInfo.RelogioFunciona</li>
-                                    <li class="list-group-item">RelogioFunciona: @leilaoInfo.DataInicio</li>
-                                    <li class="list-group-item">RelogioFunciona: @leilaoInfo.DataFim</li>
+                                    <li class="list-group-item">Estado de Conservacao: @watchInfo.EstadoConservacao</li>
+                                    <li class="list-group-item">Caixa Original: @(watchInfo.TemCaixaOriginal ? "Sim" : "Não")</li>
+                                    <li class="list-group-item">Relogio Funciona: @(watchInfo.RelogioFunciona ? "Sim" : "Não")</li>
+                                    <li class="list-group-item">Data Inicío: @leilaoInfo.DataInicio</li>
+                                    <li class="list-group-item">Data Fim: @leilaoInfo.DataFim</li>
                                 </ul>
                                 <div class="card-footer">
                                     <p class="text-muted">Lance atual: € @leilaoInfo.LicitacaoAtual</p>

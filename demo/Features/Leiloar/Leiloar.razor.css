@@ -42,7 +42,7 @@ input, textarea, button, select {
     box-sizing: border-box;
     border: none;
     border-radius: 8px;
-    background-color: #f2f2f2;
+    background-color: lightgray;
     color: rgb(0, 0, 0);
 }
 

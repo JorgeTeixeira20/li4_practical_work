@@ -36,6 +36,7 @@
     padding: 10px;
     width: calc(100% - 200px); /* Adjusted width */
     border-radius: 10px;
+    background-color: lightgray;
 }
 
 .text-right {
