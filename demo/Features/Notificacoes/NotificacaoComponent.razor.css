@@ -6,6 +6,7 @@
     margin-bottom: 10px;
     border-radius: 10px;
     width: 500px; /* Defina a largura desejada */
+    cursor: pointer;
 }
 
 .notification-content {
@@ -60,7 +61,7 @@
     background-color: #dc3545;
     color: #fff;
     border: none;
-    border-radius: 10px;
+    border-radius: 20px;
     padding: 5px 10px;
     cursor: pointer;
     margin-bottom: 10px;
