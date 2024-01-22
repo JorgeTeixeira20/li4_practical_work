@@ -84,3 +84,18 @@ input, textarea, button, select {
     background-color: #f2dede;
     border-color: #ebccd1;
 }
+
+@media (max-width: 767px) {
+    .form-columns {
+        flex-direction: column;
+    }
+
+    .form-column {
+        flex: 1;
+        margin-right: 0;
+    }
+
+    .button-9 {
+        width: 100%;
+    }
+}
