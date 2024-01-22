@@ -1,0 +1,53 @@
+﻿@using DataLayer.Notificacao
+@inject NavigationManager Navigation
+@inject INotificacaoRepository NotificacaoRepo
+
+<div class="notification-box">
+    <div class="comp">
+        @if (notificacao != null)
+        {
+            <div class="card mt-4 notification-card" @onclick="NavigateToPage">
+                <span>
+                    @switch (notificacao.Tipo)
+                    {
+                        case "Ganhou":
+                            <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
+                            <span>Ganhou o leilão!</span>
+                            break;
+                        case "LeilaoFavoritoTerminou":
+                            <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
+                            <span>O leilão favorito terminou!</span>
+                            break;
+                        case "LeilaoFavoritoComecou":
+                            <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
+                            <span>O leilão favorito começou!</span>
+                            break;
+                        case "LicitacaoNoFavorito":
+                            <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
+                            <span>Fizeram uma licitação no seu leilão favorito!</span>
+                            break;
+                        default:
+                            <span>Mensagem de notificação padrão</span>
+                            break;
+                    }
+                </span>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public NotificacaoModel notificacao { get; set; } = default!;
+
+    private void RemoveNotification()
+    {
+        NotificacaoRepo.Remove(notificacao.Id);
+    }
+
+    private void NavigateToPage()
+    {
+        // Adicione o redirecionamento para a página desejada
+        Navigation.NavigateTo($"/leilao/{notificacao.Leilao_idLeilao}");
+    }
+}

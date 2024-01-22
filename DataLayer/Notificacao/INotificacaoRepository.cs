@@ -6,6 +6,6 @@
         public Task<List<NotificacaoModel>> FindAllFromUtilizador(int idUser);
         public Task Create(NotificacaoModel card);
         public Task<NotificacaoModel> Update(NotificacaoModel noti);
-        public Task Remove(int code);
+        public Task Remove(int id);
     }
 }
