@@ -129,7 +129,7 @@
     private string numeroSerie;
     private string descricao;
     private string marca;
-    private string estadoConservacao = "Novo";
+    private string estadoConservacao;
     private bool temCaixaOriginal;
     private int anoFabrico = 2000;
     private bool relogioFunciona;
@@ -169,7 +169,6 @@
             return;
         }
 
-
         Console.WriteLine($"Modelo: {modelo}");
         Console.WriteLine($"Número de série: {numeroSerie}");
         Console.WriteLine($"Descrição: {descricao}");
@@ -180,6 +179,14 @@
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         var userIdString = authState.User.FindFirst("UserId")?.Value;
         int userId = int.Parse(userIdString);
+
+        var user = authState.User;
+
+        username = user.Identity.Name;
+
+        userFounded = await UtilizadorRepo.Find(username);
+
+        userFounded = await UtilizadorRepo.UpdateNumLeilao(username, userFounded.numeroDeLeiloesFeitos + 1);
 
         // Crie um objeto WatchModel com os dados do formulário
         var novoRelogio = new WatchModel
@@ -207,7 +214,7 @@
                 Relogio_id = idWatch,
                 DataInicio = dataHoraInicio.ToString("yyyy-MM-dd HH:mm:ss"),
                 DataFim = dataHoraFecho.ToString("yyyy-MM-dd HH:mm:ss"),
-                Utilizador_idUtilizador = userId, 
+                Utilizador_idUtilizador = userId,
             };
 
         await LeilaoRepo.Create(novoLeilao);
@@ -218,20 +225,10 @@
         Console.WriteLine(BitConverter.ToString(imagemRelogio)); // Imprime os bytes
 
         Console.WriteLine("Leilão criado com sucesso.");
-        
+
         errorMessage = ""; // Limpar mensagem de erro se não houver erro
         await js.InvokeVoidAsync("showSuccessNotification", "Leilão criado com sucesso.");
         await Task.Delay(3000);
         NavigationManager.NavigateTo("/leiloar");
-
-        var user = authState.User;
-
-        username = user.Identity.Name;
-
-        userFounded = await UtilizadorRepo.Find(username);
-
-        userFounded = await UtilizadorRepo.UpdateNumLeilao(username, userFounded.numeroDeLeiloesFeitos + 1);
-
-        Console.WriteLine("dei update ao num de leiloes");
     }
 }
