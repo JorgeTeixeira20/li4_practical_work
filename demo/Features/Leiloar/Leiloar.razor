@@ -129,7 +129,7 @@
     private string numeroSerie;
     private string descricao;
     private string marca;
-    private string estadoConservacao;
+    private string estadoConservacao = "Novo";
     private bool temCaixaOriginal;
     private int anoFabrico = 2000;
     private bool relogioFunciona;
@@ -231,5 +231,7 @@
         userFounded = await UtilizadorRepo.Find(username);
 
         userFounded = await UtilizadorRepo.UpdateNumLeilao(username, userFounded.numeroDeLeiloesFeitos + 1);
+
+        Console.WriteLine("dei update ao num de leiloes");
     }
 }
