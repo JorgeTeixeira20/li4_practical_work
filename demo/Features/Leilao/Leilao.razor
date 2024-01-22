@@ -3,16 +3,18 @@
 @using DataLayer.Leilao
 @using DataLayer.Watches
 @using System.Globalization;
-@inject IJSRuntime JSRuntime
+@using System.Timers;
 @using DataLayer.Licitacao
 @using DataLayer.LeilaoFavorito
 @using DataLayer.Utilizador
+@using DataLayer.Notificacao
 @inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider authStateProvider
 @inject ILicitacaoRepository LicitacaoRepo
 @inject ILeilaoRepository LeilaoRepo
 @inject ILeilaoFavoritoRepository LeilaoFavoritoRepo
 @inject IUtilizadorRepository UserRepo
+@inject INotificacaoRepository NotificacaoRepo
 
 <AuthorizeView Roles="Client">
     <Authorized>
@@ -108,6 +110,8 @@
     [Parameter]
     public string CardId { get; set; }
 
+    private Timer tempoLicitacao;
+
     private WatchModel watchInfo;
 
     private UtilizadorModel userInfo;
@@ -117,7 +121,6 @@
     private List<DataLayer.Licitacao.LicitacaoModel> _licitacoes;
 
     private int newBidValue;
-
 
     private void IncrementValue20()
     {
@@ -178,7 +181,6 @@
         }
     }
 
-
     protected override async Task OnInitializedAsync()
     {
         try
@@ -195,7 +197,7 @@
 
                 userInfo = await LeilaoRepo.FindUser(leilaoInfo.Id);
 
-                if (userInfo == null) Console.WriteLine("TAS NA MERDA ESTE GAJO NAO EXISTE");
+                if (userInfo == null) Console.WriteLine("User não existe");
 
                 if (watchInfo != null)
                 {
@@ -230,7 +232,7 @@
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         var userIdString = authState.User.FindFirst("UserId")?.Value;
         int userId = int.Parse(userIdString);
-        
+
         var novoLeilaoFavorito = new LeilaoFavoritoModel
             {
                 Utilizador_idUtilizador = userId,   
@@ -238,6 +240,46 @@
             };
 
         await LeilaoFavoritoRepo.Create(novoLeilaoFavorito);
+    }
+
+    private async Task enviarNotificacaoVencedora()
+    {
+        _licitacoes = await LicitacaoRepo.FindAllFromLeilao(int.Parse(CardId));
+        LicitacaoModel ultimaLicitacao = _licitacoes.OrderByDescending(bid => DateTime.Parse(bid.Data)).FirstOrDefault();
+
+        var novaNotificacao = new NotificacaoModel
+        {
+                Tipo = "Ganhou",
+                Utilizador_idUtilizador = ultimaLicitacao.Utilizador_idUtilizador,
+                Leilao_idLeilao = ultimaLicitacao.Leilao_idUtilizador
+        };
+
+        await NotificacaoRepo.Create(novaNotificacao);
+    }
+
+    private void SetTempo()
+    {
+        TimeSpan initialDelay;
+
+        if (DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now)
+        {
+            initialDelay = DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) - DateTime.Now;
+        }
+        else
+        {
+            initialDelay = TimeSpan.Zero;
+        }
+        tempoLicitacao = new Timer(500000);
+
+        tempoLicitacao.Elapsed += FinalizaLeilao;
+        tempoLicitacao.AutoReset = false;
+        tempoLicitacao.Enabled = true;
+    }
+
+    private async void FinalizaLeilao(object state, ElapsedEventArgs e)
+    {
+            await enviarNotificacaoVencedora();
+            Environment.Exit(0);
     }
 }
 

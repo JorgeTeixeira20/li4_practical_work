@@ -1,5 +1,6 @@
 ﻿@using DataLayer.Notificacao
 @inject NavigationManager Navigation
+@inject INotificacaoRepository NotificacaoRepo
 
 <div class="notification-box">
     <div class="comp">
@@ -41,8 +42,7 @@
 
     private void RemoveNotification()
     {
-        // Adicione lógica aqui para remover a notificação (pode emitir um evento ou chamar um método no componente pai)
-        Console.WriteLine($"Notificação removida: {notificacao.Tipo}");
+        NotificacaoRepo.Remove(notificacao.Id);
     }
 
     private void NavigateToPage()

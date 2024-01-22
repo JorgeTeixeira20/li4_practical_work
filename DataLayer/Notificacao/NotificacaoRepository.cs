@@ -51,8 +51,9 @@ public class NotificacaoRepository : INotificacaoRepository
         throw new NotImplementedException();
     }
 
-    public Task Remove(int code)
+    public async Task Remove(int id)
     {
-        throw new NotImplementedException();
+        string sql = "DELETE FROM Notificacao WHERE id = @Id";
+        await _db.SaveData(sql, new { Id = id });
     }
 }
