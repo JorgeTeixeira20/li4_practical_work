@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background: url('https://cdn.discordapp.com/attachments/816683287648927746/1198757490079318157/landing-page-homepage-push-banner.png?ex=65c010e9&is=65ad9be9&hm=cb54715c0df0f2bd95f0aff92bfa8b65f40050e366539884ab4d61f5674f4b26&') no-repeat center center fixed;
+    background: url('https://cdn.discordapp.com/attachments/816683287648927746/1198757490079318157/landing-page-homepage-push-banner.png?ex=65c010e9&is=65ad9be9&hm=cb54715c0df0f2bd95f0aff92bfa8b65f40050e366539884ab4d61f5674f4b26&') fixed;
     background-size: cover;
     height: 200vh;
 }
