@@ -162,7 +162,7 @@
 
         // Verificar se todos os campos obrigatórios estão preenchidos
         if (string.IsNullOrWhiteSpace(modelo) || string.IsNullOrWhiteSpace(numeroSerie) || string.IsNullOrWhiteSpace(marca) ||
-        estadoConservacao == null || imagemRelogio == null || imagemRelogio.Length == 0 || precoBase < 0)
+        imagemRelogio == null || imagemRelogio.Length == 0 || precoBase < 0)
         {
             errorMessage = "Preencha todos os campos obrigatórios.";
             await js.InvokeVoidAsync("alert", errorMessage);

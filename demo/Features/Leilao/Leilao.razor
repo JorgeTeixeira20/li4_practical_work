@@ -3,7 +3,7 @@
 @using DataLayer.Leilao
 @using DataLayer.Watches
 @using System.Globalization;
-@using System.Timers;
+@using System.Threading
 @using DataLayer.Licitacao
 @using DataLayer.LeilaoFavorito
 @using DataLayer.Utilizador
@@ -122,6 +122,8 @@
 
     private int newBidValue;
 
+    private bool timerSet = false;
+
     private void IncrementValue20()
     {
         int precoBase = Convert.ToInt32(leilaoInfo.LicitacaoAtual);
@@ -196,6 +198,12 @@
 
                 leilaoInfo = await LeilaoRepo.Find(cardIdAsInt);
 
+                if (!timerSet)
+                {
+                    SetTempo();
+                    timerSet = true;
+                }
+
                 Console.WriteLine($"Leilao id: {leilaoInfo.Id}");
 
                 userInfo = await LeilaoRepo.FindUser(leilaoInfo.Id);
@@ -247,42 +255,38 @@
 
     private async Task enviarNotificacaoVencedora()
     {
+        /*
         _licitacoes = await LicitacaoRepo.FindAllFromLeilao(int.Parse(CardId));
         LicitacaoModel ultimaLicitacao = _licitacoes.OrderByDescending(bid => DateTime.Parse(bid.Data)).FirstOrDefault();
+        */
 
         var novaNotificacao = new NotificacaoModel
         {
                 Tipo = "Ganhou",
-                Utilizador_idUtilizador = ultimaLicitacao.Utilizador_idUtilizador,
-                Leilao_idLeilao = ultimaLicitacao.Leilao_idUtilizador
+                Utilizador_idUtilizador = 1,
+                Leilao_idLeilao = 1
         };
 
         await NotificacaoRepo.Create(novaNotificacao);
     }
 
-    private void SetTempo()
+    private async void SetTempo()
     {
-        TimeSpan initialDelay;
+        TimeSpan tempoEspera;
 
         if (DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now)
         {
-            initialDelay = DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) - DateTime.Now;
-        }
-        else
-        {
-            initialDelay = TimeSpan.Zero;
-        }
-        tempoLicitacao = new Timer(500000);
+            tempoEspera = DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) - DateTime.Now;
+            Console.WriteLine($"tempo de espera: {tempoEspera}");
 
-        tempoLicitacao.Elapsed += FinalizaLeilao;
-        tempoLicitacao.AutoReset = false;
-        tempoLicitacao.Enabled = true;
+            tempoLicitacao = new Timer(async (state) => await FinalizaLeilao(), null, tempoEspera, Timeout.InfiniteTimeSpan);
+        }
     }
 
-    private async void FinalizaLeilao(object state, ElapsedEventArgs e)
+    private async Task FinalizaLeilao()
     {
+            Console.WriteLine("Finalizei o leilao!");
             await enviarNotificacaoVencedora();
-            Environment.Exit(0);
     }
 }
 
