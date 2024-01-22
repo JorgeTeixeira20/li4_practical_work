@@ -36,12 +36,13 @@ public class UtilizadorRepository : IUtilizadorRepository
 
     public async Task Create(UtilizadorModel user)
     {
-        string sql = "INSERT INTO Utilizador (username, password, avaliacaoMedia, numeroDeLeiloesFeitos, imagem,dataDeRegisto)" +
-                     "VALUES (@username, @password, @avaliacaoMedia, @numeroDeLeiloesFeitos, @Imagem,@dataDeRegisto)";
+        string sql = "INSERT INTO Utilizador (username, email, password, avaliacaoMedia, numeroDeLeiloesFeitos, imagem,dataDeRegisto)" +
+                     "VALUES (@username, @email, @password, @avaliacaoMedia, @numeroDeLeiloesFeitos, @Imagem,@dataDeRegisto)";
 
         await _db.SaveData(sql, new
         {
             user.username,
+            user.email,
             user.password,
             user.avaliacaoMedia,
             user.numeroDeLeiloesFeitos,
