@@ -1,6 +1,10 @@
 ﻿@using DataLayer.Notificacao
+@using DataLayer.Utilizador
+@using DataLayer.Leilao
 @inject NavigationManager Navigation
 @inject INotificacaoRepository NotificacaoRepo
+@inject IUtilizadorRepository UtilizadorRepo
+@inject ILeilaoRepository LeilaoRepo
 
 <div class="notification-box">
     <div class="comp">
@@ -12,7 +16,7 @@
                     {
                         case "Ganhou":
                             <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
-                            <span>Ganhou o leilão!</span>
+                            <span>Ganhou o leilão! Contacte o dono do relógio: @userInfo?.email</span>
                             break;
                         case "LeilaoFavoritoTerminou":
                             <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
@@ -39,6 +43,8 @@
 @code {
     [Parameter, EditorRequired]
     public NotificacaoModel notificacao { get; set; } = default!;
+    private UtilizadorModel userInfo;
+    private UtilizadorModel leilaoInfo;
 
     private void RemoveNotification()
     {
@@ -49,5 +55,17 @@
     {
         // Adicione o redirecionamento para a página desejada
         Navigation.NavigateTo($"/leilao/{notificacao.Leilao_idLeilao}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            userInfo = await LeilaoRepo.FindUser(notificacao.Leilao_idLeilao);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao recuperar informações do utilizador: {ex.Message}");
+        }
     }
 }
