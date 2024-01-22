@@ -1,0 +1,28 @@
+﻿.notification-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    width: 500px; /* Defina a largura desejada */
+}
+
+.card-body {
+    text-align: left; /* Alinhar o conteúdo à esquerda */
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.remove-button {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}

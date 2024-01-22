@@ -6,7 +6,6 @@
 @inject IUtilizadorRepository _db
 @inject IJSRuntime js
 
-
 <form action="/register" method="post" asp-modal="true" @onsubmit="RegisterUser">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -38,26 +37,19 @@
                     <InputFile multiple OnChange="HandleFileInput" />
                 </div>
 
+                <div class="button text-center">
+                    <button type="submit" class="btn btn-primary">
+                        <strong>Registar</strong>
+                    </button>
+                </div>
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary btn-block">Registar</button>
+                <!-- You can remove or customize the footer as needed -->
             </div>
         </div>
     </div>
 </form>
-
-
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="card mt-3" style="display: @(showMessageBox ? "block" : "none")">
-            <div class="card-body text-center">
-                <p>Registado com sucesso!</p>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 @code {

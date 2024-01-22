@@ -2,8 +2,9 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; 
-    background-color: #f0f0f0; 
+    background: url('https://cdn.discordapp.com/attachments/816683287648927746/1198760671953821918/close-up-clock-with-time-change.jpg?ex=65c013e0&is=65ad9ee0&hm=108aab8907c30d1453eea7ef23678ba26f071013ab4243611f28f354c1a28ba5&') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
 }
 
 main {
@@ -12,12 +13,11 @@ main {
 
 
 .top-row {
-    background: #999999;
-    border-bottom: 1px solid #f7f7f7;
     justify-content: center;
     height: 3.5rem;
     display: flex;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .brand {

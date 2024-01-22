@@ -5,16 +5,27 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject INotificacaoRepository NotificacaoRepo
 
+<div class="card mt-3">
+    <div class="card-header">
+        <h2>Notificações</h2>
+    </div>
+</div>
+
+
 <AuthorizeView Roles="Client">
     <Authorized>
-        @if (notificacoes != null)
+        @if (notificacoes != null && notificacoes.Any())
         {
-            @foreach (var notificacao in notificacoes)
-            {
-                <div class="licitacao-item">
-                    <NotificacaoComponent notificacao = "notificacao" />
+            <div class="grid">
+                <div class="column">
+                    @foreach (var notificacao in notificacoes)
+                    {
+                        <div class="licitacao-item">
+                            <NotificacaoComponent notificacao="notificacao" />
+                        </div>
+                    }
                 </div>
-            }
+            </div>
         }
         else
         {
@@ -25,6 +36,8 @@
         <h1>Faz o login meu grande rei</h1>
     </NotAuthorized>
 </AuthorizeView>
+
+
 
 @code {
     private string username;

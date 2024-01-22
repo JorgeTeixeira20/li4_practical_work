@@ -1,10 +1,53 @@
 ﻿@using DataLayer.Notificacao
+@inject NavigationManager Navigation
 
-<div class="comp">
-    <p class="card-text">@notificacao.Tipo </p>
+<div class="notification-box">
+    <div class="comp">
+        @if (notificacao != null)
+        {
+            <div class="card mt-4 notification-card" @onclick="NavigateToPage">
+                <span>
+                    @switch (notificacao.Tipo)
+                    {
+                        case "Ganhou":
+                            <button class="remove-button" @onclick="RemoveNotification">Remover</button>
+                            <span>Ganhou o leilão!</span>
+                            break;
+                        case "LeilaoFavoritoTerminou":
+                            <button class="remove-button" @onclick="RemoveNotification">Remover</button>
+                            <span>O leilão favorito terminou!</span>
+                            break;
+                        case "LeilaoFavoritoComecou":
+                            <button class="remove-button" @onclick="RemoveNotification">Remover</button>
+                            <span>O leilão favorito começou!</span>
+                            break;
+                        case "LicitacaoNoFavorito":
+                            <button class="remove-button" @onclick="RemoveNotification">Remover</button>
+                            <span>Fizeram uma licitação no seu leilão favorito!</span>
+                            break;
+                        default:
+                            <span>Mensagem de notificação padrão</span>
+                            break;
+                    }
+                </span>
+            </div>
+        }
+    </div>
 </div>
 
 @code {
     [Parameter, EditorRequired]
     public NotificacaoModel notificacao { get; set; } = default!;
+
+    private void RemoveNotification()
+    {
+        // Adicione lógica aqui para remover a notificação (pode emitir um evento ou chamar um método no componente pai)
+        Console.WriteLine($"Notificação removida: {notificacao.Tipo}");
+    }
+
+    private void NavigateToPage()
+    {
+        // Adicione o redirecionamento para a página desejada
+        Navigation.NavigateTo($"/leilao/{notificacao.Leilao_idLeilao}");
+    }
 }
