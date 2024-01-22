@@ -129,7 +129,7 @@
     private string numeroSerie;
     private string descricao;
     private string marca;
-    private string estadoConservacao;
+    private string estadoConservacao = "Novo";
     private bool temCaixaOriginal;
     private int anoFabrico = 2000;
     private bool relogioFunciona;
@@ -222,11 +222,11 @@
         Console.WriteLine("Objeto WatchModel criado com sucesso.");
 
         Console.WriteLine("Bytes da Imagem antes de salvar na base de dados:");
-        Console.WriteLine(BitConverter.ToString(imagemRelogio)); // Imprime os bytes
+        Console.WriteLine(BitConverter.ToString(imagemRelogio));
 
         Console.WriteLine("Leilão criado com sucesso.");
 
-        errorMessage = ""; // Limpar mensagem de erro se não houver erro
+        errorMessage = "";
         await js.InvokeVoidAsync("showSuccessNotification", "Leilão criado com sucesso.");
         await Task.Delay(3000);
         NavigationManager.NavigateTo("/leiloar");
