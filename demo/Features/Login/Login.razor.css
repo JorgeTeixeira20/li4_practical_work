@@ -1,7 +1,7 @@
 ﻿.modal-dialog {
     max-width: 500px;
     margin: 50px auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #333;
     border-radius: 10px;
     color: white;
     transition: background-color 0.3s;
@@ -19,7 +19,6 @@
 
 .form-control {
     font-size: 16px;
-    color: white;
 }
 
 .modal-title {
