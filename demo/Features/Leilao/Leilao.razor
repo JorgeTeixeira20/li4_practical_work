@@ -200,7 +200,7 @@
 
                 userInfo = await LeilaoRepo.FindUser(leilaoInfo.Id);
 
-                if (userInfo == null) Console.WriteLine("TAS NA MERDA ESTE GAJO NAO EXISTE");
+                if (userInfo == null) Console.WriteLine("User não existe");
 
                 if (watchInfo != null)
                 {
@@ -262,20 +262,27 @@
 
     private void SetTempo()
     {
+        TimeSpan initialDelay;
+
+        if (DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now)
+        {
+            initialDelay = DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) - DateTime.Now;
+        }
+        else
+        {
+            initialDelay = TimeSpan.Zero;
+        }
         tempoLicitacao = new Timer(500000);
 
-        tempoLicitacao.Elapsed += VerificarFimLeilao;
-        tempoLicitacao.AutoReset = true;
+        tempoLicitacao.Elapsed += FinalizaLeilao;
+        tempoLicitacao.AutoReset = false;
         tempoLicitacao.Enabled = true;
     }
 
-    private async void VerificarFimLeilao(object state, ElapsedEventArgs e)
+    private async void FinalizaLeilao(object state, ElapsedEventArgs e)
     {
-        if (DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) < DateTime.UtcNow)
-        {
             await enviarNotificacaoVencedora();
-            tempoLicitacao.Close();
-        }
+            Environment.Exit(0);
     }
 }
 
