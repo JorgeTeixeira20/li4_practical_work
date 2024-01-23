@@ -1,31 +1,17 @@
-﻿.card {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    border-radius: 20px;
-    padding-top: 10px;
-    width: 200px;
-}
-
-.card-body {
-    padding: 0;
-}
-
-.modal-dialog {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    max-width: 600px;
-    margin: 0 auto;
-    margin-top: 50px;
+﻿.modal-dialog {
+    max-width: 500px;
+    margin: 50px auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    color: white;
+    transition: background-color 0.3s;
 }
 
 .modal-body {
     padding: 20px;
 }
 
-.modal-footer {
-    padding: 20px;
-}
+
 
 .form-group {
     margin-bottom: 15px;
@@ -33,31 +19,39 @@
 
 .form-control {
     font-size: 16px;
-    color: #333;
 }
 
 .modal-title {
     margin: 0;
+    padding: 10px;
+    color: white;
+    transition: font-weight 0.3s;
 }
 
+    .modal-title:hover {
+        font-weight: bold;
+    }
+
 .modal-header {
-    background-color: #f7f7f7;
-    border-radius: 20px 20px 0 0;
-    border-bottom: 1px solid #ccc;
     padding: 10px;
 }
 
-.modal-content {
-    border-radius: 20px;
+.button {
+    padding: 20px;
 }
 
 .btn-primary {
-    background-color: #007bff;
-    color: #ffffff;
+    width: 30%; 
+    height: 50px;
+    font-size: 18px;
+    border: none;
+    background-color: #9C9C9C;
+    color: white;
+    transition: background-color 0.3s;
 }
 
     .btn-primary:hover {
-        background-color: #0056b3;
+        background-color: #333;
     }
 
 hr {

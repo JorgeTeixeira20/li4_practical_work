@@ -3,16 +3,20 @@
 @using DataLayer.Leilao
 @using DataLayer.Watches
 @using System.Globalization;
-@inject IJSRuntime JSRuntime
+@using System.Threading
 @using DataLayer.Licitacao
 @using DataLayer.LeilaoFavorito
 @using DataLayer.Utilizador
+@using DataLayer.Notificacao
 @inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider authStateProvider
 @inject ILicitacaoRepository LicitacaoRepo
 @inject ILeilaoRepository LeilaoRepo
 @inject ILeilaoFavoritoRepository LeilaoFavoritoRepo
 @inject IUtilizadorRepository UserRepo
+@inject INotificacaoRepository NotificacaoRepo
+
+<PageTitle>Leilão</PageTitle>
 
 <AuthorizeView Roles="Client">
     <Authorized>
@@ -54,30 +58,35 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">@watchInfo.Modelo</h5>
+                                <h5 class="card-title">@watchInfo.Marca @watchInfo.Modelo</h5>
                                 <p class="card-text">
                                     @watchInfo.Descricao
                                 </p>
                                 <ul class="list-group">
                                     <li class="list-group-item">
-                                        <a href="/perfil-utilizador/@userInfo.idUtilizador">@userInfo.username</a>
+                                        <a href="/perfilpublico/@userInfo.username">@userInfo.username</a>
                                     </li>
-                                    <li class="list-group-item">Marca: @watchInfo.Marca</li>
-                                    <li class="list-group-item">NumeroSerie: @watchInfo.NumeroSerie</li>
+                                    <li class="list-group-item">Número Série: @watchInfo.NumeroSerie</li>
                                     <li class="list-group-item">Ano: @watchInfo.AnoFabrico </li>
-                                    <li class="list-group-item">EstadoConservacao: @watchInfo.EstadoConservacao</li>
-                                    <li class="list-group-item">TemCaixaOriginal: @watchInfo.TemCaixaOriginal</li>
-                                    <li class="list-group-item">RelogioFunciona: @watchInfo.RelogioFunciona</li>
-                                    <li class="list-group-item">RelogioFunciona: @leilaoInfo.DataInicio</li>
-                                    <li class="list-group-item">RelogioFunciona: @leilaoInfo.DataFim</li>
+                                    <li class="list-group-item">Estado de Conservacao: @watchInfo.EstadoConservacao</li>
+                                    <li class="list-group-item">Caixa Original: @(watchInfo.TemCaixaOriginal ? "Sim" : "Não")</li>
+                                    <li class="list-group-item">Relogio Funciona: @(watchInfo.RelogioFunciona ? "Sim" : "Não")</li>
+                                    <li class="list-group-item">Data Inicío: @leilaoInfo.DataInicio</li>
+                                    <li class="list-group-item">Data Fim: @leilaoInfo.DataFim</li>
+                                    <li class="list-group-item">Preço Base: @watchInfo.PrecoBase€</li>
                                 </ul>
                                 <div class="card-footer">
-                                    <p class="text-muted">Lance atual: € @leilaoInfo.LicitacaoAtual</p>
+                                    <p class="text-muted">Lance atual: @leilaoInfo.LicitacaoAtual€</p>
                                 </div>
                             </div>
                         </div>
 
-                        <button class="btn btn-primary" @onclick="AdicionarFavoritos"  style="margin-left: 20px;">Adicionar aos Favoritos</button>
+                        <button class="btn btn-primary" @onclick="AdicionarFavoritos" style="margin-left: 20px;">Adicionar aos Favoritos</button>
+
+                        @if (isAuthor())
+                        {
+                            <button class="btn btn-primary btn-remove" @onclick="RemoverLeilao" style="margin-left: 20px;">Remover Leilão</button>
+                        }
 
                         <div class="card">
                             <div class="card-body">
@@ -108,6 +117,8 @@
     [Parameter]
     public string CardId { get; set; }
 
+    private Timer tempoLicitacao;
+
     private WatchModel watchInfo;
 
     private UtilizadorModel userInfo;
@@ -116,27 +127,27 @@
 
     private List<DataLayer.Licitacao.LicitacaoModel> _licitacoes;
 
+    string username;
+
     private int newBidValue;
 
+    private bool timerSet = false;
 
     private void IncrementValue20()
     {
-        int precoBase = Convert.ToInt32(leilaoInfo.LicitacaoAtual);
-        newBidValue += precoBase + 20;
+        newBidValue += 20;
         StateHasChanged();
     }
 
     private void IncrementValue50()
     {
-        int precoBase = Convert.ToInt32(leilaoInfo.LicitacaoAtual);
-        newBidValue += precoBase + 50;
+        newBidValue += 50;
         StateHasChanged();
     }
 
     private void IncrementValue100()
     {
-        int precoBase = Convert.ToInt32(leilaoInfo.LicitacaoAtual);
-        newBidValue += precoBase + 100;
+        newBidValue += 100;
         StateHasChanged();
     }
 
@@ -152,9 +163,9 @@
         {
             await JSRuntime.InvokeVoidAsync("alert", "O Leilao já terminou!");
         }
-        else if (newBidValue <= leilaoInfo.LicitacaoAtual)
+        else if (newBidValue <= leilaoInfo.LicitacaoAtual || newBidValue <= watchInfo.PrecoBase)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "O valor da Licitação tem de ser superior ao Lance atual");
+            await JSRuntime.InvokeVoidAsync("alert", "O valor da Licitação tem de ser superior ao Lance atual e ao Preço base");
         }
         else
         {
@@ -181,6 +192,25 @@
         }
     }
 
+    public async Task RemoverLeilao()
+    {
+        await LeilaoRepo.DeleteLeilao(int.Parse(CardId));
+
+        NavigationManager.NavigateTo("/home");
+    }
+
+
+    private bool isAuthor()
+    {
+        if (username == userInfo.username)
+        {
+            return true;
+        } 
+        else
+        {
+            return false;
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -192,13 +222,13 @@
             {
                 watchInfo = await LeilaoRepo.FindWatch(cardIdAsInt);
 
-                leilaoInfo = await LeilaoRepo.Find(cardIdAsInt);
+                leilaoInfo = await LeilaoRepo.Find(cardIdAsInt);           
 
                 Console.WriteLine($"Leilao id: {leilaoInfo.Id}");
 
                 userInfo = await LeilaoRepo.FindUser(leilaoInfo.Id);
 
-                if (userInfo == null) Console.WriteLine("TAS NA MERDA ESTE GAJO NAO EXISTE");
+                if (userInfo == null) Console.WriteLine("User não existe");
 
                 if (watchInfo != null)
                 {
@@ -225,7 +255,19 @@
         {
             Console.WriteLine($"Erro ao recuperar informações do relógio: {ex.Message}");
         }
-        newBidValue = leilaoInfo.LicitacaoAtual;
+        if (leilaoInfo.LicitacaoAtual < watchInfo.PrecoBase)
+        {
+            newBidValue = (int)watchInfo.PrecoBase;
+        }
+        else
+        {
+            newBidValue = leilaoInfo.LicitacaoAtual;
+        }
+
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        username = user.Identity.Name;
     }
 
     private async Task AdicionarFavoritos()
@@ -233,7 +275,7 @@
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         var userIdString = authState.User.FindFirst("UserId")?.Value;
         int userId = int.Parse(userIdString);
-        
+
         var novoLeilaoFavorito = new LeilaoFavoritoModel
             {
                 Utilizador_idUtilizador = userId,   
@@ -242,6 +284,7 @@
 
         await LeilaoFavoritoRepo.Create(novoLeilaoFavorito);
     }
+
 }
 
 

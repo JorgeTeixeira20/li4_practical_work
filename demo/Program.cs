@@ -14,6 +14,7 @@ using BlazorServerAutheticationAndAuthorization.Authetication;
 using DataLayer.Licitacao;
 using DataLayer.LeilaoFavorito;
 using DataLayer.Notificacao;
+using demo.Features.Notificacoes;
 
 var builder = WebApplication.CreateBuilder(args);
 

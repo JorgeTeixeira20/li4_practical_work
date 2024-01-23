@@ -29,7 +29,7 @@ public class NotificacaoRepository : INotificacaoRepository
     public Task<List<NotificacaoModel>> FindAllFromUtilizador(int idUser)
     {
         string sql = $"select * from Notificacao Where Utilizador_idUtilizador = {idUser}";
-        return _db.LoadData<NotificacaoModel, dynamic>(sql, new { });
+        return _db.LoadData<NotificacaoModel, dynamic>(sql, new { Utilizador_idUtilizador = idUser });
     }
 
     public async Task Create(NotificacaoModel noti)
@@ -51,8 +51,11 @@ public class NotificacaoRepository : INotificacaoRepository
         throw new NotImplementedException();
     }
 
-    public Task Remove(int code)
+    public async Task Remove(int id)
     {
-        throw new NotImplementedException();
+        string sql = "DELETE FROM Notificacao WHERE id = @Id";
+        await _db.SaveData(sql, new { Id = id });
     }
+
+   
 }

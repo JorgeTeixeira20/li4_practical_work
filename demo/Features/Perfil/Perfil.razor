@@ -5,6 +5,8 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ILeilaoRepository LeilaoRepo
 
+<PageTitle>Perfil</PageTitle>
+
 <AuthorizeView Roles="Client">
     <Authorized>
         <div class="card">
@@ -30,9 +32,9 @@
                             <dd class="col-sm-9">@username</dd>
 
                             <dt class="col-sm-3 text-right">Avaliação Media:</dt>
-                            <dd class="col-sm-9">@userFounded?.avaliacaoMedia</dd>
+                            <dd class="col-sm-9">@avaliacaoMedia</dd>
 
-                            <dt class="col-sm-3 text-right">Número de Leilões:</dt>
+                            <dt class="col-sm-3 text-right">Leilões Finalizados:</dt>
                             <dd class="col-sm-9">@userFounded?.numeroDeLeiloesFeitos</dd>
 
                             <dt class="col-sm-3 text-right">Data de Registro:</dt>
@@ -45,7 +47,7 @@
 
         <div class="card mt-3">
             <div class="card-header">
-                <h2>Leilões Passados</h2>
+                <h2>Leilões</h2>
             </div>
         </div>
             @if (_leiloes == null)
@@ -73,6 +75,7 @@
     private string username;
     private UtilizadorModel userFounded;
     private List<DataLayer.Leilao.LeilaoModel> _leiloes;
+    private string avaliacaoMedia;
 
     protected override async Task OnInitializedAsync()
     {
@@ -84,6 +87,15 @@
         await showUser();
 
         _leiloes = await LeilaoRepo.FindLeiloesUtilizador(userFounded.idUtilizador);
+        if (userFounded.avaliacaoMedia != 0)
+        {
+            double avaliacaoDoule = userFounded.avaliacaoMedia / userFounded.numeroDeLeiloesFeitos;
+            avaliacaoMedia = avaliacaoDoule.ToString("F2");
+        }
+        else
+        {
+            avaliacaoMedia = "O utilizador ainda não foi avaliado";
+        }
     }
 
     private async Task showUser()

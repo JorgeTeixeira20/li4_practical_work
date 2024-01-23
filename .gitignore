@@ -5,6 +5,11 @@
 *.suo
 *.user
 *.sln.docstates
+*.vsidx
+*.wsuo
+*.sqlite
+*.v2
+*.bin
 
 # Build results
 

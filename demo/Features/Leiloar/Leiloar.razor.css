@@ -42,7 +42,7 @@ input, textarea, button, select {
     box-sizing: border-box;
     border: none;
     border-radius: 8px;
-    background-color: #f2f2f2;
+    background-color: lightgray;
     color: rgb(0, 0, 0);
 }
 
@@ -70,4 +70,32 @@ input, textarea, button, select {
 .price-group {
     width: 200px;
     margin: 0 auto;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+@media (max-width: 767px) {
+    .form-columns {
+        flex-direction: column;
+    }
+
+    .form-column {
+        flex: 1;
+        margin-right: 0;
+    }
+
+    .button-9 {
+        width: 100%;
+    }
 }

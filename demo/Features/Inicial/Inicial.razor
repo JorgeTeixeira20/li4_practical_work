@@ -1,20 +1,34 @@
 ﻿@page "/"
 @layout SpecialLayout
 @using BlazorServerAutheticationAndAuthorization.Authetication
+@using DataLayer.Notificacao
+@using DataLayer.Leilao
+@using DataLayer.Licitacao
+@using System.Globalization;
 @inject AuthenticationStateProvider authStateProvider
+@inject INotificacaoRepository NotificacaoRepo
+@inject ILeilaoRepository LeilaoRepo
+@inject ILicitacaoRepository LicitacaoRepo
+@inject NavigationManager NavigationManager
+
+<PageTitle>Inicio</PageTitle>
 
 <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title">Bem-vindo</h1>
-        </div>
         <div class="modal-body">
+            <div class="title text-center">
+                <h2>Bem-vindo</h2>
+            </div>
             <div class="form-group text-center">
-                <button class="btn btn-primary custom-button" @onclick="NavigateToRegister">Registar</button>
+                <button class="btn btn-primary custom-button" @onclick="NavigateToRegister">
+                    <strong>Registar</strong>
+                </button>
             </div>
 
             <div class="form-group text-center">
-                <button class="btn btn-success custom-button" @onclick="NavigateToLogin">Entrar</button>
+                <button class="btn btn-success custom-button" @onclick="NavigateToLogin">
+                    <strong>Entrar</strong>
+                </button>
             </div>
         </div>
     </div>
@@ -22,15 +36,6 @@
 
 
 @code {
-    @inject NavigationManager NavigationManager
-
-    /*
-    protected override async Task OnInitializedAsync()
-    {
-        var customAuthSateProvider = (CustomAutheticationStateProvider)authStateProvider;
-        await customAuthSateProvider.dele;
-    }*/
-
     private void NavigateToRegister()
     {
         NavigationManager.NavigateTo("/registar");

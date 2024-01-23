@@ -1,0 +1,103 @@
+﻿@page "/searchresults/{searchinput}"
+@using BlazorServerAutheticationAndAuthorization.Authetication
+@using DataLayer.Utilizador
+@using DataLayer.Leilao
+@using DataLayer.Watches
+@inject IUtilizadorRepository _dbUsers
+@inject ILeilaoRepository _dbLeiloes
+@inject IWatchRepository _dbWatches
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authStateProvider
+
+<AuthorizeView Roles="Client">
+    <Authorized>
+        <h3>Informações do Utilizador</h3>
+        @if (userInfo != null)
+        {
+            if (!userInfo.username.Equals(stateUsername))
+            {   
+                <div>
+                    <strong>Username:</strong>
+                    <a href="@($"perfilpublico/{userInfo.username}")">@userInfo.username</a>
+                    <Strong>Avaliação média:</Strong> @userInfo.avaliacaoMedia 
+                    <Strong>Data de Registo:</Strong> @userInfo.dataDeRegisto
+                </div>
+            } else
+            {
+                <div>
+                    <strong>Username:</strong>
+                    <a href="@($"perfil")">@userInfo.username</a>
+                    <Strong>Avaliação média:</Strong> @userInfo.avaliacaoMedia 
+                    <Strong>Data de Registo:</Strong> @userInfo.dataDeRegisto
+                </div>
+            }
+        }
+        else
+        {
+            <p>Nenhum utilizador encontrado com o username '@SearchInput'</p>
+        }
+
+        <h3>Leilões Encontrados</h3>
+        @if(listaLeiloesRes != null && listaLeiloesRes.Any())
+        {
+            <div class="grid">
+                @foreach(var leilao in listaLeiloesRes)
+                {
+                    <CardComponent leilao="leilao" />
+                }
+            </div>
+        } else
+        {
+            <p>Nenhum leilão encontrado</p>
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        Not Authorized
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    [Parameter]
+    public string SearchInput { get; set; }
+    private UtilizadorModel userInfo;
+    private List<LeilaoModel> listaLeiloes;
+    private List<LeilaoModel> listaLeiloesRes = new List<LeilaoModel>();
+    private string stateUsername;
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        string stateUsername = user.Identity.Name;
+
+        userInfo = new UtilizadorModel();
+        listaLeiloesRes.Clear();
+        Console.WriteLine($"Input recebido na página de resultados de pesquisa: '{SearchInput}'");
+        userInfo = await _dbUsers.Find(SearchInput);
+        Console.WriteLine("Já fiz consulta na BD dos users");
+        listaLeiloes = await _dbLeiloes.FindAll();
+        Console.WriteLine("Já fiz consulta na BD dos leiloes");
+
+        foreach(LeilaoModel leilao in listaLeiloes)
+        {
+            Console.WriteLine("Entrei no foreach");
+            int idRelogio = leilao.Relogio_id;
+            WatchModel relogio = await _dbLeiloes.FindWatch(leilao.Id);
+            Console.WriteLine("Já fiz consulta do relogio na BD dos relogios");
+
+            string marcaModelo = $"{relogio.Marca} {relogio.Modelo}";
+            Console.WriteLine($"MarcaModelo encontrado: '{relogio.Marca} {relogio.Modelo}'");
+
+            if (marcaModelo.Contains(SearchInput))
+            {
+                listaLeiloesRes.Add(leilao);
+            }
+        }
+        SearchInput = String.Empty;
+        StateHasChanged();
+        return;
+    }
+}

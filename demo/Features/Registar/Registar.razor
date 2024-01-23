@@ -6,6 +6,7 @@
 @inject IUtilizadorRepository _db
 @inject IJSRuntime js
 
+<PageTitle>Registrar</PageTitle>
 
 <form action="/register" method="post" asp-modal="true" @onsubmit="RegisterUser">
     <div class="modal-dialog">
@@ -15,9 +16,15 @@
                 <h1 class="modal-title">Registar</h1>
             </div>
             <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="username" id="username" name="username" placeholder="Username" class="form-control" @bind="nome">
+                </div>
+
                 <div class="form-group">
                     <label for="email">Endereço de e-mail:</label>
-                    <input type="email" id="email" name="email" placeholder="Endereço de e-mail" class="form-control" @bind="nome">
+                    <input type="email" id="email" name="email" placeholder="Endereço de e-mail" class="form-control" @bind="mail">
                 </div>
 
                 <div class="form-group">
@@ -38,30 +45,24 @@
                     <InputFile multiple OnChange="HandleFileInput" />
                 </div>
 
+                <div class="button text-center">
+                    <button type="submit" class="btn btn-primary">
+                        <strong>Registar</strong>
+                    </button>
+                </div>
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary btn-block">Registar</button>
+                <!-- You can remove or customize the footer as needed -->
             </div>
         </div>
     </div>
 </form>
 
 
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="card mt-3" style="display: @(showMessageBox ? "block" : "none")">
-            <div class="card-body text-center">
-                <p>Registado com sucesso!</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 @code {
     private string nome;
+    private string mail;
     private string password;
     private bool showMessageBox = false;
 
@@ -88,6 +89,7 @@
         var novoUtilizador = new UtilizadorModel
             {
                 username = nome,
+                email = mail,
                 password = password,
                 avaliacaoMedia = 0,
                 numeroDeLeiloesFeitos = 0,

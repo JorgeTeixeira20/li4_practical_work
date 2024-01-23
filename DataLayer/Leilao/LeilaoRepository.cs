@@ -32,6 +32,29 @@ public class LeilaoRepository : ILeilaoRepository
         }
     }
 
+    public async Task<bool> DeleteLeilao(int leilaoId)
+    {
+        LeilaoModel existingLeilao = await Find(leilaoId);
+
+        if (existingLeilao == null)
+        {
+            Console.WriteLine($"Leilao com id {leilaoId} não encontrado.");
+            return false;
+        }
+
+        try
+        {
+            string sql = $"DELETE FROM Leilao WHERE id = '{leilaoId}'";
+            await _db.SaveData(sql, new { id = leilaoId });
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao deletar Leilao com id {leilaoId}: {ex.Message}");
+            return false;
+        }
+    }
+
     public async Task<WatchModel> FindWatch(int leilaoId)
     {
         string sql = $"SELECT w.* FROM Leilao l INNER JOIN watches w ON l.Relogio_id = w.id WHERE l.id = {leilaoId};";
@@ -86,12 +109,13 @@ public class LeilaoRepository : ILeilaoRepository
         return _db.LoadData<LeilaoModel, dynamic>(sql, new { });
     }
 
-    public async Task Create(LeilaoModel leilao)
+    public async Task<int> Create(LeilaoModel leilao)
     {
         string sql = "INSERT INTO Leilao (Relogio_id, DataInicio, DataFim, LicitacaoAtual, Utilizador_idUtilizador)" +
+                     "OUTPUT INSERTED.Id " +
                      "VALUES (@Relogio_id, @DataInicio, @DataFim, @LicitacaoAtual, @Utilizador_idUtilizador)";
 
-        await _db.SaveData(sql, new
+        return await _db.SaveDataGetId(sql, new
         {
             leilao.Relogio_id,
             leilao.DataInicio,
