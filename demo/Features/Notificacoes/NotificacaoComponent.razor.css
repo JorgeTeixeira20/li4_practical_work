@@ -1,41 +1,49 @@
-﻿.notification-card {
+﻿.container {
     display: flex;
-    flex-direction: column;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
+    width: 600px;
+    padding-top: 20px;
+}
+
+.noti-input {
+    margin-top: 10px;
+}
+
+.noti-msg {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    margin-right: 10px;
+    margin-left: 10px;
     border-radius: 10px;
-    width: 600px; /* Defina a largura desejada */
     cursor: pointer;
 }
 
-.notification-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    .noti-msg span {
+        text-align: center;
+        padding-left: 20px;
+    }
+
+.noti-button {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    margin-right: 20px;
+    border-radius: 20%;
 }
 
-.notification-text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    margin-left: 100px;
-}
+    .noti-button span {
+        align-items: center;
+        justify-content: space-between;
+    }
 
-.card-body {
-    text-align: left; /* Alinhar o conteúdo à esquerda */
-    
-}
-
-.card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.bi-trash3-fill-not {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 .bi {
@@ -65,4 +73,12 @@
     padding: 5px 10px;
     cursor: pointer;
     margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        display: flex;
+        width: 380px;
+        padding-top: 20px;
+    }
 }
