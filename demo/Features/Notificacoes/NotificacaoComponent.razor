@@ -30,7 +30,7 @@
                             <div class="noti-input">
                                 <div class="title">Classificação: </div>
                                 <input type="text" @bind="avaliacao" placeholder="Enter something..." class="custom-input">
-                                <button class="confirmation-button" aria-hidden="true" @onclick="RemoveNotification">Confirm</button>
+                                <button class="confirmation-button" aria-hidden="true" @onclick="UpdateAvaliacaoNLeiloe">Confirm</button>
                             </div>
                             <div class="noti-button">
                                 <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
@@ -60,6 +60,16 @@
         NotificacaoRepo.Remove(notificacao.Id);
 
         NavigationManager.NavigateTo("/notificacoes", forceLoad: true);
+    }
+
+    private async Task UpdateAvaliacaoNLeiloe()
+    {
+        UtilizadorModel user = await UtilizadorRepo.FindId(notificacao.Utilizador_idUtilizador);
+        UtilizadorRepo.UpdateAvaliacaoMedia(user.username ,avaliacao);
+
+        UtilizadorRepo.UpdateNumLeilao(user.username, user.numeroDeLeiloesFeitos + 1);
+
+        RemoveNotification();
     }
 
     private void NavigateToPage()

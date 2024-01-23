@@ -28,6 +28,21 @@ public class UtilizadorRepository : IUtilizadorRepository
         }
     }
 
+    public async Task<UtilizadorModel> FindId(int id)
+    {
+        string sql = $"select * from Utilizador where idUtilizador = @id";
+        List<UtilizadorModel> utiRes = await _db.LoadData<UtilizadorModel, dynamic>(sql, new { id });
+        if (utiRes != null && utiRes.Count > 0)
+        {
+            return utiRes.First();
+        }
+        else
+        {
+            Console.WriteLine("Utilizador encontrou null");
+            return null;
+        }
+    }
+
     public Task<List<UtilizadorModel>> FindAll()
     {
         string sql = "select * from Utilizador";

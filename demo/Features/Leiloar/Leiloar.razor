@@ -227,14 +227,6 @@
         var userIdString = authState.User.FindFirst("UserId")?.Value;
         int userId = int.Parse(userIdString);
 
-        var user = authState.User;
-
-        username = user.Identity.Name;
-
-        userFounded = await UtilizadorRepo.Find(username);
-
-        userFounded = await UtilizadorRepo.UpdateNumLeilao(username, userFounded.numeroDeLeiloesFeitos + 1);
-
         // Crie um objeto WatchModel com os dados do formulário
         var novoRelogio = new WatchModel
             {
@@ -280,7 +272,7 @@
         await Task.Delay(3000);
         NavigationManager.NavigateTo("/leiloar");
 
-        user = authState.User;
+        var user = authState.User;
 
         username = user.Identity.Name;
 
