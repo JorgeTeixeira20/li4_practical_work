@@ -1,7 +1,15 @@
 ﻿@page "/"
 @layout SpecialLayout
 @using BlazorServerAutheticationAndAuthorization.Authetication
+@using DataLayer.Notificacao
+@using DataLayer.Leilao
+@using DataLayer.Licitacao
+@using System.Globalization;
 @inject AuthenticationStateProvider authStateProvider
+@inject INotificacaoRepository NotificacaoRepo
+@inject ILeilaoRepository LeilaoRepo
+@inject ILicitacaoRepository LicitacaoRepo
+@inject NavigationManager NavigationManager
 
 <div class="modal-dialog">
     <div class="modal-content">
@@ -26,14 +34,19 @@
 
 
 @code {
-    @inject NavigationManager NavigationManager
+    private bool timerSet = false;
+    private Timer tempoLicitacao;
 
-    /*
     protected override async Task OnInitializedAsync()
     {
-        var customAuthSateProvider = (CustomAutheticationStateProvider)authStateProvider;
-        await customAuthSateProvider.dele;
-    }*/
+        if (!timerSet)
+        {
+            List<DataLayer.Leilao.LeilaoModel> listaleiloes = await LeilaoRepo.FindAll();
+            await SetTodosTempos(listaleiloes);
+            timerSet = true;
+        };
+
+    }
 
     private void NavigateToRegister()
     {
@@ -43,5 +56,60 @@
     private void NavigateToLogin()
     {
         NavigationManager.NavigateTo("/entrar");
+    }
+
+
+
+    private async Task enviarNotificacaoVencedora(int leilaoId)
+    {
+
+        List<DataLayer.Licitacao.LicitacaoModel> licitacoes = await LicitacaoRepo.FindAllFromLeilao(leilaoId);
+        LicitacaoModel ultimaLicitacao = licitacoes.OrderByDescending(bid => DateTime.TryParseExact(bid.Data, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate) ? parsedDate : DateTime.MinValue)
+                                         .FirstOrDefault();
+
+        var novaNotificacao = new NotificacaoModel
+            {
+                Tipo = "Ganhou",
+                Utilizador_idUtilizador = ultimaLicitacao.Utilizador_idUtilizador,
+                Leilao_idLeilao = ultimaLicitacao.Leilao_idUtilizador
+            };
+
+        var novaNotificacaoAval = new NotificacaoModel
+            {
+                Tipo = "Avalia",
+                Utilizador_idUtilizador = ultimaLicitacao.Utilizador_idUtilizador,
+                Leilao_idLeilao = ultimaLicitacao.Leilao_idUtilizador
+            };
+
+        await NotificacaoRepo.Create(novaNotificacao);
+        await NotificacaoRepo.Create(novaNotificacaoAval);
+    }
+
+    public async Task SetTodosTempos(List<DataLayer.Leilao.LeilaoModel> listaleiloes)
+    {
+        foreach (var leilao in listaleiloes)
+        {
+            await SetTempo(leilao.Id);
+        }
+    }
+
+    private async Task SetTempo(int leilaoId)
+    {
+        LeilaoModel leilaoInfo = await LeilaoRepo.Find(leilaoId);
+
+        TimeSpan tempoEspera;
+
+        if (DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now)
+        {
+            tempoEspera = DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) - DateTime.Now;
+
+            tempoLicitacao = new Timer(async (state) => await FinalizaLeilao(leilaoId), null, tempoEspera, Timeout.InfiniteTimeSpan);
+        }
+    }
+
+    private async Task FinalizaLeilao(int leilaoId)
+    {
+        Console.WriteLine("Finalizei o leilao!");
+        await enviarNotificacaoVencedora(leilaoId);
     }
 }

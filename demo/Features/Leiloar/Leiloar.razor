@@ -2,9 +2,14 @@
 @using DataLayer.Watches
 @using DataLayer.Leilao
 @using DataLayer.Utilizador
+@using DataLayer.Notificacao
+@using DataLayer.Licitacao
+@using System.Globalization;
+@inject INotificacaoRepository NotificacaoRepo
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager NavigationManager
 @inject IJSRuntime js
+@inject ILicitacaoRepository LicitacaoRepo
 
 <PageTitle>Leiloar Relógio</PageTitle>
 
@@ -143,6 +148,10 @@
 
     private byte[] imagemRelogio; // Alterada para ser um array de bytes
 
+    private int idLeilao;
+
+    private Timer tempoLicitacao;
+
     private async Task HandleFileInput(InputFileChangeEventArgs e)
     {
         var file = e.File;
@@ -153,6 +162,44 @@
             await stream.CopyToAsync(memoryStream);
             imagemRelogio = memoryStream.ToArray();
         }
+    }
+
+    private async Task enviarNotificacaoVencedora()
+    {
+
+        List<DataLayer.Licitacao.LicitacaoModel> licitacoes = await LicitacaoRepo.FindAllFromLeilao(idLeilao);
+        LicitacaoModel ultimaLicitacao = licitacoes.OrderByDescending(bid => DateTime.TryParseExact(bid.Data, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate) ? parsedDate : DateTime.MinValue)
+                                         .FirstOrDefault();
+
+        var novaNotificacao = new NotificacaoModel
+            {
+                Tipo = "Ganhou",
+                Utilizador_idUtilizador = ultimaLicitacao.Utilizador_idUtilizador,
+                Leilao_idLeilao = ultimaLicitacao.Leilao_idUtilizador
+            };
+
+        await NotificacaoRepo.Create(novaNotificacao);
+    }
+
+    private async Task SetTempo(int leilaoId)
+    {
+        LeilaoModel leilaoInfo = await LeilaoRepo.Find(leilaoId);
+
+        TimeSpan tempoEspera;
+
+        if (DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now)
+        {
+            tempoEspera = DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) - DateTime.Now;
+            Console.WriteLine($"tempo de espera: {tempoEspera}");
+
+            tempoLicitacao = new Timer(async (state) => await FinalizaLeilao(), null, tempoEspera, Timeout.InfiniteTimeSpan);
+        }
+    }
+
+    private async Task FinalizaLeilao()
+    {
+        Console.WriteLine("Finalizei o leilao!");
+        await enviarNotificacaoVencedora();
     }
 
     private async Task CriarLeilao()
@@ -217,7 +264,9 @@
                 Utilizador_idUtilizador = userId,
             };
 
-        await LeilaoRepo.Create(novoLeilao);
+        idLeilao = await LeilaoRepo.Create(novoLeilao);
+
+        await SetTempo(idLeilao);
 
         Console.WriteLine("Objeto WatchModel criado com sucesso.");
 
@@ -226,6 +275,19 @@
 
         Console.WriteLine("Leilão criado com sucesso.");
 
+        errorMessage = ""; // Limpar mensagem de erro se não houver erro
+        await js.InvokeVoidAsync("showSuccessNotification", "Leilão criado com sucesso.");
+        await Task.Delay(3000);
+        NavigationManager.NavigateTo("/leiloar");
+
+        user = authState.User;
+
+        username = user.Identity.Name;
+
+        userFounded = await UtilizadorRepo.Find(username);
+
+        userFounded = await UtilizadorRepo.UpdateNumLeilao(username, userFounded.numeroDeLeiloesFeitos + 1);
+        
         errorMessage = "";
         await js.InvokeVoidAsync("showSuccessNotification", "Leilão criado com sucesso.");
         await Task.Delay(3000);

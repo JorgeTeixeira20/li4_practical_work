@@ -193,13 +193,7 @@
             {
                 watchInfo = await LeilaoRepo.FindWatch(cardIdAsInt);
 
-                leilaoInfo = await LeilaoRepo.Find(cardIdAsInt);
-
-                if (!timerSet)
-                {
-                    SetTempo();
-                    timerSet = true;
-                }
+                leilaoInfo = await LeilaoRepo.Find(cardIdAsInt);           
 
                 Console.WriteLine($"Leilao id: {leilaoInfo.Id}");
 
@@ -250,41 +244,6 @@
         await LeilaoFavoritoRepo.Create(novoLeilaoFavorito);
     }
 
-    private async Task enviarNotificacaoVencedora()
-    {
-        /*
-        _licitacoes = await LicitacaoRepo.FindAllFromLeilao(int.Parse(CardId));
-        LicitacaoModel ultimaLicitacao = _licitacoes.OrderByDescending(bid => DateTime.Parse(bid.Data)).FirstOrDefault();
-        */
-
-        var novaNotificacao = new NotificacaoModel
-        {
-                Tipo = "Ganhou",
-                Utilizador_idUtilizador = 1,
-                Leilao_idLeilao = 1
-        };
-
-        await NotificacaoRepo.Create(novaNotificacao);
-    }
-
-    private async void SetTempo()
-    {
-        TimeSpan tempoEspera;
-
-        if (DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now)
-        {
-            tempoEspera = DateTime.ParseExact(leilaoInfo.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) - DateTime.Now;
-            Console.WriteLine($"tempo de espera: {tempoEspera}");
-
-            tempoLicitacao = new Timer(async (state) => await FinalizaLeilao(), null, tempoEspera, Timeout.InfiniteTimeSpan);
-        }
-    }
-
-    private async Task FinalizaLeilao()
-    {
-            Console.WriteLine("Finalizei o leilao!");
-            await enviarNotificacaoVencedora();
-    }
 }
 
 

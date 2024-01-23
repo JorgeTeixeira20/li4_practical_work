@@ -86,12 +86,13 @@ public class LeilaoRepository : ILeilaoRepository
         return _db.LoadData<LeilaoModel, dynamic>(sql, new { });
     }
 
-    public async Task Create(LeilaoModel leilao)
+    public async Task<int> Create(LeilaoModel leilao)
     {
         string sql = "INSERT INTO Leilao (Relogio_id, DataInicio, DataFim, LicitacaoAtual, Utilizador_idUtilizador)" +
+                     "OUTPUT INSERTED.Id " +
                      "VALUES (@Relogio_id, @DataInicio, @DataFim, @LicitacaoAtual, @Utilizador_idUtilizador)";
 
-        await _db.SaveData(sql, new
+        return await _db.SaveDataGetId(sql, new
         {
             leilao.Relogio_id,
             leilao.DataInicio,

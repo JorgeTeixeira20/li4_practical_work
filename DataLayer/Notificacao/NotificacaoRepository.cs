@@ -56,4 +56,6 @@ public class NotificacaoRepository : INotificacaoRepository
         string sql = "DELETE FROM Notificacao WHERE id = @Id";
         await _db.SaveData(sql, new { Id = id });
     }
+
+   
 }
