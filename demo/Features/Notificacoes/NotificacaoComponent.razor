@@ -24,36 +24,20 @@
                             </div>
                         </div>
                         break;
-                    case "LeilaoFavoritoTerminou":
+
+                    case "Avalia":
                         <div class="container">
-                            <div class="noti-msg" @onclick="NavigateToPage">
-                                <span>O leilão favorito terminou!</span>
+                            <div class="noti-input">
+                                <div class="title">Classificação: </div>
+                                <input type="text" @bind="avaliacao" placeholder="Enter something..." class="custom-input">
+                                <button class="confirmation-button" aria-hidden="true" @onclick="RemoveNotification">Confirm</button>
                             </div>
                             <div class="noti-button">
                                 <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
                             </div>
                         </div>
                         break;
-                    case "LeilaoFavoritoComecou":
-                        <div class="container">
-                            <div class="noti-msg" @onclick="NavigateToPage">
-                                <span>O leilão favorito começou!</span>
-                            </div>
-                            <div class="noti-button">
-                                <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
-                            </div>
-                        </div>
-                        break;
-                    case "LicitacaoNoFavorito":
-                        <div class="container">
-                            <div class="noti-msg" @onclick="NavigateToPage">
-                                <span>Fizeram uma licitação no seu leilão favorito!</span>
-                            </div>
-                            <div class="noti-button">
-                                <button class="bi bi-trash3-fill-not" aria-hidden="true" @onclick="RemoveNotification"></button>
-                            </div>
-                        </div>
-                        break;
+
                     default:
                         <span>Mensagem de notificação padrão</span>
                         break;
@@ -68,6 +52,8 @@
     public NotificacaoModel notificacao { get; set; } = default!;
     private UtilizadorModel userInfo;
     private UtilizadorModel leilaoInfo;
+
+    private int avaliacao;
 
     private void RemoveNotification()
     {

@@ -7,6 +7,7 @@
         public Task Create(UtilizadorModel card);
         public Task<UtilizadorModel> Update(UtilizadorModel user);
         public Task<UtilizadorModel> UpdateNumLeilao(string user, int numLeilao);
+        public Task<UtilizadorModel> UpdateAvaliacaoMedia(string user, int numLeilao);
         public Task Remove(int code);
     }
 }

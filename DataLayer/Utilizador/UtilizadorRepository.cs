@@ -72,6 +72,29 @@ public class UtilizadorRepository : IUtilizadorRepository
         }
     }
 
+    public async Task<UtilizadorModel> UpdateAvaliacaoMedia(string user, int avaliacao)
+{
+    try
+    {
+        var utilizador = await Find(user);
+
+        string sql = "UPDATE utilizador SET AvaliacaoMedia = @novaAvaliacaoMedia WHERE username = @userA";
+
+        await _db.SaveData(sql, new
+        {
+            novaAvaliacaoMedia = utilizador.avaliacaoMedia + avaliacao,
+            userA = user
+        });
+
+        return await Find(user);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error updating AvaliacaoMedia for Utilizador");
+        throw;
+    }
+}
+
     public Task<UtilizadorModel> Update(UtilizadorModel user)
     {
         //string sql = "UPDATE Utilizador SET ";
