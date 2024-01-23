@@ -72,6 +72,7 @@
                                     <li class="list-group-item">Relogio Funciona: @(watchInfo.RelogioFunciona ? "Sim" : "Não")</li>
                                     <li class="list-group-item">Data Inicío: @leilaoInfo.DataInicio</li>
                                     <li class="list-group-item">Data Fim: @leilaoInfo.DataFim</li>
+                                    <li class="list-group-item">Preço Base: @watchInfo.PrecoBase</li>
                                 </ul>
                                 <div class="card-footer">
                                     <p class="text-muted">Lance atual: € @leilaoInfo.LicitacaoAtual</p>
@@ -154,9 +155,9 @@
         {
             await JSRuntime.InvokeVoidAsync("alert", "O Leilao já terminou!");
         }
-        else if (newBidValue <= leilaoInfo.LicitacaoAtual)
+        else if (newBidValue <= leilaoInfo.LicitacaoAtual || newBidValue <= watchInfo.PrecoBase)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "O valor da Licitação tem de ser superior ao Lance atual");
+            await JSRuntime.InvokeVoidAsync("alert", "O valor da Licitação tem de ser superior ao Lance atual e ao Preço base");
         }
         else
         {
@@ -226,7 +227,14 @@
         {
             Console.WriteLine($"Erro ao recuperar informações do relógio: {ex.Message}");
         }
-        newBidValue = leilaoInfo.LicitacaoAtual;
+        if (leilaoInfo.LicitacaoAtual < watchInfo.PrecoBase)
+        {
+            newBidValue = (int)watchInfo.PrecoBase;
+        }
+        else
+        {
+            newBidValue = leilaoInfo.LicitacaoAtual;
+        }
     }
 
     private async Task AdicionarFavoritos()
