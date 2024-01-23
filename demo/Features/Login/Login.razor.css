@@ -1,7 +1,7 @@
 ﻿.modal-dialog {
     max-width: 500px;
     margin: 50px auto;
-    background-color: #333;
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     color: white;
     transition: background-color 0.3s;

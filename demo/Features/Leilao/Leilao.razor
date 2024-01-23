@@ -56,7 +56,7 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">@watchInfo.Modelo</h5>
+                                <h5 class="card-title">@watchInfo.Marca @watchInfo.Modelo</h5>
                                 <p class="card-text">
                                     @watchInfo.Descricao
                                 </p>
@@ -64,23 +64,27 @@
                                     <li class="list-group-item">
                                         <a href="/perfilpublico/@userInfo.username">@userInfo.username</a>
                                     </li>
-                                    <li class="list-group-item">Marca: @watchInfo.Marca</li>
-                                    <li class="list-group-item">NumeroSerie: @watchInfo.NumeroSerie</li>
+                                    <li class="list-group-item">Número Série: @watchInfo.NumeroSerie</li>
                                     <li class="list-group-item">Ano: @watchInfo.AnoFabrico </li>
                                     <li class="list-group-item">Estado de Conservacao: @watchInfo.EstadoConservacao</li>
                                     <li class="list-group-item">Caixa Original: @(watchInfo.TemCaixaOriginal ? "Sim" : "Não")</li>
                                     <li class="list-group-item">Relogio Funciona: @(watchInfo.RelogioFunciona ? "Sim" : "Não")</li>
                                     <li class="list-group-item">Data Inicío: @leilaoInfo.DataInicio</li>
                                     <li class="list-group-item">Data Fim: @leilaoInfo.DataFim</li>
-                                    <li class="list-group-item">Preço Base: @watchInfo.PrecoBase</li>
+                                    <li class="list-group-item">Preço Base: @watchInfo.PrecoBase€</li>
                                 </ul>
                                 <div class="card-footer">
-                                    <p class="text-muted">Lance atual: € @leilaoInfo.LicitacaoAtual</p>
+                                    <p class="text-muted">Lance atual: @leilaoInfo.LicitacaoAtual€</p>
                                 </div>
                             </div>
                         </div>
 
-                        <button class="btn btn-primary" @onclick="AdicionarFavoritos"  style="margin-left: 20px;">Adicionar aos Favoritos</button>
+                        <button class="btn btn-primary" @onclick="AdicionarFavoritos" style="margin-left: 20px;">Adicionar aos Favoritos</button>
+
+                        @if (isAuthor())
+                        {
+                            <button class="btn btn-primary btn-remove" @onclick="RemoverLeilao" style="margin-left: 20px;">Remover Leilão</button>
+                        }
 
                         <div class="card">
                             <div class="card-body">
@@ -120,6 +124,8 @@
     private LeilaoModel leilaoInfo;
 
     private List<DataLayer.Licitacao.LicitacaoModel> _licitacoes;
+
+    string username;
 
     private int newBidValue;
 
@@ -184,6 +190,26 @@
         }
     }
 
+    public async Task RemoverLeilao()
+    {
+        await LeilaoRepo.DeleteLeilao(int.Parse(CardId));
+
+        NavigationManager.NavigateTo("/home");
+    }
+
+
+    private bool isAuthor()
+    {
+        if (username == userInfo.username)
+        {
+            return true;
+        } 
+        else
+        {
+            return false;
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -235,6 +261,11 @@
         {
             newBidValue = leilaoInfo.LicitacaoAtual;
         }
+
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        username = user.Identity.Name;
     }
 
     private async Task AdicionarFavoritos()

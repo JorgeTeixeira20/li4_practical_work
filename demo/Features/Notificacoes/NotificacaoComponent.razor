@@ -28,7 +28,7 @@
                     case "Avalia":
                         <div class="container">
                             <div class="noti-input">
-                                <div class="title">Classificação: </div>
+                                <div class="title">Classificação @userInfo?.username: </div>
                                 <input type="text" @bind="avaliacao" placeholder="Enter something..." class="custom-input">
                                 <button class="confirmation-button" aria-hidden="true" @onclick="UpdateAvaliacaoNLeiloe">Confirm</button>
                             </div>
@@ -53,7 +53,7 @@
     private UtilizadorModel userInfo;
     private UtilizadorModel leilaoInfo;
 
-    private int avaliacao;
+    private int avaliacao = 5;
 
     private void RemoveNotification()
     {
@@ -64,10 +64,10 @@
 
     private async Task UpdateAvaliacaoNLeiloe()
     {
-        UtilizadorModel user = await UtilizadorRepo.FindId(notificacao.Utilizador_idUtilizador);
-        UtilizadorRepo.UpdateAvaliacaoMedia(user.username ,avaliacao);
+        //UtilizadorModel user = await UtilizadorRepo.FindId(notificacao.Utilizador_idUtilizador);
+        UtilizadorRepo.UpdateAvaliacaoMedia(userInfo.username, avaliacao);
 
-        UtilizadorRepo.UpdateNumLeilao(user.username, user.numeroDeLeiloesFeitos + 1);
+        UtilizadorRepo.UpdateNumLeilao(userInfo.username, userInfo.numeroDeLeiloesFeitos + 1);
 
         RemoveNotification();
     }

@@ -178,7 +178,15 @@
                 Leilao_idLeilao = ultimaLicitacao.Leilao_idUtilizador
             };
 
+        var novaNotificacaoAval = new NotificacaoModel
+            {
+                Tipo = "Avalia",
+                Utilizador_idUtilizador = ultimaLicitacao.Utilizador_idUtilizador,
+                Leilao_idLeilao = ultimaLicitacao.Leilao_idUtilizador
+            };
+
         await NotificacaoRepo.Create(novaNotificacao);
+        await NotificacaoRepo.Create(novaNotificacaoAval);
     }
 
     private async Task SetTempo(int leilaoId)

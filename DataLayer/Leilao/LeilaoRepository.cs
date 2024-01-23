@@ -32,6 +32,29 @@ public class LeilaoRepository : ILeilaoRepository
         }
     }
 
+    public async Task<bool> DeleteLeilao(int leilaoId)
+    {
+        LeilaoModel existingLeilao = await Find(leilaoId);
+
+        if (existingLeilao == null)
+        {
+            Console.WriteLine($"Leilao com id {leilaoId} não encontrado.");
+            return false;
+        }
+
+        try
+        {
+            string sql = $"DELETE FROM Leilao WHERE id = '{leilaoId}'";
+            await _db.SaveData(sql, new { id = leilaoId });
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao deletar Leilao com id {leilaoId}: {ex.Message}");
+            return false;
+        }
+    }
+
     public async Task<WatchModel> FindWatch(int leilaoId)
     {
         string sql = $"SELECT w.* FROM Leilao l INNER JOIN watches w ON l.Relogio_id = w.id WHERE l.id = {leilaoId};";
