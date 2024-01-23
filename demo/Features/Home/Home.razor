@@ -1,6 +1,7 @@
 ﻿@page "/home"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager;
+@using System.Globalization;
 @using DataLayer.Watches
 @using DataLayer.Cards
 @using DataLayer.Leilao
@@ -20,13 +21,27 @@ else
     <div class="grid">
         @foreach (var leilao in _leiloes)
         {
-            <CardComponent leilao="leilao" />
+            if (dataFimLeilao(leilao)) {
+                <CardComponent leilao="leilao" />
+            }
         }
     </div>
 }
 
 @code {
     private List<DataLayer.Leilao.LeilaoModel> _leiloes;
+
+    private bool dataFimLeilao(LeilaoModel leilao)
+    {
+        if (DateTime.ParseExact(leilao.DataFim, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture) > DateTime.Now)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {

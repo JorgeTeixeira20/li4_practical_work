@@ -6,6 +6,8 @@
 @inject IUtilizadorRepository _db
 @inject IJSRuntime js
 
+<PageTitle>Registrar</PageTitle>
+
 <form action="/register" method="post" asp-modal="true" @onsubmit="RegisterUser">
     <div class="modal-dialog">
         <div class="modal-content">
