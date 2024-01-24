@@ -29,7 +29,7 @@
 
                 <div class="form-group">
                     <label for="password">Senha:</label>
-                    <input type="password" id="password" name="password" placeholder="Senha" class="form-control">
+                    <input type="password" id="password" name="password" placeholder="Senha" class="form-control" @bind="cpassword">
                 </div>
 
                 <div class="form-group">
@@ -64,6 +64,7 @@
     private string nome;
     private string mail;
     private string password;
+    private string cpassword;
     private bool showMessageBox = false;
 
     private byte[] imagemDeRei; // Alterada para ser um array de bytes
@@ -98,16 +99,21 @@
             };
 
         UtilizadorModel userFounded = await _db.Find(nome);
-        if (userFounded == null)
+        if (userFounded != null)
+        {
+            await js.InvokeVoidAsync("alert", "Utilizador já existente");
+            return;
+        }
+        else if (cpassword != password)
+        {
+            await js.InvokeVoidAsync("alert", "Palavra-passe e confirmação diferentes");
+            return;
+        }
+        else
         {
             await _db.Create(novoUtilizador);
             await js.InvokeVoidAsync("alert", "Utilizador criado com sucesso");
             NavigationManager.NavigateTo("/");
-        }
-        else
-        {
-            await js.InvokeVoidAsync("alert", "Utilizador já existente");
-            return;
         }
     }
 }
