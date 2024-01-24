@@ -11,51 +11,77 @@
 
 <AuthorizeView Roles="Client">
     <Authorized>
-        <h3>Informações do Utilizador</h3>
-        @if (userInfo != null)
-        {
-            if (!userInfo.username.Equals(stateUsername))
-            {   
-                <div>
-                    <strong>Username:</strong>
-                    <a href="@($"perfilpublico/{userInfo.username}")">@userInfo.username</a>
-                    <Strong>Avaliação média:</Strong> @userInfo.avaliacaoMedia 
-                    <Strong>Data de Registo:</Strong> @userInfo.dataDeRegisto
-                </div>
-            } else
-            {
-                <div>
-                    <strong>Username:</strong>
-                    <a href="@($"perfil")">@userInfo.username</a>
-                    <Strong>Avaliação média:</Strong> @userInfo.avaliacaoMedia 
-                    <Strong>Data de Registo:</Strong> @userInfo.dataDeRegisto
-                </div>
-            }
-        }
-        else
-        {
-            <p>Nenhum utilizador encontrado com o username '@SearchInput'</p>
-        }
+        <div class="card mt-3">
+            <div class="card-header">
+                <h2>Utilizadores Encontrados</h2>
+            </div>
+            <div class="card-body">
+                @if (userInfo != null)
+                {
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            @if (!userInfo.username.Equals(stateUsername))
+                            {
+                                <strong>Username: </strong>
 
-        <h3>Leilões Encontrados</h3>
-        @if(listaLeiloesRes != null && listaLeiloesRes.Any())
+                                <a href="@($"perfilpublico/{userInfo.username}")"> @userInfo.username</a>
+                            }
+                            else
+                            {
+                                <strong>Username: </strong>
+
+                                <a href="@($"perfil")">@userInfo.username</a>
+                            }
+                             - 
+                            <strong>Avaliação:</strong> @userInfo.avaliacaoMedia -
+                            <strong>Registo:</strong> @userInfo.dataDeRegisto
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p>Nenhum utilizador encontrado.</p>
+                }
+            </div>
+        </div>
+
+        @if (listaLeiloesRes != null && listaLeiloesRes.Any())
         {
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h2>Leilões Encontrados</h2>
+                </div>
+            </div>
             <div class="grid">
-                @foreach(var leilao in listaLeiloesRes)
+                @foreach (var leilao in listaLeiloesRes)
                 {
                     <CardComponent leilao="leilao" />
                 }
             </div>
-        } else
+        }
+        else
         {
-            <p>Nenhum leilão encontrado</p>
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h2>Leilões Encontrados</h2>
+                </div>
+            
+                <div class="card-body">
+                    <p>Nenhum leilão encontrado.</p>
+                </div>
+            </div>
         }
 
     </Authorized>
     <NotAuthorized>
-        Not Authorized
+        <div class="card mt-3">
+            <div class="card-header">
+                <h2>Não estás autenticado</h2>
+            </div>
+        </div>
     </NotAuthorized>
 </AuthorizeView>
+
 
 
 @code {
