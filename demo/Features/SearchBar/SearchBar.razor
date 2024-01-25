@@ -32,22 +32,10 @@
 
     private async Task Search()
     {
-        //UtilizadorModel userFounded = await _db.Find(searchInput);
-        //var authState = await authStateProvider.GetAuthenticationStateAsync();
-        //var user = authState.User;
-        //string stateUsername = user.Identity.Name;
-
-        /*
-        if (userFounded == null)
+        if(string.IsNullOrWhiteSpace(searchInput))
         {
-            await js.InvokeVoidAsync("alert", "utilizador não encontrado.");
             return;
         }
-        if (userFounded.username.Equals(stateUsername))
-        {
-            navManager.NavigateTo("/perfil");
-            return;
-        }*/
 
         navManager.NavigateTo($"/searchresults/{searchInput}");
         searchInput = string.Empty;

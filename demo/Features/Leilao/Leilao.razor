@@ -64,7 +64,13 @@
                                 </p>
                                 <ul class="list-group">
                                     <li class="list-group-item">
-                                        <a href="/perfilpublico/@userInfo.username">@userInfo.username</a>
+                                        @if(userInfo.username.Equals(stateUsername))
+                                        {
+                                            <a href="/perfil">@userInfo.username</a>
+                                        } else
+                                        {
+                                            <a href="/perfilpublico/@userInfo.username">@userInfo.username</a>                                            
+                                        }
                                     </li>
                                     <li class="list-group-item">Número Série: @watchInfo.NumeroSerie</li>
                                     <li class="list-group-item">Ano: @watchInfo.AnoFabrico </li>
@@ -132,6 +138,8 @@
     private int newBidValue;
 
     private bool timerSet = false;
+
+    private string stateUsername;
 
     private void IncrementValue20()
     {
@@ -214,6 +222,9 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var authState2 = await authStateProvider.GetAuthenticationStateAsync();
+        var user2 = authState2.User;
+        stateUsername = user2.Identity.Name;
         try
         {
             _licitacoes = await LicitacaoRepo.FindAllFromLeilao(int.Parse(CardId));

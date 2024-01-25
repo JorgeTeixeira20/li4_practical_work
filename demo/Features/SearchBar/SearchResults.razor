@@ -20,6 +20,7 @@
             <div class="card-body">
                 @if (userInfo != null)
                 {
+                    
                     <div class="row align-items-center">
                         <div class="col-md-4">
                             @if (!userInfo.username.Equals(stateUsername))
@@ -28,17 +29,17 @@
 
                                 <a href="@($"perfilpublico/{userInfo.username}")"> @userInfo.username</a>
                             }
-                            else
+                            @if(userInfo.username.Equals(stateUsername))
                             {
-                                <strong>Username: </strong>
+                               <strong>Username: </strong>
 
                                 <a href="@($"perfil")">@userInfo.username</a>
                             }
-                             - 
+                            -  
                             <strong>Avaliação:</strong> @userInfo.avaliacaoMedia -
                             <strong>Registo:</strong> @userInfo.dataDeRegisto
                         </div>
-                    </div>
+                    </div>                      
                 }
                 else
                 {
@@ -99,12 +100,18 @@
     {
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
-        string stateUsername = user.Identity.Name;
+        stateUsername = user.Identity.Name;
+        Console.WriteLine($"State username: {stateUsername}");
 
         userInfo = new UtilizadorModel();
         listaLeiloesRes.Clear();
         Console.WriteLine($"Input recebido na página de resultados de pesquisa: '{SearchInput}'");
         userInfo = await _dbUsers.Find(SearchInput);
+        if (userInfo != null)
+        {
+            Console.WriteLine($"Encontrei user com username: {userInfo.username}");
+            Console.WriteLine($"User name do authetication state: {authState.User.Identity.Name}");
+        }
         Console.WriteLine("Já fiz consulta na BD dos users");
         listaLeiloes = await _dbLeiloes.FindAll();
         Console.WriteLine("Já fiz consulta na BD dos leiloes");
@@ -119,7 +126,7 @@
             string marcaModelo = $"{relogio.Marca} {relogio.Modelo}";
             Console.WriteLine($"MarcaModelo encontrado: '{relogio.Marca} {relogio.Modelo}'");
 
-            if (marcaModelo.Contains(SearchInput))
+            if (marcaModelo.ToUpper().Contains(SearchInput.ToUpper()))
             {
                 listaLeiloesRes.Add(leilao);
             }
