@@ -95,12 +95,13 @@
     private List<LeilaoModel> listaLeiloesRes = new List<LeilaoModel>();
     private string stateUsername;
 
-
     protected override async Task OnParametersSetAsync()
     {
+        StateHasChanged();
+        navManager.NavigateTo($"/searchresults/{SearchInput}");
         var authState = await authStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        stateUsername = user.Identity.Name;
+        var user = authState.User; 
+        stateUsername = user.Identity.Name;                                                                                                           
         Console.WriteLine($"State username: {stateUsername}");
 
         userInfo = new UtilizadorModel();
@@ -131,8 +132,10 @@
                 listaLeiloesRes.Add(leilao);
             }
         }
+
         SearchInput = String.Empty;
         StateHasChanged();
+
         return;
     }
 }

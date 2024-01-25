@@ -12,21 +12,25 @@
 
 <PageTitle>Home</PageTitle>
 
-@if (_leiloes == null)
-{
-    <p>Loading leiloes...</p>
-}
-else
-{
-    <div class="grid">
-        @foreach (var leilao in _leiloes)
+<AuthorizeView Roles="Client">
+    <Authorized>
+        @if (_leiloes == null)
         {
-            if (dataFimLeilao(leilao)) {
-                <CardComponent leilao="leilao" />
-            }
+            <p>Loading leiloes...</p>
         }
-    </div>
-}
+        else
+        {
+            <div class="grid">
+                @foreach (var leilao in _leiloes)
+                {
+                    if (dataFimLeilao(leilao)) {
+                        <CardComponent leilao="leilao" />
+                    }
+                }
+            </div>
+        }
+    </Authorized>
+</AuthorizeView>
 
 @code {
     private List<DataLayer.Leilao.LeilaoModel> _leiloes;
